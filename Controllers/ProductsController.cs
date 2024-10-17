@@ -22,4 +22,12 @@ public class ProductController : ControllerBase
         }
         return Ok(products);
     }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProductById([FromRoute] int id)
+    {
+        var product = await _productRepo.GetProductByIdAsync(id);
+        if (product == null)
+            return BadRequest();
+        return Ok(product);
+    }
 }

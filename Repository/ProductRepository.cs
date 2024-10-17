@@ -19,6 +19,13 @@ public class ProductRepository : IProductRepository
     public async Task<List<ProductModel>> GetAllProductsAsync()
     {
         var products = await _context.ProductModels.ToListAsync();
+        if (products == null)
+            return null;
         return products;
+    }
+
+    public async Task<ProductModel?> GetProductByIdAsync(int productId)
+    {
+        return await _context.ProductModels.FindAsync(productId);
     }
 }

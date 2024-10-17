@@ -7,4 +7,5 @@ namespace MainApi.Interfaces;
 public interface IProductRepository
 {
     Task<List<ProductModel>> GetAllProductsAsync();
+    Task<ProductModel> GetProductByIdAsync(int productId);
 }
