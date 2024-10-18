@@ -16,6 +16,13 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
+    public async Task<ProductModel> AddProductAsync(ProductModel productModel)
+    {
+        await _context.AddAsync(productModel);
+        await _context.SaveChangesAsync();
+        return productModel;
+    }
+
     public async Task<List<ProductModel>> GetAllProductsAsync()
     {
         var products = await _context.ProductModels.ToListAsync();
@@ -28,4 +35,5 @@ public class ProductRepository : IProductRepository
     {
         return await _context.ProductModels.FindAsync(productId);
     }
+
 }

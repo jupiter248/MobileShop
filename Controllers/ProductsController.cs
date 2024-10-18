@@ -1,4 +1,6 @@
+using MainApi.Dtos.Products;
 using MainApi.Interfaces;
+using MainApi.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainApi.Controllers;
@@ -29,5 +31,13 @@ public class ProductController : ControllerBase
         if (product == null)
             return BadRequest();
         return Ok(product);
+    }
+    [HttpPost]
+    public async Task<IActionResult> AddProduct([FromBody] CreateProductRequestDto createProductRequestDto)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        var product = createProductRequestDto.ToProductFromCreateDto();
+        await _productRepo.AddProductAsync(product);
+        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
     }
 }
