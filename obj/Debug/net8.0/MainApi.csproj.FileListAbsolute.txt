@@ -141,3 +141,4 @@ C:\Users\mohammad\Desktop\MobileShopping\MainApi\bin\Debug\net8.0\runtimes\win\l
 C:\Users\mohammad\Desktop\MobileShopping\MainApi\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\mohammad\Desktop\MobileShopping\MainApi\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\mohammad\Desktop\MobileShopping\MainApi\obj\Debug\net8.0\MainApi.sourcelink.json
+C:\Users\mohammad\Desktop\MobileShopping\MainApi\bin\Debug\net8.0\MainApi.staticwebassets.runtime.json
