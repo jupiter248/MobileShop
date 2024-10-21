@@ -11,7 +11,7 @@ namespace MainApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ProductModels",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -26,11 +26,11 @@ namespace MainApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductModels", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.InsertData(
-                table: "ProductModels",
+                table: "Products",
                 columns: new[] { "Id", "Brand", "Description", "ImageURL", "Model", "Price", "ProductName", "Quantity" },
                 values: new object[] { 1, "Samsung", "test test test test", "", "A15", 15000000m, "Mobile", 8 });
         }
@@ -39,7 +39,7 @@ namespace MainApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ProductModels");
+                name: "Products");
         }
     }
 }

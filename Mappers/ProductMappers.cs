@@ -6,9 +6,9 @@ namespace MainApi.Mappers;
 
 public static class ProductMappers
 {
-    public static ProductModel ToProductFromCreateDto(this CreateProductRequestDto createProductRequestDto)
+    public static Products ToProductFromCreateDto(this CreateProductRequestDto createProductRequestDto)
     {
-        return new ProductModel()
+        return new Products()
         {
             ProductName = createProductRequestDto.ProductName,
             Brand = createProductRequestDto.Brand,
@@ -18,9 +18,9 @@ public static class ProductMappers
             Description = createProductRequestDto.Description
         };
     }
-      public static ProductModel ToProductFromUpdateDto(this UpdateProductRequestDto updateProductRequestDto)
+      public static Products ToProductFromUpdateDto(this UpdateProductRequestDto updateProductRequestDto)
     {
-        return new ProductModel()
+        return new Products()
         {
             ProductName = updateProductRequestDto.ProductName,
             Brand = updateProductRequestDto.Brand,
@@ -30,7 +30,7 @@ public static class ProductMappers
             Description = updateProductRequestDto.Description
         };
     }
-    public static ProductDto ToProductDto(this ProductModel productModel)
+    public static ProductDto ToProductDto(this Products productModel)
     {
         return new ProductDto()
         {

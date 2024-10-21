@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Models
 {
-    public class ProductModel
+    public class Products
     {
         public int Id { get; set; }
         public string ProductName { get; set; } = string.Empty;

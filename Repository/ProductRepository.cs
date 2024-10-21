@@ -16,27 +16,27 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
-    public async Task<ProductModel> AddProductAsync(ProductModel productModel)
+    public async Task<Products> AddProductAsync(Products products)
     {
-        await _context.AddAsync(productModel);
+        await _context.AddAsync(products);
         await _context.SaveChangesAsync();
-        return productModel;
+        return products;
     }
 
-    public async Task<List<ProductModel>> GetAllProductsAsync()
+    public async Task<List<Products>> GetAllProductsAsync()
     {
-        var products = await _context.ProductModels.ToListAsync();
+        var products = await _context.Products.ToListAsync();
         if (products == null)
             return null;
         return products;
     }
 
-    public async Task<ProductModel?> GetProductByIdAsync(int productId)
+    public async Task<Products?> GetProductByIdAsync(int productId)
     {
-        return await _context.ProductModels.FindAsync(productId);
+        return await _context.Products.FindAsync(productId);
     }
 
-    public async Task<ProductModel?> RemoveProductAsync(int productId)
+    public async Task<Products?> RemoveProductAsync(int productId)
     {
         var product = await GetProductByIdAsync(productId);
         _context.Remove(product);
@@ -44,9 +44,9 @@ public class ProductRepository : IProductRepository
         return product;
     }
 
-    public async Task<ProductModel> UpdateProductAsync(ProductModel productModel, int productId)
+    public async Task<Products> UpdateProductAsync(Products productModel, int productId)
     {
-        var product = _context.ProductModels.FirstOrDefault(f => f.Id == productId);
+        var product = _context.Products.FirstOrDefault(f => f.Id == productId);
         if (product == null)
         {
             return null;

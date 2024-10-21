@@ -10,12 +10,12 @@ public class ApplicationDbContext : DbContext
     : base(options)
     {
     }
-    public DbSet<ProductModel> ProductModels { get; set; }
+    public DbSet<Products> Products { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<ProductModel>().HasData(
-            new ProductModel
+        modelBuilder.Entity<Products>().HasData(
+            new Products
             {
                 Id = 1,
                 ProductName = "Mobile",
