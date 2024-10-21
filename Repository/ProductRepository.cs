@@ -36,4 +36,11 @@ public class ProductRepository : IProductRepository
         return await _context.ProductModels.FindAsync(productId);
     }
 
+    public async Task<ProductModel?> RemoveProductAsync(int productId)
+    {
+        var product = await GetProductByIdAsync(productId);
+        _context.Remove(product);
+        await _context.SaveChangesAsync();
+        return product;
+    }
 }

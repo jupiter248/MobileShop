@@ -18,4 +18,17 @@ public static class ProductMappers
             Description = createProductRequestDto.Description
         };
     }
+    public static ProductDto ToProductDto(this ProductModel productModel)
+    {
+        return new ProductDto()
+        {
+            Id = productModel.Id,
+            ProductName = productModel.ProductName,
+            Brand = productModel.Brand,
+            Model = productModel.Model,
+            Price = productModel.Price,
+            Quantity = productModel.Quantity,
+            Description = productModel.Description
+        };
+    }
 }

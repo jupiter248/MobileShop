@@ -24,7 +24,7 @@ public class ProductController : ControllerBase
         }
         return Ok(products);
     }
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetProductById([FromRoute] int id)
     {
         var product = await _productRepo.GetProductByIdAsync(id);
@@ -38,6 +38,13 @@ public class ProductController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         var product = createProductRequestDto.ToProductFromCreateDto();
         await _productRepo.AddProductAsync(product);
-        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
+        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product.ToProductDto());
+    }
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> RemoveProduct([FromRoute] int id)
+    {
+        var product = await _productRepo.RemoveProductAsync(id);
+        if (product == null) return NotFound();
+        return NoContent();
     }
 }
