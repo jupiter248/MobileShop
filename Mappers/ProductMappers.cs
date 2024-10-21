@@ -18,6 +18,18 @@ public static class ProductMappers
             Description = createProductRequestDto.Description
         };
     }
+      public static ProductModel ToProductFromUpdateDto(this UpdateProductRequestDto updateProductRequestDto)
+    {
+        return new ProductModel()
+        {
+            ProductName = updateProductRequestDto.ProductName,
+            Brand = updateProductRequestDto.Brand,
+            Model = updateProductRequestDto.Model,
+            Price = updateProductRequestDto.Price,
+            Quantity = updateProductRequestDto.Quantity,
+            Description = updateProductRequestDto.Description
+        };
+    }
     public static ProductDto ToProductDto(this ProductModel productModel)
     {
         return new ProductDto()

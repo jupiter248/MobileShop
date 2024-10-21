@@ -43,4 +43,22 @@ public class ProductRepository : IProductRepository
         await _context.SaveChangesAsync();
         return product;
     }
+
+    public async Task<ProductModel> UpdateProductAsync(ProductModel productModel, int productId)
+    {
+        var product = _context.ProductModels.FirstOrDefault(f => f.Id == productId);
+        if (product == null)
+        {
+            return null;
+        }
+        product.ProductName = productModel.ProductName;
+        product.Brand = productModel.Brand;
+        product.Model = productModel.Model;
+        product.Price = productModel.Price;
+        product.Quantity = productModel.Quantity;
+        product.Description = productModel.Description;
+        product.ImageURL = productModel.ImageURL;
+        await _context.SaveChangesAsync();
+        return product;
+    }
 }
