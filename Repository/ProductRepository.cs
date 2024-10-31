@@ -16,14 +16,14 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
-    public async Task<Products?> AddProductAsync(Products products)
+    public async Task<Product?> AddProductAsync(Product products)
     {
         await _context.AddAsync(products);
         await _context.SaveChangesAsync();
         return products;
     }
 
-    public async Task<List<Products>?> GetAllProductsAsync()
+    public async Task<List<Product>?> GetAllProductsAsync()
     {
         var products = await _context.Products.ToListAsync();
         if (products == null)
@@ -31,12 +31,12 @@ public class ProductRepository : IProductRepository
         return products;
     }
 
-    public async Task<Products?> GetProductByIdAsync(int productId)
+    public async Task<Product?> GetProductByIdAsync(int productId)
     {
         return await _context.Products.FindAsync(productId);
     }
 
-    public async Task<Products?> RemoveProductAsync(int productId)
+    public async Task<Product?> RemoveProductAsync(int productId)
     {
         var product = await GetProductByIdAsync(productId);
         _context.Remove(product);
@@ -44,7 +44,7 @@ public class ProductRepository : IProductRepository
         return product;
     }
 
-    public async Task<Products?> UpdateProductAsync(Products productModel, int productId)
+    public async Task<Product?> UpdateProductAsync(Product productModel, int productId)
     {
         var product = _context.Products.FirstOrDefault(f => f.Id == productId);
         if (product == null)
@@ -57,7 +57,6 @@ public class ProductRepository : IProductRepository
         product.Price = productModel.Price;
         product.Quantity = productModel.Quantity;
         product.Description = productModel.Description;
-        product.ImageURL = productModel.ImageURL;
         await _context.SaveChangesAsync();
         return product;
     }
