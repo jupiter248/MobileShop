@@ -1,0 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace MainApi.Models
+{
+    public class Image
+    {
+        public int Id { get; set; }
+        public string ImagesName { get; set; } = string.Empty;
+        public string ImageName { get; set; } = string.Empty;
+        public int? ProductId { get; set; }
+        public Product? Product { get; set; }
+        public Boolean IsPrimary { get; set; }
+        public DateTime DateAdded { get; set; } = DateTime.Now;
+    }
+}

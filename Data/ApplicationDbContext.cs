@@ -10,12 +10,30 @@ public class ApplicationDbContext : DbContext
     : base(options)
     {
     }
-    public DbSet<Products> Products { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Color> Colors { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Image> Images { get; set; }
+    public DbSet<ProductColor> ProductColors { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<Products>().HasData(
-            new Products
+
+        modelBuilder.Entity<ProductColor>(x => x.HasKey(p => new { p.ColorId, p.ProductId }));
+
+        modelBuilder.Entity<ProductColor>()
+            .HasOne(u => u.Product)
+            .WithMany(u => u.ProductColors)
+            .HasForeignKey(u => u.ProductId);
+
+        modelBuilder.Entity<ProductColor>()
+            .HasOne(u => u.Color)
+            .WithMany(u => u.ProductsColors)
+            .HasForeignKey(u => u.ColorId);
+
+
+        modelBuilder.Entity<Product>().HasData(
+            new Product
             {
                 Id = 1,
                 ProductName = "Mobile",

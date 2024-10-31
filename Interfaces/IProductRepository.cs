@@ -6,9 +6,9 @@ namespace MainApi.Interfaces;
 
 public interface IProductRepository
 {
-    Task<List<Products>> GetAllProductsAsync();
-    Task<Products> GetProductByIdAsync(int productId);
-    Task<Products> AddProductAsync(Products product);
-    Task<Products> RemoveProductAsync(int productId);
-    Task<Products> UpdateProductAsync(Products product , int productId);
+    Task<List<Product>?> GetAllProductsAsync();
+    Task<Product?> GetProductByIdAsync(int productId);
+    Task<Product?> AddProductAsync(Product product);
+    Task<Product?> RemoveProductAsync(int productId);
+    Task<Product?> UpdateProductAsync(Product product, int productId);
 }
