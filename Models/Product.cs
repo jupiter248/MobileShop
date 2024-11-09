@@ -17,7 +17,6 @@ namespace MainApi.Models
         public decimal Price { get; set; }
         public int Quantity { get; set; }
         public string Description { get; set; } = string.Empty;
-        public List<ProductColor> ProductColors { get; set; } = new List<ProductColor>();
         public List<Image> Images { get; set; } = new List<Image>();
     }
 }
