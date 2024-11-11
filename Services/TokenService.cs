@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using MainApi.Interfaces;
 using MainApi.Models;
@@ -14,10 +15,10 @@ namespace MainApi.Services
     {
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
-        public TokenService(IConfiguration config, SymmetricSecurityKey key)
+        public TokenService(IConfiguration config)
         {
             _config = config;
-            _key = key;
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
         }
 
         public string CreateToken(AppUser appUser)
@@ -38,8 +39,11 @@ namespace MainApi.Services
                 SigningCredentials = creds,
                 Expires = DateTime.Now.AddDays(7)
             };
+
             var tokenHandler = new JwtSecurityTokenHandler();
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
+
             return tokenHandler.WriteToken(token);
         }
     }
