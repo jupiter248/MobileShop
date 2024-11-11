@@ -39,8 +39,11 @@ public class ProductRepository : IProductRepository
     public async Task<Product?> RemoveProductAsync(int productId)
     {
         var product = await GetProductByIdAsync(productId);
-        _context.Remove(product);
-        await _context.SaveChangesAsync();
+        if (product != null)
+        {
+            _context.Remove(product);
+            await _context.SaveChangesAsync();
+        }
         return product;
     }
 
