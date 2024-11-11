@@ -18,7 +18,7 @@ namespace MainApi.Services
         public TokenService(IConfiguration config)
         {
             _config = config;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"] ?? string.Empty));
         }
 
         public string CreateToken(AppUser appUser)
@@ -26,8 +26,8 @@ namespace MainApi.Services
             var claims = new List<Claim>
             {
                 new Claim("Myapp_User_Id", appUser.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email , appUser.Email),
-                new Claim(JwtRegisteredClaimNames.GivenName , appUser.UserName)
+                new Claim(JwtRegisteredClaimNames.Email , appUser.Email ?? string.Empty),
+                new Claim(JwtRegisteredClaimNames.GivenName , appUser.UserName ?? string.Empty)
             };
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
