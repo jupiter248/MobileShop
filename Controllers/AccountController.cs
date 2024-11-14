@@ -7,6 +7,7 @@ using MainApi.Interfaces;
 using MainApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Controllers
 {
@@ -24,7 +25,7 @@ namespace MainApi.Controllers
             _signInManager = signInManager;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterUser(RegisterDto registerDto)
+        public async Task<IActionResult> RegisterUser([FromBody] RegisterDto registerDto)
         {
             try
             {
@@ -66,6 +67,33 @@ namespace MainApi.Controllers
             {
                 return StatusCode(500, e);
             }
+        }
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginUser([FromBody] LoginDto loginDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(loginDto);
+
+
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginDto.Username.ToLower());
+
+            if (user == null)
+                return Unauthorized("Invalid username!");
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+            if (result == null)
+                return Unauthorized("Username not found and/or password");
+
+            return Ok(
+                new NewUserDto
+                {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    Token = _tokenService.CreateToken(user)
+                }
+            );
         }
     }
 }
