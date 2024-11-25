@@ -15,6 +15,7 @@ namespace MainApi.Services
     {
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
+        
         public TokenService(IConfiguration config)
         {
             _config = config;
@@ -27,7 +28,7 @@ namespace MainApi.Services
             {
                 new Claim("Myapp_User_Id", appUser.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email , appUser.Email ?? string.Empty),
-                new Claim(JwtRegisteredClaimNames.GivenName , appUser.UserName ?? string.Empty)
+                new Claim(JwtRegisteredClaimNames.GivenName , appUser.UserName ?? string.Empty),
             };
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 

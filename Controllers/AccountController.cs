@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Dtos.Account;
 using MainApi.Interfaces;
 using MainApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -68,6 +69,56 @@ namespace MainApi.Controllers
                 return StatusCode(500, e);
             }
         }
+        [Authorize(Roles = "Admin")]
+        [HttpPost("register-admin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterDto registerDto)
+        {
+            try
+            {
+                if (!User.IsInRole("Admin"))
+                    return Forbid("Only admins can register new admins");
+
+                if (!ModelState.IsValid)
+                    return BadRequest(registerDto);
+
+                var appUser = new AppUser()
+                {
+                    UserName = registerDto.Username,
+                    Email = registerDto.Email
+                };
+
+                var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password ?? String.Empty);
+                if (createdUser.Succeeded)
+                {
+                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Admin");
+                    if (roleResult.Succeeded)
+                    {
+                        return Ok(
+                            new NewUserDto()
+                            {
+                                Email = appUser.Email,
+                                Username = appUser.UserName,
+                                Token = _tokenService.CreateToken(appUser)
+                            }
+                        );
+                    }
+                    else
+                    {
+                        return StatusCode(500, roleResult.Errors);
+                    }
+                }
+                else
+                {
+                    return StatusCode(500, createdUser.Errors);
+                }
+            }
+            catch (System.Exception e)
+            {
+                return StatusCode(500, e);
+            }
+        }
+
+
         [HttpPost("login")]
         public async Task<IActionResult> LoginUser([FromBody] LoginDto loginDto)
         {
@@ -81,7 +132,7 @@ namespace MainApi.Controllers
             if (user == null)
                 return Unauthorized("Invalid username!");
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password ?? String.Empty, false);
 
             if (result == null)
                 return Unauthorized("Username not found and/or password");
