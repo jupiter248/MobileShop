@@ -4593,11 +4593,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mohammad\\Desktop\\MobileShopping\\MainApi\\MainApi.csproj",
+      "projectUniqueName": "C:\\Users\\mohammad\\Desktop\\Programming\\MobileShopping\\MainApi\\MainApi.csproj",
       "projectName": "MainApi",
-      "projectPath": "C:\\Users\\mohammad\\Desktop\\MobileShopping\\MainApi\\MainApi.csproj",
+      "projectPath": "C:\\Users\\mohammad\\Desktop\\Programming\\MobileShopping\\MainApi\\MainApi.csproj",
       "packagesPath": "C:\\Users\\mohammad\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mohammad\\Desktop\\MobileShopping\\MainApi\\obj\\",
+      "outputPath": "C:\\Users\\mohammad\\Desktop\\Programming\\MobileShopping\\MainApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mohammad\\AppData\\Roaming\\NuGet\\NuGet.Config",

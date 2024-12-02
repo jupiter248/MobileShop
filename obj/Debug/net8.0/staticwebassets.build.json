@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "2M69iC1ST8+q6AIy0iUDj5Sb/LCIqXTjYkZg7NjtUEc=",
+  "Hash": "/rxePSaDbRfxFLiS70HhAO3E3xnuqcIkBZNS0RHevsU=",
   "Source": "MainApi",
   "BasePath": "_content/MainApi",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "MainApi\\wwwroot",
       "Source": "MainApi",
-      "ContentRoot": "C:\\Users\\mohammad\\Desktop\\MobileShopping\\MainApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\mohammad\\Desktop\\Programming\\MobileShopping\\MainApi\\wwwroot\\",
       "BasePath": "_content/MainApi",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\mohammad\\Desktop\\MobileShopping\\MainApi\\wwwroot\\uploads\\Jupiter-88.png",
+      "Identity": "C:\\Users\\mohammad\\Desktop\\Programming\\MobileShopping\\MainApi\\wwwroot\\uploads\\Jupiter-88.png",
       "SourceId": "MainApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\mohammad\\Desktop\\MobileShopping\\MainApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\mohammad\\Desktop\\Programming\\MobileShopping\\MainApi\\wwwroot\\",
       "BasePath": "_content/MainApi",
       "RelativePath": "uploads/Jupiter-88.png",
       "AssetKind": "All",
