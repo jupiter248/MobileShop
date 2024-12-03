@@ -1,6 +1,10 @@
 using MainApi.Dtos.Products;
+using MainApi.Extensions;
 using MainApi.Interfaces;
 using MainApi.Mappers;
+using MainApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainApi.Controllers;
@@ -10,11 +14,14 @@ namespace MainApi.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly IProductRepository _productRepo;
-    public ProductController(IProductRepository productRepo)
+    private readonly UserManager<AppUser> _userManager;
+    public ProductController(IProductRepository productRepo, UserManager<AppUser> userManager)
     {
         _productRepo = productRepo;
+        _userManager = userManager;
     }
     [HttpGet]
+    // [Authorize(Roles = "User")]
     public async Task<IActionResult> GetAllProduct()
     {
         var products = await _productRepo.GetAllProductsAsync();
@@ -27,6 +34,10 @@ public class ProductController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetProductById([FromRoute] int id)
     {
+        // var username = User.GetUsername();
+        // var appUser = await _userManager.FindByNameAsync(username);
+        // if (appUser == null) return BadRequest("User not found");
+
         var product = await _productRepo.GetProductByIdAsync(id);
         if (product == null)
             return BadRequest();

@@ -50,7 +50,6 @@ namespace MainApi.Controllers
                             {
                                 Username = appUser.UserName,
                                 Email = appUser.Email,
-                                Token = _tokenService.CreateToken(appUser)
                             }
                         );
                     }
@@ -69,14 +68,13 @@ namespace MainApi.Controllers
                 return StatusCode(500, e);
             }
         }
-        [Authorize(Roles = "Admin")]
         [HttpPost("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterDto registerDto)
         {
             try
             {
-                if (!User.IsInRole("Admin"))
-                    return Forbid("Only admins can register new admins");
+                // if (!User.IsInRole("Admin"))
+                //     return Forbid("Only admins can register new admins");
 
                 if (!ModelState.IsValid)
                     return BadRequest(registerDto);
@@ -98,7 +96,6 @@ namespace MainApi.Controllers
                             {
                                 Email = appUser.Email,
                                 Username = appUser.UserName,
-                                Token = _tokenService.CreateToken(appUser)
                             }
                         );
                     }
@@ -137,12 +134,14 @@ namespace MainApi.Controllers
             if (result == null)
                 return Unauthorized("Username not found and/or password");
 
+            var roles = await _userManager.GetRolesAsync(user);
+
             return Ok(
                 new NewUserDto
                 {
                     Username = user.UserName,
                     Email = user.Email,
-                    Token = _tokenService.CreateToken(user)
+                    Token = _tokenService.CreateToken(user, roles)
                 }
             );
         }
