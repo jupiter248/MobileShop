@@ -1,4 +1,3 @@
-using System.Text;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models;
@@ -9,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

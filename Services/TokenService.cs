@@ -26,11 +26,8 @@ namespace MainApi.Services
         public string CreateToken(AppUser appUser, IList<string> roles)
         {
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
-
-
             var claims = new List<Claim>
             {
-                new Claim("User_Id", appUser.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email , appUser.Email ?? string.Empty),
                 new Claim(JwtRegisteredClaimNames.GivenName , appUser.UserName ?? string.Empty),
             };

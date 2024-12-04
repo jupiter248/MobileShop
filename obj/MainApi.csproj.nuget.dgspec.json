@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mohammad\\Desktop\\Programming\\MobileShopping\\MainApi\\MainApi.csproj": {}
+    "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mohammad\\Desktop\\Programming\\MobileShopping\\MainApi\\MainApi.csproj": {
+    "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mohammad\\Desktop\\Programming\\MobileShopping\\MainApi\\MainApi.csproj",
+        "projectUniqueName": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj",
         "projectName": "MainApi",
-        "projectPath": "C:\\Users\\mohammad\\Desktop\\Programming\\MobileShopping\\MainApi\\MainApi.csproj",
+        "projectPath": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj",
         "packagesPath": "C:\\Users\\mohammad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mohammad\\Desktop\\Programming\\MobileShopping\\MainApi\\obj\\",
+        "outputPath": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mohammad\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -49,7 +49,7 @@
           "dependencies": {
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[8.0.10, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
@@ -78,6 +78,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.10, )"
+            },
+            "Microsoft.Extensions.Identity.Core": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

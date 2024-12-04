@@ -21,6 +21,7 @@ public class ProductController : ControllerBase
         _userManager = userManager;
     }
     [HttpGet]
+    [Authorize]
     // [Authorize(Roles = "User")]
     public async Task<IActionResult> GetAllProduct()
     {
