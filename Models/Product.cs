@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ namespace MainApi.Models
 {
     public class Product
     {
+        [Key]
         public int Id { get; set; }
         public string ProductName { get; set; } = string.Empty;
         public int? CategoryId { get; set; }
