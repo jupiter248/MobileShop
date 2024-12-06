@@ -17,7 +17,7 @@ using Microsoft.OpenApi.Models;
 
 namespace MainApi.Services
 {
-    public static class ServiceExtensions 
+    public static class ServiceExtensions
     {
         public static void AddDatabase(this IServiceCollection services, IConfiguration config)
         {
