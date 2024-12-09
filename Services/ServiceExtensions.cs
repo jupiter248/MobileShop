@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Security.Principal;
-using System.Text;
 using System.Threading.Tasks;
 using MainApi.Data;
 using MainApi.Interfaces;
@@ -71,7 +70,7 @@ namespace MainApi.Services
         public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration config)
         {
             var jwtSettings = config.GetSection("JWT");
-            var signingKey = Encoding.UTF8.GetBytes(jwtSettings["SigningKey"]);
+            var signingKey = System.Text.Encoding.UTF8.GetBytes(jwtSettings["SigningKey"]);
             if (string.IsNullOrWhiteSpace(signingKey.ToString()))
                 throw new InvalidOperationException("JWT key is not configured properly. Please set 'JWT:SigningKey' in appsettings.json or environment variables.");
 
