@@ -5,22 +5,18 @@ using System.Threading.Tasks;
 using MainApi.Dtos.Account;
 using MainApi.Interfaces;
 using MainApi.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository
 {
-    public class AccountRepository : IAccountRepository
+    public class UserRepository : IUserRepository
     {
-
         private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly ITokenService _tokenService;
-        public AccountRepository(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
+        public UserRepository(UserManager<AppUser> userManager)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
-            _tokenService = tokenService;
         }
         public async Task<List<UserDto>> GetAllUsers()
         {
@@ -34,21 +30,6 @@ namespace MainApi.Repository
                 }
             ).ToList();
             return userDtos;
-        }
-
-        public Task<NewUserDto> Login(LoginDto loginDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<NewUserDto> RegisterAdmin(RegisterDto registerDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<NewUserDto> RegisterUser(RegisterDto registerDto)
-        {
-            throw new NotImplementedException();
         }
     }
 }
