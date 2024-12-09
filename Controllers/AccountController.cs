@@ -117,13 +117,10 @@ namespace MainApi.Controllers
 
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginUser([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(loginDto);
-
-
-
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginDto.Username.ToLower());
 
             if (user == null)
