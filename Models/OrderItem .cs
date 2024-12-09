@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace MainApi.Models
 {
-    public class Image
+    public class OrderItem
     {
         [Key]
         public int Id { get; set; }
-        public string ImageName { get; set; } = string.Empty;
+        public int? OrderId { get; set; }
+        public Order? Order { get; set; }
         public int? ProductId { get; set; }
         public Product? Product { get; set; }
-        public Boolean IsPrimary { get; set; }
-        public DateTime DateAdded { get; set; } = DateTime.Now;
+        public int Quantity { get; set; }
+        public decimal PriceAtPurchase { get; set; }
     }
 }
