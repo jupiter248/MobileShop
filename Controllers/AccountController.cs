@@ -19,11 +19,13 @@ namespace MainApi.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signInManager;
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
+        private readonly IAccountRepository _accountRepository;
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager, IAccountRepository accountRepository)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
+            _accountRepository = accountRepository;
         }
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterDto registerDto)
@@ -141,6 +143,15 @@ namespace MainApi.Controllers
                     Token = _tokenService.CreateToken(user, roles)
                 }
             );
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllUser()
+        {
+            var users = await _accountRepository.GetAllUsers();
+            if (users == null)
+                return BadRequest();
+
+            return Ok(users);
         }
     }
 }
