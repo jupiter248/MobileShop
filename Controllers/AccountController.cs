@@ -144,14 +144,5 @@ namespace MainApi.Controllers
                 }
             );
         }
-        [HttpGet]
-        public async Task<IActionResult> GetAllUser()
-        {
-            var users = await _userRepository.GetAllUsers();
-            if (users == null)
-                return BadRequest();
-
-            return Ok(users);
-        }
     }
 }
