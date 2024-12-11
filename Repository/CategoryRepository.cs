@@ -25,8 +25,12 @@ namespace MainApi.Repository
 
         public async Task<List<Category>> GetAllCategoriesAsync()
         {
-            throw new NotImplementedException();
-
+            var categories = await _context.Categories.ToListAsync();
+            if (categories == null)
+            {
+                return null;
+            }
+            return categories;
         }
 
         public Task<Category> GetCategoryByIdAsync(int categoryId)

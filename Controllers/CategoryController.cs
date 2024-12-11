@@ -20,6 +20,13 @@ namespace MainApi.Controllers
         {
             _categoryRepository = categoryRepository;
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var categories = await _categoryRepository.GetAllCategoriesAsync();
+            if (categories == null) return BadRequest();
+            return Ok(categories);
+        }
         [HttpPost]
         public async Task<IActionResult> AddCategory([FromBody] AddCategoryRequestDto addCategoryRequestDto)
         {
