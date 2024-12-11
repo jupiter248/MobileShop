@@ -2,21 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository
 {
     public class CategoryRepository : ICategoryRepository
     {
-        public Task<Category> AddCategoryAsync(Category category)
+        private readonly ApplicationDbContext _context;
+        public CategoryRepository(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<Category> AddCategoryAsync(Category category)
+        {
+            await _context.AddAsync(category);
+            await _context.SaveChangesAsync();
+            return category;
         }
 
-        public Task<List<Category>> GetAllCategoriesAsync()
+        public async Task<List<Category>> GetAllCategoriesAsync()
         {
             throw new NotImplementedException();
+
         }
 
         public Task<Category> GetCategoryByIdAsync(int categoryId)
