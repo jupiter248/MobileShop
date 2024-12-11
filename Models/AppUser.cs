@@ -9,5 +9,6 @@ namespace MainApi.Models
     public class AppUser : IdentityUser
     {
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public List<Order> Orders { get; set; } = new List<Order>();
     }
 }
