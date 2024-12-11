@@ -7,7 +7,6 @@ using MainApi.Dtos.Category;
 using MainApi.Interfaces;
 using MainApi.Mappers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace MainApi.Controllers
 {
@@ -26,6 +25,13 @@ namespace MainApi.Controllers
             var categories = await _categoryRepository.GetAllCategoriesAsync();
             if (categories == null) return BadRequest();
             return Ok(categories);
+        }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetCategoryById([FromRoute] int id)
+        {
+            var category = await _categoryRepository.GetCategoryByIdAsync(id);
+            if (category == null) return BadRequest();
+            return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category.ToCategoryDto());
         }
         [HttpPost]
         public async Task<IActionResult> AddCategory([FromBody] AddCategoryRequestDto addCategoryRequestDto)

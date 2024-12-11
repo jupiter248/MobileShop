@@ -16,34 +16,31 @@ namespace MainApi.Repository
         {
             _context = context;
         }
-        public async Task<Category> AddCategoryAsync(Category category)
+        public async Task<Category?> AddCategoryAsync(Category category)
         {
             await _context.AddAsync(category);
             await _context.SaveChangesAsync();
             return category;
         }
 
-        public async Task<List<Category>> GetAllCategoriesAsync()
+        public async Task<List<Category>?> GetAllCategoriesAsync()
         {
             var categories = await _context.Categories.ToListAsync();
-            if (categories == null)
-            {
-                return null;
-            }
             return categories;
         }
 
-        public Task<Category> GetCategoryByIdAsync(int categoryId)
+        public async Task<Category?> GetCategoryByIdAsync(int categoryId)
+        {
+            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
+            return category;
+        }
+
+        public Task<Category?> RemoveCategoryAsync(int categoryId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Category> RemoveCategoryAsync(int categoryId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Category> UpdateCategoryAsync(Category category, int categoryId)
+        public Task<Category?> UpdateCategoryAsync(Category category, int categoryId)
         {
             throw new NotImplementedException();
         }
