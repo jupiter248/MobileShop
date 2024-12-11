@@ -13,7 +13,7 @@ namespace MainApi.Models
         [Key]
         public int Id { get; set; }
         public string? UserId { get; set; }
-        public UserDto? User { get; set; }
+        public AppUser? User { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public decimal TotalAmount { get; set; }
         public int StatusId { get; set; }
