@@ -48,7 +48,7 @@ namespace MainApi.Repository
                 return null;
             }
             category.CategoryName = categoryModel.CategoryName;
-            category.CategoryName = categoryModel.Description;
+            category.Description = categoryModel.Description;
             await _context.SaveChangesAsync();
             return category;
         }

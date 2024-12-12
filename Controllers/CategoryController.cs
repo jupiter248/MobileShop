@@ -42,5 +42,14 @@ namespace MainApi.Controllers
             await _categoryRepository.AddCategoryAsync(category);
             return Ok(category);
         }
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] UpdateCategoryRequestDto updateCategoryRequestDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var categoryModel = updateCategoryRequestDto.ToCategoryFromUpdateCategoryDto();
+            var category = await _categoryRepository.UpdateCategoryAsync(categoryModel, id);
+            if (category == null) return NotFound();
+            return Ok(category.ToCategoryDto());
+        }
     }
 }
