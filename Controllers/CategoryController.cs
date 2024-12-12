@@ -51,5 +51,12 @@ namespace MainApi.Controllers
             if (category == null) return NotFound();
             return Ok(category.ToCategoryDto());
         }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> RemoveCategory([FromRoute] int id)
+        {
+            var category = await _categoryRepository.RemoveCategoryAsync(id);
+            if (category == null) return NotFound();
+            return Ok();
+        }
     }
 }

@@ -51,13 +51,6 @@ public class ProductController : ControllerBase
         await _productRepo.AddProductAsync(product);
         return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product.ToProductDto());
     }
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> RemoveProduct([FromRoute] int id)
-    {
-        var product = await _productRepo.RemoveProductAsync(id);
-        if (product == null) return NotFound();
-        return NoContent();
-    }
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductRequestDto updateProductRequestDto)
     {
@@ -66,4 +59,12 @@ public class ProductController : ControllerBase
         if (product == null) return NotFound();
         return Ok(product.ToProductDto());
     }
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> RemoveProduct([FromRoute] int id)
+    {
+        var product = await _productRepo.RemoveProductAsync(id);
+        if (product == null) return NotFound();
+        return NoContent();
+    }
+
 }

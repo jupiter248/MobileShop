@@ -35,9 +35,15 @@ namespace MainApi.Repository
             return category;
         }
 
-        public Task<Category?> RemoveCategoryAsync(int categoryId)
+        public async Task<Category?> RemoveCategoryAsync(int categoryId)
         {
-            throw new NotImplementedException();
+            var category = await GetCategoryByIdAsync(categoryId);
+            if (category != null)
+            {
+                _context.Remove(category);
+                await _context.SaveChangesAsync();
+            }
+            return category;
         }
 
         public async Task<Category?> UpdateCategoryAsync(Category categoryModel, int categoryId)
