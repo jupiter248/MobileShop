@@ -40,9 +40,17 @@ namespace MainApi.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Category?> UpdateCategoryAsync(Category category, int categoryId)
+        public async Task<Category?> UpdateCategoryAsync(Category categoryModel, int categoryId)
         {
-            throw new NotImplementedException();
+            var category = await GetCategoryByIdAsync(categoryId);
+            if (category == null)
+            {
+                return null;
+            }
+            category.CategoryName = categoryModel.CategoryName;
+            category.CategoryName = categoryModel.Description;
+            await _context.SaveChangesAsync();
+            return category;
         }
     }
 }
