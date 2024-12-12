@@ -26,5 +26,13 @@ namespace MainApi.Mappers
                 Description = category.Description
             };
         }
+        public static Category ToCategoryFromUpdateCategoryDto(this UpdateCategoryRequestDto updateCategoryRequestDto)
+        {
+            return new Category()
+            {
+                CategoryName = updateCategoryRequestDto.CategoryName,
+                Description = updateCategoryRequestDto.Description
+            };
+        }
     }
 }
