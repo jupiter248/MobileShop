@@ -23,5 +23,4 @@ public class CreateProductRequestDto
     [Required]
     [MinLength(40 , ErrorMessage = "Description can not be Under 40 characters")]
     public string Description { get; set; } = string.Empty;
-    public string ImageURL { get; set; } = string.Empty;
 }
