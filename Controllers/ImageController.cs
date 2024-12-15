@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MainApi.Dtos.Image;
 using MainApi.Interfaces;
 using MainApi.Mappers;
+using MainApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,6 +21,14 @@ namespace MainApi.Controllers
         public ImageController(IImageRepository imageRepo)
         {
             _imageRepo = imageRepo;
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllImages()
+        {
+            var images = await _imageRepo.GetAllImagesAsync();
+            if (images == null)
+                return BadRequest();
+            return Ok(images);
         }
         [HttpPost]
         public async Task<IActionResult> AddImage([FromBody] AddImageRequestDto addImageRequestDto, int productId)

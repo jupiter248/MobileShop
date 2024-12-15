@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository
 {
@@ -28,9 +29,13 @@ namespace MainApi.Repository
             throw new NotImplementedException();
         }
 
-        public Task<List<Image>?> GetAllImagesAsync()
+        public async Task<List<Image>?> GetAllImagesAsync()
         {
-            throw new NotImplementedException();
+            var images = await _context.Images.ToListAsync();
+            if (images == null)
+                return null;
+            return images;
+
         }
 
         public Task<Image?> GetImageByIdAsync(int imageId)
