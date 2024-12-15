@@ -23,12 +23,13 @@ public class ProductController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllProduct()
     {
-        var products = await _productRepo.GetAllProductsAsync();
+        List<Product>? products = await _productRepo.GetAllProductsAsync();
         if (products == null)
         {
             return BadRequest();
         }
-        return Ok(products);
+        List<ProductDto>? productsDto = products.Select(p => p.ToProductDto()).ToList();
+        return Ok(productsDto);
     }
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetProductById([FromRoute] int id)

@@ -23,7 +23,8 @@ namespace MainApi.Mappers
             {
                 Id = category.Id,
                 CategoryName = category.CategoryName,
-                Description = category.Description
+                Description = category.Description,
+                Products = category.Products.Select(p => p.ToProductDto()).ToList()
             };
         }
         public static Category ToCategoryFromUpdateCategoryDto(this UpdateCategoryRequestDto updateCategoryRequestDto)

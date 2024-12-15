@@ -25,7 +25,7 @@ namespace MainApi.Repository
 
         public async Task<List<Category>?> GetAllCategoriesAsync()
         {
-            var categories = await _context.Categories.ToListAsync();
+            var categories = await _context.Categories.Include(p => p.Products).ToListAsync();
             return categories;
         }
 
