@@ -44,18 +44,18 @@ public class ProductController : ControllerBase
         return Ok(product.ToProductDto());
     }
     [HttpPost]
-    public async Task<IActionResult> AddProduct([FromBody] CreateProductRequestDto createProductRequestDto)
+    public async Task<IActionResult> AddProduct([FromBody] CreateProductRequestDto createProductRequestDto, int categoryId)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var product = createProductRequestDto.ToProductFromCreateDto();
+        var product = createProductRequestDto.ToProductFromCreateDto(categoryId);
         await _productRepo.AddProductAsync(product);
         return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product.ToProductDto());
     }
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductRequestDto updateProductRequestDto)
+    public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductRequestDto updateProductRequestDto, int categoryId)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var product = await _productRepo.UpdateProductAsync(updateProductRequestDto.ToProductFromUpdateDto(), id);
+        var product = await _productRepo.UpdateProductAsync(updateProductRequestDto.ToProductFromUpdateDto(categoryId), id);
         if (product == null) return NotFound();
         return Ok(product.ToProductDto());
     }

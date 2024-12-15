@@ -60,6 +60,7 @@ public class ProductRepository : IProductRepository
         product.Price = productModel.Price;
         product.Quantity = productModel.Quantity;
         product.Description = productModel.Description;
+        product.CategoryId = productModel.CategoryId;
         await _context.SaveChangesAsync();
         return product;
     }
