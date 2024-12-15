@@ -44,7 +44,7 @@ namespace MainApi.Controllers
             if (!ModelState.IsValid) BadRequest(ModelState);
             var image = addImageRequestDto.ToImageFromAdd(productId);
             await _imageRepo.AddImageAsync(image);
-            return Ok(image);
+            return CreatedAtAction(nameof(GetImageById), new { id = image.Id }, image.ToImageDto());
         }
     }
 }
