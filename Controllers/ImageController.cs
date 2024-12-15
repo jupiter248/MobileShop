@@ -33,7 +33,7 @@ namespace MainApi.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetImageById([FromRoute] int id)
         {
-            var image = _imageRepo.GetImageByIdAsync(id);
+            var image = await _imageRepo.GetImageByIdAsync(id);
             if (image == null)
                 return NotFound();
             return Ok(image);

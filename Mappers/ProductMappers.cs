@@ -18,7 +18,7 @@ public static class ProductMappers
             Description = createProductRequestDto.Description
         };
     }
-      public static Product ToProductFromUpdateDto(this UpdateProductRequestDto updateProductRequestDto)
+    public static Product ToProductFromUpdateDto(this UpdateProductRequestDto updateProductRequestDto)
     {
         return new Product()
         {
@@ -40,7 +40,8 @@ public static class ProductMappers
             Model = productModel.Model,
             Price = productModel.Price,
             Quantity = productModel.Quantity,
-            Description = productModel.Description
+            Description = productModel.Description,
+            ImagesDto = productModel.Images.Select(s => s.ToImageDto()).ToList()
         };
     }
 }
