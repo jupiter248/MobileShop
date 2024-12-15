@@ -30,6 +30,14 @@ namespace MainApi.Controllers
                 return BadRequest();
             return Ok(images);
         }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetImageById([FromRoute] int id)
+        {
+            var image = _imageRepo.GetImageByIdAsync(id);
+            if (image == null)
+                return NotFound();
+            return Ok(image);
+        }
         [HttpPost]
         public async Task<IActionResult> AddImage([FromBody] AddImageRequestDto addImageRequestDto, int productId)
         {

@@ -38,9 +38,14 @@ namespace MainApi.Repository
 
         }
 
-        public Task<Image?> GetImageByIdAsync(int imageId)
+        public async Task<Image?> GetImageByIdAsync(int imageId)
         {
-            throw new NotImplementedException();
+            var image = await _context.Images.FirstOrDefaultAsync(i => i.Id == imageId);
+            if (image == null)
+            {
+                return null;
+            }
+            return image;
         }
 
         public Task<Image?> RemoveImage(int imageId)
