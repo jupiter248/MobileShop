@@ -53,5 +53,12 @@ namespace MainApi.Controllers
             if (image == null) return BadRequest();
             return Ok(image);
         }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> RemoveImage([FromRoute] int id)
+        {
+            var image = await _imageRepo.RemoveImageAsync(id);
+            if (image == null) return NotFound();
+            return Ok(image);
+        }
     }
 }

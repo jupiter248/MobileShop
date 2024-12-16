@@ -50,9 +50,15 @@ namespace MainApi.Repository
             return image;
         }
 
-        public Task<Image?> RemoveImage(int imageId)
+        public async Task<Image?> RemoveImageAsync(int imageId)
         {
-            throw new NotImplementedException();
+            Image? image = await _context.Images.FirstOrDefaultAsync(i => i.Id == imageId);
+            if (image != null)
+            {
+                _context.Remove(image);
+                await _context.SaveChangesAsync();
+            }
+            return image;
         }
     }
 }

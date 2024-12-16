@@ -12,6 +12,6 @@ namespace MainApi.Interfaces
         Task<Image?> GetImageByIdAsync(int imageId);
         Task<Image?> AddImageAsync(Image image);
         Task<Image?> EditImageAsync(Image image, int imageId);
-        Task<Image?> RemoveImage(int imageId);
+        Task<Image?> RemoveImageAsync(int imageId);
     }
 }
