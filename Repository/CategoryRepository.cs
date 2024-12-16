@@ -49,13 +49,12 @@ namespace MainApi.Repository
         public async Task<Category?> UpdateCategoryAsync(Category categoryModel, int categoryId)
         {
             var category = await GetCategoryByIdAsync(categoryId);
-            if (category == null)
+            if (category != null)
             {
-                return null;
+                category.CategoryName = categoryModel.CategoryName;
+                category.Description = categoryModel.Description;
+                await _context.SaveChangesAsync();
             }
-            category.CategoryName = categoryModel.CategoryName;
-            category.Description = categoryModel.Description;
-            await _context.SaveChangesAsync();
             return category;
         }
     }

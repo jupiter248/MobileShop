@@ -26,8 +26,6 @@ public class ProductRepository : IProductRepository
     public async Task<List<Product>?> GetAllProductsAsync()
     {
         var products = await _context.Products.Include(i => i.Images).ToListAsync();
-        if (products == null)
-            return null;
         return products;
     }
 
@@ -50,18 +48,17 @@ public class ProductRepository : IProductRepository
     public async Task<Product?> UpdateProductAsync(Product productModel, int productId)
     {
         var product = _context.Products.FirstOrDefault(f => f.Id == productId);
-        if (product == null)
+        if (product != null)
         {
-            return null;
+            product.ProductName = productModel.ProductName;
+            product.Brand = productModel.Brand;
+            product.Model = productModel.Model;
+            product.Price = productModel.Price;
+            product.Quantity = productModel.Quantity;
+            product.Description = productModel.Description;
+            product.CategoryId = productModel.CategoryId;
+            await _context.SaveChangesAsync();
         }
-        product.ProductName = productModel.ProductName;
-        product.Brand = productModel.Brand;
-        product.Model = productModel.Model;
-        product.Price = productModel.Price;
-        product.Quantity = productModel.Quantity;
-        product.Description = productModel.Description;
-        product.CategoryId = productModel.CategoryId;
-        await _context.SaveChangesAsync();
         return product;
     }
 }

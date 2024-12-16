@@ -32,19 +32,12 @@ namespace MainApi.Repository
         public async Task<List<Image>?> GetAllImagesAsync()
         {
             var images = await _context.Images.ToListAsync();
-            if (images == null)
-                return null;
             return images;
-
         }
 
         public async Task<Image?> GetImageByIdAsync(int imageId)
         {
             var image = await _context.Images.FirstOrDefaultAsync(i => i.Id == imageId);
-            if (image == null)
-            {
-                return null;
-            }
             return image;
         }
 
