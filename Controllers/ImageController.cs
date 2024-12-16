@@ -46,5 +46,12 @@ namespace MainApi.Controllers
             await _imageRepo.AddImageAsync(image);
             return CreatedAtAction(nameof(GetImageById), new { id = image.Id }, image.ToImageDto());
         }
+        [HttpPut]
+        public async Task<IActionResult> EditImage([FromBody] EditImageRequestDto editImageRequestDto, int imageId)
+        {
+            var image = await _imageRepo.EditImageAsync(editImageRequestDto.ToImageFromEdit(), imageId);
+            if (image == null) return BadRequest();
+            return Ok(image);
+        }
     }
 }

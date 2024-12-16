@@ -24,9 +24,18 @@ namespace MainApi.Repository
             return image;
         }
 
-        public Task<Image?> EditImageAsync(Image image, int imageId)
+        public async Task<Image?> EditImageAsync(Image imageModel, int imageId)
         {
-            throw new NotImplementedException();
+            Image? image = await GetImageByIdAsync(imageId);
+            if (image != null)
+            {
+                image.ImageName = imageModel.ImageName;
+                image.Url = imageModel.Url;
+                image.IsPrimary = imageModel.IsPrimary;
+                image.ProductId = imageModel.ProductId;
+                await _context.SaveChangesAsync();
+            }
+            return image;
         }
 
         public async Task<List<Image>?> GetAllImagesAsync()

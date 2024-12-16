@@ -15,5 +15,6 @@ namespace MainApi.Dtos.Image
         public string Url { get; set; } = string.Empty;
         [Required]
         public Boolean IsPrimary { get; set; }
+        public int productId { get; set; }
     }
 }

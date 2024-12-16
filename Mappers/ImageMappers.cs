@@ -30,14 +30,14 @@ namespace MainApi.Mappers
                 ProductId = productId
             };
         }
-        public static Image ToImageFromEdit(this EditImageRequestDto editImageRequestDto, int productId)
+        public static Image ToImageFromEdit(this EditImageRequestDto editImageRequestDto)
         {
             return new Image()
             {
                 ImageName = editImageRequestDto.ImageName,
                 Url = editImageRequestDto.Url,
                 IsPrimary = editImageRequestDto.IsPrimary,
-                ProductId = productId
+                ProductId = editImageRequestDto.productId
             };
         }
     }
