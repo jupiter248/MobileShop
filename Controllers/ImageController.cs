@@ -17,10 +17,12 @@ namespace MainApi.Controllers
     public class ImageController : ControllerBase
     {
         private readonly IImageRepository _imageRepo;
+        private readonly IProductRepository _productRepo;
 
-        public ImageController(IImageRepository imageRepo)
+        public ImageController(IImageRepository imageRepo, IProductRepository productRepo)
         {
             _imageRepo = imageRepo;
+            _productRepo = productRepo;
         }
         [HttpGet]
         public async Task<IActionResult> GetAllImages()
@@ -42,6 +44,7 @@ namespace MainApi.Controllers
         public async Task<IActionResult> AddImage([FromBody] AddImageRequestDto addImageRequestDto, int productId)
         {
             if (!ModelState.IsValid) BadRequest(ModelState);
+            if (!await _productRepo.ProductExistsAsync(productId)) return NotFound("The product does not exist");
             Image? image = addImageRequestDto.ToImageFromAdd(productId);
             await _imageRepo.AddImageAsync(image);
             return CreatedAtAction(nameof(GetImageById), new { id = image.Id }, image.ToImageDto());

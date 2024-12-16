@@ -34,6 +34,16 @@ public class ProductRepository : IProductRepository
         return await _context.Products.Include(i => i.Images).FirstAsync(p => p.Id == productId);
     }
 
+    public async Task<bool> ProductExistsAsync(int productId)
+    {
+        Product? product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+        if (product == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
     public async Task<Product?> RemoveProductAsync(int productId)
     {
         var product = await GetProductByIdAsync(productId);
