@@ -38,7 +38,7 @@ public class ProductController : ControllerBase
         // var appUser = await _userManager.FindByNameAsync(username);
         // if (appUser == null) return BadRequest("User not found");
 
-        var product = await _productRepo.GetProductByIdAsync(id);
+        Product? product = await _productRepo.GetProductByIdAsync(id);
         if (product == null)
             return BadRequest();
         return Ok(product.ToProductDto());
@@ -47,7 +47,7 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> AddProduct([FromBody] CreateProductRequestDto createProductRequestDto, int categoryId)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var product = createProductRequestDto.ToProductFromCreateDto(categoryId);
+        Product? product = createProductRequestDto.ToProductFromCreateDto(categoryId);
         await _productRepo.AddProductAsync(product);
         return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product.ToProductDto());
     }
@@ -55,14 +55,14 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductRequestDto updateProductRequestDto, int categoryId)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var product = await _productRepo.UpdateProductAsync(updateProductRequestDto.ToProductFromUpdateDto(categoryId), id);
+        Product? product = await _productRepo.UpdateProductAsync(updateProductRequestDto.ToProductFromUpdateDto(categoryId), id);
         if (product == null) return NotFound();
         return NoContent();
     }
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> RemoveProduct([FromRoute] int id)
     {
-        var product = await _productRepo.RemoveProductAsync(id);
+        Product? product = await _productRepo.RemoveProductAsync(id);
         if (product == null) return NotFound();
         return NoContent();
     }

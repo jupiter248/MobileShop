@@ -25,7 +25,7 @@ namespace MainApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllImages()
         {
-            var images = await _imageRepo.GetAllImagesAsync();
+            List<Image>? images = await _imageRepo.GetAllImagesAsync();
             if (images == null)
                 return BadRequest();
             return Ok(images);
@@ -33,7 +33,7 @@ namespace MainApi.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetImageById([FromRoute] int id)
         {
-            var image = await _imageRepo.GetImageByIdAsync(id);
+            Image? image = await _imageRepo.GetImageByIdAsync(id);
             if (image == null)
                 return NotFound();
             return Ok(image);
@@ -42,21 +42,21 @@ namespace MainApi.Controllers
         public async Task<IActionResult> AddImage([FromBody] AddImageRequestDto addImageRequestDto, int productId)
         {
             if (!ModelState.IsValid) BadRequest(ModelState);
-            var image = addImageRequestDto.ToImageFromAdd(productId);
+            Image? image = addImageRequestDto.ToImageFromAdd(productId);
             await _imageRepo.AddImageAsync(image);
             return CreatedAtAction(nameof(GetImageById), new { id = image.Id }, image.ToImageDto());
         }
         [HttpPut]
         public async Task<IActionResult> EditImage([FromBody] EditImageRequestDto editImageRequestDto, int imageId)
         {
-            var image = await _imageRepo.EditImageAsync(editImageRequestDto.ToImageFromEdit(), imageId);
+            Image? image = await _imageRepo.EditImageAsync(editImageRequestDto.ToImageFromEdit(), imageId);
             if (image == null) return NotFound();
             return NoContent();
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveImage([FromRoute] int id)
         {
-            var image = await _imageRepo.RemoveImageAsync(id);
+            Image? image = await _imageRepo.RemoveImageAsync(id);
             if (image == null) return NotFound();
             return NoContent();
         }

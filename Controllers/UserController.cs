@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using MainApi.Dtos.Account;
 using MainApi.Interfaces;
+using MainApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -21,10 +23,9 @@ namespace MainApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUser()
         {
-            var users = await _userRepository.GetAllUsers();
+            List<UserDto>? users = await _userRepository.GetAllUsers();
             if (users == null)
                 return BadRequest();
-
             return Ok(users);
         }
     }

@@ -23,14 +23,14 @@ namespace MainApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
-            var categories = await _categoryRepository.GetAllCategoriesAsync();
+            List<Category>? categories = await _categoryRepository.GetAllCategoriesAsync();
             if (categories == null) return BadRequest();
             return Ok(categories);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetCategoryById([FromRoute] int id)
         {
-            var category = await _categoryRepository.GetCategoryByIdAsync(id);
+            Category? category = await _categoryRepository.GetCategoryByIdAsync(id);
             if (category == null) return BadRequest();
             return Ok(category);
         }
@@ -47,15 +47,14 @@ namespace MainApi.Controllers
         public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] UpdateCategoryRequestDto updateCategoryRequestDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var categoryModel = updateCategoryRequestDto.ToCategoryFromUpdateCategoryDto();
-            var category = await _categoryRepository.UpdateCategoryAsync(categoryModel, id);
+            Category? category = await _categoryRepository.UpdateCategoryAsync(updateCategoryRequestDto.ToCategoryFromUpdateCategoryDto(), id);
             if (category == null) return NotFound();
             return NoContent();
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveCategory([FromRoute] int id)
         {
-            var category = await _categoryRepository.RemoveCategoryAsync(id);
+            Category? category = await _categoryRepository.RemoveCategoryAsync(id);
             if (category == null) return NotFound();
             return NoContent();
         }
