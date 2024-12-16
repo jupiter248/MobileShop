@@ -57,7 +57,7 @@ public class ProductController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         var product = await _productRepo.UpdateProductAsync(updateProductRequestDto.ToProductFromUpdateDto(categoryId), id);
         if (product == null) return NotFound();
-        return Ok(product.ToProductDto());
+        return NoContent();
     }
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> RemoveProduct([FromRoute] int id)

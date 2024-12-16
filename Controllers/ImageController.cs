@@ -50,15 +50,15 @@ namespace MainApi.Controllers
         public async Task<IActionResult> EditImage([FromBody] EditImageRequestDto editImageRequestDto, int imageId)
         {
             var image = await _imageRepo.EditImageAsync(editImageRequestDto.ToImageFromEdit(), imageId);
-            if (image == null) return BadRequest();
-            return Ok(image);
+            if (image == null) return NotFound();
+            return NoContent();
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveImage([FromRoute] int id)
         {
             var image = await _imageRepo.RemoveImageAsync(id);
             if (image == null) return NotFound();
-            return Ok(image);
+            return NoContent();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MainApi.Dtos.Category;
 using MainApi.Interfaces;
 using MainApi.Mappers;
+using MainApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainApi.Controllers
@@ -31,16 +32,16 @@ namespace MainApi.Controllers
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(id);
             if (category == null) return BadRequest();
-            return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category.ToCategoryDto());
+            return Ok(category);
         }
         [HttpPost]
         public async Task<IActionResult> AddCategory([FromBody] AddCategoryRequestDto addCategoryRequestDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var category = addCategoryRequestDto.ToCategoryFromAddCategoryDto();
-            await _categoryRepository.AddCategoryAsync(category);
-            return Ok(category);
+            Category? category = addCategoryRequestDto.ToCategoryFromAddCategoryDto();
+            await _categoryRepository.AddCategoryAsync(addCategoryRequestDto.ToCategoryFromAddCategoryDto());
+            return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category.ToCategoryDto());
         }
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] UpdateCategoryRequestDto updateCategoryRequestDto)
@@ -49,14 +50,14 @@ namespace MainApi.Controllers
             var categoryModel = updateCategoryRequestDto.ToCategoryFromUpdateCategoryDto();
             var category = await _categoryRepository.UpdateCategoryAsync(categoryModel, id);
             if (category == null) return NotFound();
-            return Ok(category.ToCategoryDto());
+            return NoContent();
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveCategory([FromRoute] int id)
         {
             var category = await _categoryRepository.RemoveCategoryAsync(id);
             if (category == null) return NotFound();
-            return Ok();
+            return NoContent();
         }
     }
 }
