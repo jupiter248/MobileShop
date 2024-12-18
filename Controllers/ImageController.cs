@@ -41,8 +41,9 @@ namespace MainApi.Controllers
             return Ok(image);
         }
         [HttpPost]
-        public async Task<IActionResult> AddImage([FromBody] AddImageRequestDto addImageRequestDto, int productId)
+        public async Task<IActionResult> AddImage([FromForm] AddImageRequestDto addImageRequestDto, [FromForm] UploadImage formFile , int productId)
         {
+            IFormFile? imageFile = formFile.FormFile;
             if (!ModelState.IsValid) BadRequest(ModelState);
             if (!await _productRepo.ProductExistsAsync(productId)) return NotFound("The product does not exist");
             Image? image = addImageRequestDto.ToImageFromAdd(productId);
