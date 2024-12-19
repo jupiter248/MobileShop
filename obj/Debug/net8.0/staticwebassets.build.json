@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "6s881tSHyBqKhu0sZyAE52wK4rAhPYeRrlXLoxNCiAY=",
+  "Hash": "nR87meqsUCzkoZvDGSBa+jhSTc1o7Vax/bgLF0C0Lcg=",
   "Source": "MainApi",
   "BasePath": "_content/MainApi",
   "Mode": "Default",
@@ -16,6 +16,25 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\images\\20dcabb7-a924-4be9-9481-e6c4de537b21-Vikings.jpg",
+      "SourceId": "MainApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\",
+      "BasePath": "_content/MainApi",
+      "RelativePath": "images/20dcabb7-a924-4be9-9481-e6c4de537b21-Vikings.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\20dcabb7-a924-4be9-9481-e6c4de537b21-Vikings.jpg"
+    },
     {
       "Identity": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\uploads\\Jupiter-88.png",
       "SourceId": "MainApi",

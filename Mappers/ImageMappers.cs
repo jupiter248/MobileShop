@@ -25,7 +25,7 @@ namespace MainApi.Mappers
             return new Image()
             {
                 ImageName = addImageRequestDto.ImageName,
-                Url = addImageRequestDto.Url,
+                Url = addImageRequestDto.path,
                 IsPrimary = addImageRequestDto.IsPrimary,
                 ProductId = productId
             };

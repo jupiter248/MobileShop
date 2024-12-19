@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace MainApi.Dtos.Image
 {
-    public class AddImageRequestDto
+    public class UploadImage
     {
         [Required]
-        public string ImageName { get; set; } = string.Empty;
-        [Required]
-        public string path { get; set; } = string.Empty;
+        public IFormFile? image { get; set; }
         [Required]
         public Boolean IsPrimary { get; set; }
+
     }
 }
