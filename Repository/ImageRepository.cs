@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Data;
+using MainApi.Dtos.Image;
 using MainApi.Interfaces;
 using MainApi.Models;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +13,11 @@ namespace MainApi.Repository
     public class ImageRepository : IImageRepository
     {
         private readonly ApplicationDbContext _context;
-        public ImageRepository(ApplicationDbContext context)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ImageRepository(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<Image?> AddImageAsync(Image image)
@@ -59,6 +62,31 @@ namespace MainApi.Repository
                 await _context.SaveChangesAsync();
             }
             return image;
+        }
+
+        public async Task<AddImageRequestDto?> StoreImage(UploadImage uploadImage)
+        {
+            IFormFile? imageFile = uploadImage.image;
+            string? imagePath = null;
+            if (imageFile != null)
+            {
+                var fileName = $"{Guid.NewGuid()}-{Path.GetFileName(imageFile.FileName)}";
+                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                imagePath = Path.Combine("images", fileName);
+                return new AddImageRequestDto()
+                {
+                    ImageName = imageFile.FileName,
+                    path = imagePath,
+                    IsPrimary = uploadImage.IsPrimary
+                };
+            }
+            else return null;
         }
     }
 }

@@ -41,13 +41,19 @@ namespace MainApi.Controllers
             return Ok(image);
         }
         [HttpPost]
-        public async Task<IActionResult> AddImage([FromBody] AddImageRequestDto addImageRequestDto, int productId)
+        public async Task<IActionResult> AddImage([FromForm] UploadImage uploadImage, int productId)
         {
             if (!ModelState.IsValid) BadRequest(ModelState);
             if (!await _productRepo.ProductExistsAsync(productId)) return NotFound("The product does not exist");
-            Image? image = addImageRequestDto.ToImageFromAdd(productId);
-            await _imageRepo.AddImageAsync(image);
-            return CreatedAtAction(nameof(GetImageById), new { id = image.Id }, image.ToImageDto());
+            AddImageRequestDto? addImageRequestDto = await _imageRepo.StoreImage(uploadImage);
+            Image? image = addImageRequestDto?.ToImageFromAdd(productId);
+            if (image != null)
+            {
+                await _imageRepo.AddImageAsync(image);
+                return CreatedAtAction(nameof(GetImageById), new { id = image.Id }, image.ToImageDto());
+            }
+            else return BadRequest();
+
         }
         [HttpPut]
         public async Task<IActionResult> EditImage([FromBody] EditImageRequestDto editImageRequestDto, int imageId)
