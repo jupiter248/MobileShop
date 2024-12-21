@@ -9,9 +9,9 @@ namespace MainApi.Interfaces
     public interface IOrderRepository
     {
         Task<List<Order>?> GetAllOrdersAsync();
-        Task<Order?> GetOrderByIdAsync(int productId);
-        Task<Order?> AddOrderAsync(Product product);
-        Task<Order?> RemoveOrderAsync(int productId);
-        Task<Order?> UpdateOrderAsync(Product product, int productId);
+        Task<Order?> GetOrderByIdAsync(int orderId);
+        Task<Order?> AddOrderAsync(Order order);
+        Task<Order?> RemoveOrderAsync(int orderId);
+        Task<Order?> UpdateOrderAsync(Order order, int orderId);
     }
 }

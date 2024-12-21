@@ -15,7 +15,8 @@ namespace MainApi.Repository
         {
             _context = context;
         }
-        public Task<Order?> AddOrderAsync(Product product)
+
+        public Task<Order?> AddOrderAsync(Order order)
         {
             throw new NotImplementedException();
         }
@@ -25,17 +26,17 @@ namespace MainApi.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Order?> GetOrderByIdAsync(int productId)
+        public Task<Order?> GetOrderByIdAsync(int orderId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Order?> RemoveOrderAsync(int productId)
+        public Task<Order?> RemoveOrderAsync(int orderId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Order?> UpdateOrderAsync(Product product, int productId)
+        public Task<Order?> UpdateOrderAsync(Order order, int orderId)
         {
             throw new NotImplementedException();
         }
