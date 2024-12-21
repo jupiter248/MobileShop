@@ -32,7 +32,7 @@ public class ProductController : ControllerBase
         return Ok(productsDto);
     }
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetProductById([FromRoute] int id)
+    public async Task<IActionResult> GetProductById([FromRoute] int id) 
     {
         // var username = User.GetUsername();
         // var appUser = await _userManager.FindByNameAsync(username);

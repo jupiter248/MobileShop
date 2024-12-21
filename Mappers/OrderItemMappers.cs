@@ -9,7 +9,7 @@ namespace MainApi.Mappers
 {
     public static class OrderItemMappers
     {
-        public static OrderItemDto ToOrderDto(this OrderItem orderItem)
+        public static OrderItemDto ToOrderItemDto(this OrderItem orderItem)
         {
             return new OrderItemDto()
             {

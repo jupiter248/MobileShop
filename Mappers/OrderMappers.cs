@@ -9,16 +9,15 @@ namespace MainApi.Mappers
 {
     public static class OrderMappers
     {
-        public static OrderDto ToOrderDto(this Order order, OrderStatus orderStatus)
+        public static OrderDto ToOrderDto(this Order order)
         {
             return new OrderDto()
             {
                 Id = order.Id,
-                OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 UserId = order.UserId,
-                StatusName = orderStatus.StatusName,
-                orderItemDtos = order.OrderItems.Select(i => i.ToOrderDto()).ToList()
+                OrderId = order.StatusId,
+                orderItemDtos = order.OrderItems.Select(i => i.ToOrderItemDto()).ToList()
             };
         }
     }
