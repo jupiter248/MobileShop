@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository
 {
@@ -21,9 +22,10 @@ namespace MainApi.Repository
             throw new NotImplementedException();
         }
 
-        public Task<List<Order>?> GetAllOrdersAsync()
+        public async Task<List<Order>?> GetAllOrdersAsync()
         {
-            throw new NotImplementedException();
+            List<Order>? orders = await _context.Orders.Include(i => i.OrderItems).Include(s => s.StatusId).ToListAsync();
+            return orders;
         }
 
         public Task<Order?> GetOrderByIdAsync(int orderId)
