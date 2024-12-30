@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mmazi\\OneDrive\\Desktop\\Programming\\MobileShop\\MainApi\\MainApi.csproj": {}
+    "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mmazi\\OneDrive\\Desktop\\Programming\\MobileShop\\MainApi\\MainApi.csproj": {
+    "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mmazi\\OneDrive\\Desktop\\Programming\\MobileShop\\MainApi\\MainApi.csproj",
+        "projectUniqueName": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj",
         "projectName": "MainApi",
-        "projectPath": "C:\\Users\\mmazi\\OneDrive\\Desktop\\Programming\\MobileShop\\MainApi\\MainApi.csproj",
-        "packagesPath": "C:\\Users\\mmazi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mmazi\\OneDrive\\Desktop\\Programming\\MobileShop\\MainApi\\obj\\",
+        "projectPath": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj",
+        "packagesPath": "C:\\Users\\mohammad\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\mmazi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\mohammad\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -23,7 +23,8 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://packagesource": {}
         },
         "frameworks": {
           "net8.0": {
@@ -106,7 +107,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

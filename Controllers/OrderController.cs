@@ -27,6 +27,16 @@ namespace MainApi.Controllers
             {
                 return BadRequest();
             }
+            decimal totalAmount = 0;
+            foreach (var item in orders)
+            {
+                List<OrderItem> orderItems = item.OrderItems.ToList();
+                foreach (var item1 in orderItems)
+                {
+                    totalAmount += item1.PriceAtPurchase;
+                }
+                item.TotalAmount = totalAmount;
+            }
             List<OrderDto>? ordersDto = orders.Select(o => o.ToOrderDto()).ToList();
             return Ok(ordersDto);
         }
