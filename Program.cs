@@ -24,6 +24,15 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddCustomServices();
 
+builder.Services.AddCors(opt => {
+    opt.AddPolicy("HelloConnection", policy =>
+    {
+        policy.AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowAnyOrigin();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,5 +50,7 @@ app.UseAuthentication();
 app.MapControllers();
 
 app.UseStaticFiles();
+
+app.UseCors("HelloConnection");
 
 app.Run();

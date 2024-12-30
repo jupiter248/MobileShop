@@ -17,5 +17,5 @@ public class ProductDto
     public int Quantity { get; set; }
     public string Description { get; set; } = string.Empty;
     public int? categoryId { get; set; }
-    public List<ImageDto> ImagesDto { get; set; }
+    public List<ImageDto> Images { get; set; }
 }
