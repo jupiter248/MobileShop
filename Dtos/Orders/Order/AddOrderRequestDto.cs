@@ -4,13 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Dtos.Orders.OrderItem;
 
-namespace MainApi.Dtos.Order
+namespace MainApi.Dtos.Orders.Order
 {
-    public class OrderDto
+    public  class AddOrderRequestDto
     {
-        public int Id { get; set; }
-        public string? UserId { get; set; }
         public decimal TotalAmount { get; set; }
-        public List<OrderItemDto> OrderItems { get; set; }
+        public List<AddOrderItemRequestDto> OrderItems { get; set; }
     }
 }

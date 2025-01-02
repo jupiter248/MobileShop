@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Dtos.Order;
+using MainApi.Dtos.Orders.Order;
 using MainApi.Models;
 
 namespace MainApi.Mappers
@@ -16,8 +17,15 @@ namespace MainApi.Mappers
                 Id = order.Id,
                 TotalAmount = order.TotalAmount,
                 UserId = order.UserId,
-                OrderId = order.StatusId,
                 OrderItems = order.OrderItems.Select(i => i.ToOrderItemDto()).ToList()
+            };
+        }
+        public static Order ToOrderFromAdd(this AddOrderRequestDto addOrderRequestDto)
+        {
+            return new Order()
+            {
+                TotalAmount = addOrderRequestDto.TotalAmount,
+                OrderItems = addOrderRequestDto.OrderItems.Select(i => i.ToOrderItemFromAdd()).ToList()
             };
         }
     }

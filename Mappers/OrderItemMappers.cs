@@ -20,5 +20,14 @@ namespace MainApi.Mappers
                 Quantity = orderItem.Quantity
             };
         }
+        public static OrderItem ToOrderItemFromAdd(this AddOrderItemRequestDto addOrderItemRequestDto)
+        {
+            return new OrderItem()
+            {
+                Quantity = addOrderItemRequestDto.Quantity,
+                PriceAtPurchase = addOrderItemRequestDto.PriceAtPurchase,
+                ProductId = addOrderItemRequestDto.ProductId
+            };
+        }
     }
 }
