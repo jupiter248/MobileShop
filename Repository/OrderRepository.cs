@@ -17,9 +17,15 @@ namespace MainApi.Repository
             _context = context;
         }
 
-        public Task<Order?> AddOrderAsync(Order order)
+        public async Task<Order?> AddOrderAsync(Order order)
         {
-            throw new NotImplementedException();
+            await _context.Orders.AddAsync(order);
+            foreach (var item in order.OrderItems)
+            {
+                await _context.OrderItems.AddAsync(item);
+            }
+            await _context.SaveChangesAsync();
+            return order;
         }
 
         public async Task<List<Order>?> GetAllOrdersAsync()
