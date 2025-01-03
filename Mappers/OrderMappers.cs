@@ -17,6 +17,8 @@ namespace MainApi.Mappers
                 Id = order.Id,
                 TotalAmount = order.TotalAmount,
                 UserId = order.UserId,
+                OrderDate = order.OrderDate,
+                StatusId = order.StatusId,
                 OrderItems = order.OrderItems.Select(i => i.ToOrderItemDto()).ToList()
             };
         }
@@ -24,7 +26,7 @@ namespace MainApi.Mappers
         {
             return new Order()
             {
-                TotalAmount = addOrderRequestDto.TotalAmount,
+                StatusId = addOrderRequestDto.StatusId,
                 OrderItems = addOrderRequestDto.OrderItems.Select(i => i.ToOrderItemFromAdd()).ToList()
             };
         }

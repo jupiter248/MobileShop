@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Dtos.Order;
+using MainApi.Dtos.Orders.Order;
 using MainApi.Interfaces;
 using MainApi.Mappers;
 using MainApi.Models;
@@ -39,6 +40,12 @@ namespace MainApi.Controllers
             }
             List<OrderDto>? ordersDto = orders.Select(o => o.ToOrderDto()).ToList();
             return Ok(ordersDto);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddOrder([FromBody] AddOrderRequestDto addOrderRequestDto)
+        {
+            var order = addOrderRequestDto.ToOrderFromAdd();
+            return Ok(order.ToOrderDto());
         }
     }
 }

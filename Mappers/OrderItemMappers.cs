@@ -25,7 +25,6 @@ namespace MainApi.Mappers
             return new OrderItem()
             {
                 Quantity = addOrderItemRequestDto.Quantity,
-                PriceAtPurchase = addOrderItemRequestDto.PriceAtPurchase,
                 ProductId = addOrderItemRequestDto.ProductId
             };
         }

@@ -6,9 +6,9 @@ using MainApi.Dtos.Orders.OrderItem;
 
 namespace MainApi.Dtos.Orders.Order
 {
-    public  class AddOrderRequestDto
+    public class AddOrderRequestDto
     {
-        public decimal TotalAmount { get; set; }
+        public int StatusId { get; set; }
         public List<AddOrderItemRequestDto> OrderItems { get; set; }
     }
 }
