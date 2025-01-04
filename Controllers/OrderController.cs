@@ -75,5 +75,12 @@ namespace MainApi.Controllers
                 return BadRequest();
             }
         }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> RemoveOrder([FromRoute] int id)
+        {
+            Order? order = await _orderRepository.RemoveOrderAsync(id);
+            if (order == null) return NotFound();
+            return NoContent();
+        }
     }
 }

@@ -44,9 +44,19 @@ namespace MainApi.Repository
             return null;
         }
 
-        public Task<Order?> RemoveOrderAsync(int orderId)
+        public async Task<Order?> RemoveOrderAsync(int orderId)
         {
-            throw new NotImplementedException();
+            Order? order = await _context.Orders.Include(i => i.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order != null)
+            {
+                _context.Orders.Remove(order);
+                foreach (var item in order.OrderItems)
+                {
+                    _context.OrderItems.Remove(item);
+                }
+                await _context.SaveChangesAsync();
+            }
+            return order;
         }
 
         public Task<Order?> UpdateOrderAsync(Order order, int orderId)
