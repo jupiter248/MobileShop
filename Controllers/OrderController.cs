@@ -16,9 +16,11 @@ namespace MainApi.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;
-        public OrderController(IOrderRepository orderRepository)
+        private readonly IProductRepository _productRepository;
+        public OrderController(IOrderRepository orderRepository, IProductRepository productRepository)
         {
             _orderRepository = orderRepository;
+            _productRepository = productRepository;
         }
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
@@ -28,24 +30,40 @@ namespace MainApi.Controllers
             {
                 return BadRequest();
             }
-            decimal totalAmount = 0;
-            foreach (var item in orders)
-            {
-                List<OrderItem> orderItems = item.OrderItems.ToList();
-                foreach (var item1 in orderItems)
-                {
-                    totalAmount += item1.PriceAtPurchase;
-                }
-                item.TotalAmount = totalAmount;
-            }
             List<OrderDto>? ordersDto = orders.Select(o => o.ToOrderDto()).ToList();
             return Ok(ordersDto);
         }
         [HttpPost]
         public async Task<IActionResult> AddOrder([FromBody] AddOrderRequestDto addOrderRequestDto)
         {
-            var order = addOrderRequestDto.ToOrderFromAdd();
-            return Ok(order.ToOrderDto());
+            Order orderModel = addOrderRequestDto.ToOrderFromAdd();
+            decimal totalAmount = 0;
+
+            List<OrderItem> orderItems = orderModel.OrderItems.ToList();
+            foreach (var item1 in orderItems)
+            {
+                var productExists = await _productRepository.ProductExistsAsync(item1.ProductId);
+                if (productExists)
+                {
+                    Product? product = await _productRepository.GetProductByIdAsync(item1.ProductId);
+                    if (product != null)
+                    {
+                        item1.PriceAtPurchase = product.Price * item1.Quantity;
+                    }
+                }
+                totalAmount += item1.PriceAtPurchase;
+            }
+            orderModel.TotalAmount = totalAmount;
+
+            Order? order = await _orderRepository.AddOrderAsync(orderModel);
+            if (order != null)
+            {
+                return Ok(order.ToOrderDto());
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }
