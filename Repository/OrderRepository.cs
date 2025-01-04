@@ -34,9 +34,14 @@ namespace MainApi.Repository
             return orders;
         }
 
-        public Task<Order?> GetOrderByIdAsync(int orderId)
+        public async Task<Order?> GetOrderByIdAsync(int orderId)
         {
-            throw new NotImplementedException();
+            Order? order = await _context.Orders.Include(i => i.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order != null)
+            {
+                return order;
+            }
+            return null;
         }
 
         public Task<Order?> RemoveOrderAsync(int orderId)

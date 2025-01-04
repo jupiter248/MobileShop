@@ -33,6 +33,16 @@ namespace MainApi.Controllers
             List<OrderDto>? ordersDto = orders.Select(o => o.ToOrderDto()).ToList();
             return Ok(ordersDto);
         }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetOrderById([FromRoute] int id)
+        {
+            Order? order = await _orderRepository.GetOrderByIdAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return Ok(order.ToOrderDto());
+        }
         [HttpPost]
         public async Task<IActionResult> AddOrder([FromBody] AddOrderRequestDto addOrderRequestDto)
         {
@@ -58,7 +68,7 @@ namespace MainApi.Controllers
             Order? order = await _orderRepository.AddOrderAsync(orderModel);
             if (order != null)
             {
-                return Ok(order.ToOrderDto());
+                return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order.ToOrderDto());
             }
             else
             {
