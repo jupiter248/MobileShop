@@ -12,7 +12,7 @@ namespace MainApi.Interfaces
         Task<Order?> GetOrderByIdAsync(int orderId);
         Task<Order?> AddOrderAsync(Order order);
         Task<Order?> RemoveOrderAsync(int orderId);
-        Task<Order?> UpdateOrderStatusAsync(Order order, int orderId);
+        Task<Order?> UpdateOrderStatusAsync(int orderId, int statusId);
         Task<OrderItem?> UpdateOrderItemAsync(OrderItem orderItem, int orderItemId);
     }
 }

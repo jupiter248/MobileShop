@@ -64,15 +64,15 @@ namespace MainApi.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<Order?> UpdateOrderStatusAsync(Order orderModel, int orderId)
+        public async Task<Order?> UpdateOrderStatusAsync(int orderId, int statusId)
         {
             Order? order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
             if (order != null)
             {
-                order.StatusId = orderModel.StatusId;
+                order.StatusId = statusId;
                 await _context.SaveChangesAsync();
             }
-            return null;
+            return order;
         }
     }
 }
