@@ -59,9 +59,20 @@ namespace MainApi.Repository
             return order;
         }
 
-        public Task<Order?> UpdateOrderAsync(Order order, int orderId)
+        public Task<OrderItem?> UpdateOrderItemAsync(OrderItem orderItem, int orderItemId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Order?> UpdateOrderStatusAsync(Order orderModel, int orderId)
+        {
+            Order? order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order != null)
+            {
+                order.StatusId = orderModel.StatusId;
+                await _context.SaveChangesAsync();
+            }
+            return null;
         }
     }
 }
