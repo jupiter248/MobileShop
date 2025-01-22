@@ -77,10 +77,17 @@ namespace MainApi.Controllers
         }
         [Route("OrderStatus/{id:int}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateOrderStatus([FromRoute] int id, [FromRoute] int statusId)
+        public async Task<IActionResult> UpdateOrderStatus([FromRoute] int id, [FromBody] int statusId)
         {
             Order? order = await _orderRepository.UpdateOrderStatusAsync(id, statusId);
             if (order == null) return NotFound();
+            // if (statusId == 2)
+            // {
+            //     foreach (var item in order.OrderItems)
+            //     {
+            //         item.Quantity -= 1;
+            //     }
+            // }
             return NoContent();
         }
         [HttpDelete("{id:int}")]
