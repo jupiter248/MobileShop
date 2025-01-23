@@ -81,13 +81,7 @@ namespace MainApi.Controllers
         {
             Order? order = await _orderRepository.UpdateOrderStatusAsync(id, statusId);
             if (order == null) return NotFound();
-            // if (statusId == 2)
-            // {
-            //     foreach (var item in order.OrderItems)
-            //     {
-            //         item.Quantity -= 1;
-            //     }
-            // }
+
             return NoContent();
         }
         [HttpDelete("{id:int}")]

@@ -57,7 +57,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<Product?> UpdateProductAsync(Product productModel, int productId)
     {
-        var product = _context.Products.FirstOrDefault(f => f.Id == productId);
+        var product = await _context.Products.FirstOrDefaultAsync(f => f.Id == productId);
         if (product != null)
         {
             product.ProductName = productModel.ProductName;

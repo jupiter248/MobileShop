@@ -66,10 +66,29 @@ namespace MainApi.Repository
 
         public async Task<Order?> UpdateOrderStatusAsync(int orderId, int statusId)
         {
-            Order? order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+            Order? order = await _context.Orders.Include(i => i.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
             if (order != null)
             {
                 order.StatusId = statusId;
+                if (statusId == 2)
+                {
+                    foreach (var item in order.OrderItems)
+                    {
+                        var product = await _context.Products.FirstOrDefaultAsync(p => item.ProductId == p.Id);
+                        if (product != null)
+                        {
+                            product.Quantity -= item.Quantity;
+                            if (product.Quantity < 0)
+                            {
+                                return null;
+                            }
+                            else
+                            {
+                                await _context.SaveChangesAsync();
+                            }
+                        }
+                    }
+                }
                 await _context.SaveChangesAsync();
             }
             return order;
