@@ -59,9 +59,21 @@ namespace MainApi.Repository
             return order;
         }
 
-        public Task<OrderItem?> UpdateOrderItemAsync(OrderItem orderItem, int orderItemId)
+        public async Task<Order?> UpdateOrderItemAsync(List<OrderItem> orderItems, int orderId)
         {
-            throw new NotImplementedException();
+            Order? order = await _context.Orders.Include(i => i.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order != null)
+            {
+                foreach (var item in orderItems)
+                {
+                    order.OrderItems.Add(item);
+                }
+                return order;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<Order?> UpdateOrderStatusAsync(int orderId, int statusId)
