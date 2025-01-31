@@ -13,6 +13,6 @@ namespace MainApi.Interfaces
         Task<Order?> AddOrderAsync(Order order);
         Task<Order?> RemoveOrderAsync(int orderId);
         Task<Order?> UpdateOrderStatusAsync(int orderId, int statusId);
-        Task<Order?> UpdateOrderItemAsync(List<OrderItem> orderItem, int orderId);
+        Task<Order?> UpdateOrderItemAsync(IEnumerable<OrderItem> orderItem, int orderId);
     }
 }

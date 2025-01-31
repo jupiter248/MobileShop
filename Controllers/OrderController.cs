@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Dtos.Order;
 using MainApi.Dtos.Orders.Order;
+using MainApi.Dtos.Orders.OrderItem;
 using MainApi.Interfaces;
 using MainApi.Mappers;
 using MainApi.Models;
@@ -69,6 +70,20 @@ namespace MainApi.Controllers
             if (order != null)
             {
                 return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order.ToOrderDto());
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> AddOrderItemsToOrder([FromRoute] int id, [FromBody] IEnumerable<AddOrderItemRequestDto> addOrderItemRequestDto)
+        {
+            var orderItems = addOrderItemRequestDto.Select(i => i.ToOrderItemFromAdd());
+            var order = await _orderRepository.UpdateOrderItemAsync(orderItems, id);
+            if (order != null)
+            {
+                return NoContent();
             }
             else
             {
