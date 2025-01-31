@@ -77,9 +77,9 @@ namespace MainApi.Controllers
             }
         }
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> AddOrderItemsToOrder([FromRoute] int id, [FromBody] IEnumerable<AddOrderItemRequestDto> addOrderItemRequestDto)
+        public async Task<IActionResult> AddOrderItemsToOrder([FromRoute] int id, [FromBody] AddOrderItemRequestDto addOrderItemRequestDto)
         {
-            var orderItems = addOrderItemRequestDto.Select(i => i.ToOrderItemFromAdd());
+            var orderItems = addOrderItemRequestDto.ToOrderItemFromAdd();
             var order = await _orderRepository.UpdateOrderItemAsync(orderItems, id);
             if (order != null)
             {

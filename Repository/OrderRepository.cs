@@ -59,15 +59,14 @@ namespace MainApi.Repository
             return order;
         }
 
-        public async Task<Order?> UpdateOrderItemAsync(IEnumerable<OrderItem> orderItem, int orderId)
+        public async Task<Order?> UpdateOrderItemAsync(OrderItem orderItem, int orderId)
         {
             Order? order = await _context.Orders.Include(i => i.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
             if (order != null)
             {
-                foreach (var item in orderItem)
-                {
-                    order.OrderItems.Add(item);
-                }
+                
+                    order.OrderItems.Add(orderItem);
+                
                 await _context.SaveChangesAsync();
                 return order;
             }
