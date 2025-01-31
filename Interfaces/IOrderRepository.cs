@@ -11,8 +11,9 @@ namespace MainApi.Interfaces
         Task<List<Order>?> GetAllOrdersAsync();
         Task<Order?> GetOrderByIdAsync(int orderId);
         Task<Order?> AddOrderAsync(Order order);
-        Task<Order?> RemoveOrderAsync(int orderId);
         Task<Order?> UpdateOrderStatusAsync(int orderId, int statusId);
         Task<Order?> UpdateOrderItemAsync(OrderItem orderItem, int orderId);
+        Task<Order?> RemoveOrderAsync(int orderId);
+        Task<Order?> RemoveOrderItemsAsync(OrderItem orderItem, int orderId);
     }
 }
