@@ -59,22 +59,30 @@ namespace MainApi.Repository
             return order;
         }
 
-        public async Task<Order?> RemoveOrderItemsAsync(OrderItem orderItem, int orderId)
+        public async Task<Order?> RemoveOrderItemsAsync(int orderId, int orderItemId)
         {
             Order? order = await _context.Orders.Include(i => i.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
             if (order != null)
             {
-                if (orderItem.Quantity > 1)
+                OrderItem? orderItem = order.OrderItems.FirstOrDefault(i => i.Id == orderItemId);
+                if (orderItem != null)
                 {
-                    orderItem.Quantity -= 1;
-                    await _context.SaveChangesAsync();
+                    if (orderItem.Quantity > 1)
+                    {
+                        orderItem.Quantity -= 1;
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        order.OrderItems.RemoveAll(i => i.Id == orderItem.Id);
+                        await _context.SaveChangesAsync();
+                    }
+                    return order;
                 }
                 else
                 {
-                    order.OrderItems.RemoveAll(i => i.Id == orderItem.Id);
-                    await _context.SaveChangesAsync();
+                    return null;
                 }
-                return order;
             }
             else
             {

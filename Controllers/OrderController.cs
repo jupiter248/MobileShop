@@ -106,5 +106,13 @@ namespace MainApi.Controllers
             if (order == null) return NotFound();
             return NoContent();
         }
+        [Route("OrderItem/{id:int}")]
+        [HttpDelete]
+        public async Task<IActionResult> RemoveOrderItem([FromRoute] int id, [FromBody] int orderItemId)
+        {
+            Order? order = await _orderRepository.RemoveOrderItemsAsync(id, orderItemId);
+            if (order == null) return NotFound();
+            return NoContent();
+        }
     }
 }
