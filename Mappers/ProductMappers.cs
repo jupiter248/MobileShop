@@ -44,6 +44,7 @@ public static class ProductMappers
             Quantity = productModel.Quantity,
             Description = productModel.Description,
             categoryId = productModel.CategoryId,
+            categoryName = productModel.Category.CategoryName,
             Images = productModel.Images.Select(s => s.ToImageDto()).ToList()
         };
     }
