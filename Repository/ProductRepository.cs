@@ -31,7 +31,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<Product?> GetProductByIdAsync(int productId)
     {
-        return await _context.Products.Include(i => i.Images).FirstAsync(p => p.Id == productId);
+        return await _context.Products.Include(i => i.Images).Include(c => c.Category).FirstAsync(p => p.Id == productId);
     }
 
     public async Task<bool> ProductExistsAsync(int productId)
