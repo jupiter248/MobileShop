@@ -17,7 +17,6 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
-
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddIdentityService();
 builder.Services.AddJwtAuthentication(builder.Configuration);
@@ -44,13 +43,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
-app.MapControllers();
 
 app.UseStaticFiles();
 
 app.UseCors("HelloConnection");
+
+app.MapControllers();
 
 app.Run();

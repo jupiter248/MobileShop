@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainApi.Controllers;
-
+[Authorize]
 [Route("api/product")]
 [ApiController]
 public class ProductController : ControllerBase

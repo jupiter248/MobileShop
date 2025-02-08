@@ -8,10 +8,11 @@ namespace MainApi.Data;
 
 public class ApplicationDbContext : IdentityDbContext<AppUser>
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-    : base(options)
+    public ApplicationDbContext(DbContextOptions dbContextOptions)
+      : base(dbContextOptions)
     {
     }
+
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Image> Images { get; set; }

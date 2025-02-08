@@ -11,6 +11,7 @@ using MainApi.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -69,10 +70,14 @@ namespace MainApi.Services
         }
         public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration config)
         {
+            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            var logger = loggerFactory.CreateLogger<Program>();
             var jwtSettings = config.GetSection("JWT");
-            var signingKey = System.Text.Encoding.UTF8.GetBytes(jwtSettings["SigningKey"]);
-            if (string.IsNullOrWhiteSpace(signingKey.ToString()))
-                throw new InvalidOperationException("JWT key is not configured properly. Please set 'JWT:SigningKey' in appsettings.json or environment variables.");
+            string signingKeyString = jwtSettings["SigningKey"];
+            if (string.IsNullOrWhiteSpace(signingKeyString))
+                throw new InvalidOperationException("JWT key is not configured properly.");
+
+            var signingKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(signingKeyString));
 
             services.AddAuthentication(option =>
             {
@@ -86,25 +91,14 @@ namespace MainApi.Services
             {
                 option.TokenValidationParameters = new TokenValidationParameters()
                 {
+                    ValidateIssuerSigningKey = true,
                     ValidateAudience = true,
                     ValidateIssuer = true,
                     ValidateLifetime = true,
                     ValidAudience = jwtSettings["Audience"],
                     ValidIssuer = jwtSettings["Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(signingKey)
-                };
-                option.Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = context =>
-                    {
-                        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
-                        return Task.CompletedTask;
-                    },
-                    OnTokenValidated = context =>
-                    {
-                        Console.WriteLine($"Token validated: {context.SecurityToken}");
-                        return Task.CompletedTask;
-                    }
+                    IssuerSigningKey = signingKey,
+
                 };
             });
         }
