@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "HqHaJk7UWRGTDNIAZN6NjfKJCYqqy+u2EdecQy57zyE=",
+  "Hash": "5M3oyjnhIKvCVHUkz0PjJm7eNVe/hd2ApVA3ExoVbsQ=",
   "Source": "MainApi",
   "BasePath": "_content/MainApi",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "MainApi\\wwwroot",
       "Source": "MainApi",
-      "ContentRoot": "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\",
       "BasePath": "_content/MainApi",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\images\\20dcabb7-a924-4be9-9481-e6c4de537b21-Vikings.jpg",
+      "Identity": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\images\\20dcabb7-a924-4be9-9481-e6c4de537b21-Vikings.jpg",
       "SourceId": "MainApi",
       "SourceType": "Discovered",
-      "ContentRoot": "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\",
       "BasePath": "_content/MainApi",
       "RelativePath": "images/20dcabb7-a924-4be9-9481-e6c4de537b21-Vikings.jpg",
       "AssetKind": "All",
@@ -36,10 +36,10 @@
       "OriginalItemSpec": "wwwroot\\images\\20dcabb7-a924-4be9-9481-e6c4de537b21-Vikings.jpg"
     },
     {
-      "Identity": "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\images\\7b28564e-272f-47bc-8e08-b5eb73b1b6de-cristiano_ronaldo_real_madrid_wallpapers-wallpaper-1920x1200.jpg",
+      "Identity": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\images\\7b28564e-272f-47bc-8e08-b5eb73b1b6de-cristiano_ronaldo_real_madrid_wallpapers-wallpaper-1920x1200.jpg",
       "SourceId": "MainApi",
       "SourceType": "Discovered",
-      "ContentRoot": "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\",
       "BasePath": "_content/MainApi",
       "RelativePath": "images/7b28564e-272f-47bc-8e08-b5eb73b1b6de-cristiano_ronaldo_real_madrid_wallpapers-wallpaper-1920x1200.jpg",
       "AssetKind": "All",
@@ -55,10 +55,10 @@
       "OriginalItemSpec": "wwwroot\\images\\7b28564e-272f-47bc-8e08-b5eb73b1b6de-cristiano_ronaldo_real_madrid_wallpapers-wallpaper-1920x1200.jpg"
     },
     {
-      "Identity": "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\uploads\\Jupiter-88.png",
+      "Identity": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\uploads\\Jupiter-88.png",
       "SourceId": "MainApi",
       "SourceType": "Discovered",
-      "ContentRoot": "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\wwwroot\\",
       "BasePath": "_content/MainApi",
       "RelativePath": "uploads/Jupiter-88.png",
       "AssetKind": "All",

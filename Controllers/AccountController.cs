@@ -70,6 +70,7 @@ namespace MainApi.Controllers
                 return StatusCode(500, e);
             }
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterDto registerDto)
         {
@@ -133,14 +134,14 @@ namespace MainApi.Controllers
             if (result == null)
                 return Unauthorized("Username not found and/or password");
 
-            var roles = await _userManager.GetRolesAsync(user);
+            var role = await _userManager.GetRolesAsync(user);
 
             return Ok(
                 new NewUserDto
                 {
                     Username = user.UserName,
                     Email = user.Email,
-                    Token = _tokenService.CreateToken(user, roles)
+                    Token = _tokenService.CreateToken(user, role)
                 }
             );
         }
