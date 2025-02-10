@@ -11,7 +11,10 @@ namespace MainApi.Extensions
         public static string GetUsername(this ClaimsPrincipal user)
         {
             // get the authorize user  
-            return user.Claims.SingleOrDefault(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname")).Value;
+            string reference = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname";
+
+            return user.Claims.SingleOrDefault(x => x.Type.Equals(reference)).Value;
+
         }
     }
 }

@@ -124,15 +124,15 @@ namespace MainApi.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(loginDto);
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginDto.Username.ToLower());
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == (loginDto.Username ?? String.Empty).ToLower());
 
             if (user == null)
                 return Unauthorized("Invalid username!");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password ?? String.Empty, false);
 
-            if (result == null)
-                return Unauthorized("Username not found and/or password");
+            if (result.Succeeded == false)
+                return Unauthorized("Password does not match with the user");
 
             var role = await _userManager.GetRolesAsync(user);
 
