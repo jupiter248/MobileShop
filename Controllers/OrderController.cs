@@ -5,24 +5,30 @@ using System.Threading.Tasks;
 using MainApi.Dtos.Order;
 using MainApi.Dtos.Orders.Order;
 using MainApi.Dtos.Orders.OrderItem;
+using MainApi.Extensions;
 using MainApi.Interfaces;
 using MainApi.Mappers;
 using MainApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainApi.Controllers
 {
-    
+
     [ApiController]
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
-        public OrderController(IOrderRepository orderRepository, IProductRepository productRepository)
+        private readonly UserManager<AppUser> _userManager;
+
+        public OrderController(IOrderRepository orderRepository, IProductRepository productRepository, UserManager<AppUser> userManager)
         {
             _orderRepository = orderRepository;
             _productRepository = productRepository;
+            _userManager = userManager;
         }
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
@@ -45,9 +51,13 @@ namespace MainApi.Controllers
             }
             return Ok(order.ToOrderDto());
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddOrder([FromBody] AddOrderRequestDto addOrderRequestDto)
         {
+            string? username = User.GetUsername();
+            AppUser? appUser = await _userManager.FindByNameAsync(username);
+
             Order orderModel = addOrderRequestDto.ToOrderFromAdd();
             decimal totalAmount = 0;
 
@@ -66,6 +76,11 @@ namespace MainApi.Controllers
                 totalAmount += item1.PriceAtPurchase;
             }
             orderModel.TotalAmount = totalAmount;
+            if (appUser != null)
+            {
+                orderModel.UserId = appUser.Id;
+                orderModel.User = appUser;
+            }
 
             Order? order = await _orderRepository.AddOrderAsync(orderModel);
             if (order != null)

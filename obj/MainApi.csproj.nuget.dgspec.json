@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj": {}
+    "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj": {}
   },
   "projects": {
-    "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj": {
+    "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj",
+        "projectUniqueName": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj",
         "projectName": "MainApi",
-        "projectPath": "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj",
+        "projectPath": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\MainApi.csproj",
         "packagesPath": "C:\\Users\\mohammad\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\obj\\",
+        "outputPath": "C:\\Users\\mohammad\\Desktop\\USProject\\Backend\\MainApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mohammad\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -30,7 +30,7 @@ namespace MainApi.Repository
 
         public async Task<List<Order>?> GetAllOrdersAsync()
         {
-            List<Order>? orders = await _context.Orders.Include(i => i.OrderItems).ToListAsync();
+            List<Order>? orders = await _context.Orders.Include(i => i.OrderItems).Include(u => u.User).ToListAsync();
             return orders;
         }
 
