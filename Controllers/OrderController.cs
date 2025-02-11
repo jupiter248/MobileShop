@@ -58,7 +58,17 @@ namespace MainApi.Controllers
             string? username = User.GetUsername();
             AppUser? appUser = await _userManager.FindByNameAsync(username);
 
-            Order orderModel = addOrderRequestDto.ToOrderFromAdd();
+            Order? orderModel = addOrderRequestDto.ToOrderFromAdd();
+            if (appUser != null)
+            {
+                orderModel.UserId = appUser.Id;
+                orderModel.User = appUser;
+            }
+            OrderStatus? orderStatus = await _orderRepository.GetOrderStatusByIdAsync(addOrderRequestDto.StatusId);
+            if (orderStatus != null)
+            {
+                orderModel.OrderStatus = orderStatus;
+            }
             decimal totalAmount = 0;
 
             List<OrderItem> orderItems = orderModel.OrderItems.ToList();
@@ -76,11 +86,6 @@ namespace MainApi.Controllers
                 totalAmount += item1.PriceAtPurchase;
             }
             orderModel.TotalAmount = totalAmount;
-            if (appUser != null)
-            {
-                orderModel.UserId = appUser.Id;
-                orderModel.User = appUser;
-            }
 
             Order? order = await _orderRepository.AddOrderAsync(orderModel);
             if (order != null)

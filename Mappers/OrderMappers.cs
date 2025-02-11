@@ -18,7 +18,7 @@ namespace MainApi.Mappers
                 TotalAmount = order.TotalAmount,
                 UserName = order.User.UserName,
                 OrderDate = order.OrderDate,
-                StatusId = order.StatusId,
+                StatusName = order.OrderStatus.StatusName,
                 OrderItems = order.OrderItems.Select(i => i.ToOrderItemDto()).ToList()
             };
         }

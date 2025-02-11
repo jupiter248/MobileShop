@@ -30,7 +30,7 @@ namespace MainApi.Repository
 
         public async Task<List<Order>?> GetAllOrdersAsync()
         {
-            List<Order>? orders = await _context.Orders.Include(i => i.OrderItems).Include(u => u.User).ToListAsync();
+            List<Order>? orders = await _context.Orders.Include(i => i.OrderItems).Include(u => u.User).Include(s => s.OrderStatus).ToListAsync();
             return orders;
         }
 
@@ -41,6 +41,13 @@ namespace MainApi.Repository
             {
                 return order;
             }
+            return null;
+        }
+
+        public async Task<OrderStatus?> GetOrderStatusByIdAsync(int orderStatusId)
+        {
+            OrderStatus? orderStatus = await _context.OrderStatuses.FirstOrDefaultAsync(s => s.Id == orderStatusId);
+            if (orderStatus != null) return orderStatus;
             return null;
         }
 
