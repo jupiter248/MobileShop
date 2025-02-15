@@ -12,7 +12,7 @@ namespace MainApi.Dtos.Category
         [MaxLength(25, ErrorMessage = "Category name can not be over 25 characters")]
         public string CategoryName { get; set; } = string.Empty;
         [Required]
-        [MinLength(40, ErrorMessage = "Description can not be Under 40 characters")]
+        [MinLength(20, ErrorMessage = "Description can not be Under 20 characters")]
         public string Description { get; set; } = string.Empty;
     }
 }

@@ -25,13 +25,13 @@ namespace MainApi.Repository
 
         public async Task<List<Category>?> GetAllCategoriesAsync()
         {
-            var categories = await _context.Categories.Include(p => p.Products).ToListAsync();
+            var categories = await _context.Categories.Include(p => p.Products).ThenInclude(p => p.Images).ToListAsync();
             return categories;
         }
 
         public async Task<Category?> GetCategoryByIdAsync(int categoryId)
         {
-            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
+            var category = await _context.Categories.Include(p => p.Products).ThenInclude(p => p.Images).FirstOrDefaultAsync(c => c.Id == categoryId);
             return category;
         }
 
