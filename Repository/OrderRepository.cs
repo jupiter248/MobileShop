@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models;
+using MainApi.Models.Orders;
 using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository
@@ -36,7 +37,7 @@ namespace MainApi.Repository
 
         public async Task<Order?> GetOrderByIdAsync(int orderId)
         {
-            Order? order = await _context.Orders.Include(i => i.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
+            Order? order = await _context.Orders.Include(i => i.OrderItems).Include(u => u.User).Include(s => s.OrderStatus).FirstOrDefaultAsync(o => o.Id == orderId);
             if (order != null)
             {
                 return order;

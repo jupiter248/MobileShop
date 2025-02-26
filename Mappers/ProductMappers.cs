@@ -1,6 +1,7 @@
 using System;
 using MainApi.Dtos.Products;
 using MainApi.Models;
+using MainApi.Models.Products;
 
 namespace MainApi.Mappers;
 

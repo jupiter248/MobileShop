@@ -9,6 +9,8 @@ using MainApi.Extensions;
 using MainApi.Interfaces;
 using MainApi.Mappers;
 using MainApi.Models;
+using MainApi.Models.Orders;
+using MainApi.Models.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

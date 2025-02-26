@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Dtos.Orders.OrderItem;
 using MainApi.Models;
+using MainApi.Models.Orders;
 
 namespace MainApi.Mappers
 {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models;
+using MainApi.Models.Products;
 using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository

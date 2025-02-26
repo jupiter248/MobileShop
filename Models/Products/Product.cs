@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace MainApi.Models
+namespace MainApi.Models.Products
 {
     public class Product
     {
@@ -20,5 +20,6 @@ namespace MainApi.Models
         public int Quantity { get; set; }
         public string Description { get; set; } = string.Empty;
         public List<Image> Images { get; set; } = new List<Image>();
+        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

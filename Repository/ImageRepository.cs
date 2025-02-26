@@ -6,6 +6,7 @@ using MainApi.Data;
 using MainApi.Dtos.Image;
 using MainApi.Interfaces;
 using MainApi.Models;
+using MainApi.Models.Products;
 using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository

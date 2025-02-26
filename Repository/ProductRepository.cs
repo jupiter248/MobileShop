@@ -2,6 +2,7 @@ using System;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models;
+using MainApi.Models.Products;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

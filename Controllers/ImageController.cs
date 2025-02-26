@@ -7,6 +7,7 @@ using MainApi.Dtos.Image;
 using MainApi.Interfaces;
 using MainApi.Mappers;
 using MainApi.Models;
+using MainApi.Models.Products;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

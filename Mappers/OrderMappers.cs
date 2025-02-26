@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Dtos.Order;
 using MainApi.Dtos.Orders.Order;
 using MainApi.Models;
+using MainApi.Models.Orders;
 
 namespace MainApi.Mappers
 {

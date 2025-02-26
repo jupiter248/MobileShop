@@ -1,5 +1,6 @@
 using System;
 using MainApi.Models;
+using MainApi.Models.Products;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainApi.Interfaces;

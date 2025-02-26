@@ -6,7 +6,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using MainApi.Dtos.Account;
 
-namespace MainApi.Models
+namespace MainApi.Models.Orders
 {
     public class Order
     {
