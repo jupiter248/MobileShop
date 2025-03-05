@@ -1,6 +1,7 @@
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models.Products;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository
 {
@@ -11,9 +12,19 @@ namespace MainApi.Repository
         {
             _context = context;
         }
-        public Task<Comment?> AddCommentAsync(Comment comment)
+        public async Task<Comment?> AddCommentAsync(Comment comment)
         {
-            throw new NotImplementedException();
+            var commentExists = await _context.Comments.FirstOrDefaultAsync(c => c.Id == comment.Id);
+            if (commentExists == null)
+            {
+                await _context.AddAsync(comment);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                return null;
+            }
+            return comment;
         }
 
         public Task<Comment?> EditCommentAsycn(int commentId, Comment comment)
@@ -21,14 +32,25 @@ namespace MainApi.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Comment?> GetCommentByIdAsync()
+        public async Task<Comment?> GetCommentByIdAsync(int commentId)
         {
-            throw new NotImplementedException();
+           Comment? comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
+           if (comment == null)
+           {
+                return null;
+           }
+           return comment;
         }
 
-        public Task<Comment?> RemoveCommentAsync(int commentId)
+        public async Task<Comment?> RemoveCommentAsync(int commentId)
         {
-            throw new NotImplementedException();
+            Comment? comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
+            if (comment != null)
+            {
+                _context.Remove(comment);
+                await _context.SaveChangesAsync();
+            }
+            return null;
         }
 
     }
