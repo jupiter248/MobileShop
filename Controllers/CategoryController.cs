@@ -33,7 +33,7 @@ namespace MainApi.Controllers
         {
             Category? category = await _categoryRepository.GetCategoryByIdAsync(id);
             if (category == null) return BadRequest();
-            return Ok(category);
+            return Ok(category.ToCategoryDto());
         }
         [HttpPost]
         public async Task<IActionResult> AddCategory([FromBody] AddCategoryRequestDto addCategoryRequestDto)
