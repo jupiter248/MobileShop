@@ -42,7 +42,7 @@ namespace MainApi.Repository
 
         public async Task<Comment?> GetCommentByIdAsync(int commentId)
         {
-            Comment? comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
+            Comment? comment = await _context.Comments.Include(u => u.AppUser).Include(p => p.Product).FirstOrDefaultAsync(c => c.Id == commentId);
             if (comment == null)
             {
                 return null;

@@ -20,13 +20,13 @@ namespace MainApi.Mappers
                 CreatedTime = comment.CreatedTime,
             };
         }
-        public static Comment ToCommentFromAdd(this AddCommentRequestDto addCommentRequestDto)
+        public static Comment ToCommentFromAdd(this AddCommentRequestDto addCommentRequestDto, int productId)
         {
             return new Comment()
             {
                 Rating = addCommentRequestDto.Rating,
                 Text = addCommentRequestDto.Text,
-                ProductId = addCommentRequestDto.ProductId
+                ProductId = productId
             };
         }
         public static Comment ToCommentFromEdit(this EditCommentRequestDto editCommentRequestDto)
