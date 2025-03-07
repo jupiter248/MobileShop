@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Interfaces;
+using MainApi.Mappers;
 using MainApi.Models.Products;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,7 @@ namespace MainApi.Controllers
         {
             Comment? comment = await _commentRepository.GetCommentByIdAsync(id);
             if (comment == null) return BadRequest();
-            return Ok(comment);
+            return Ok(comment.ToCommentDto());
         }
     }
 }
