@@ -6,7 +6,7 @@ namespace MainApi.Interfaces
     {
         Task<Comment?> GetCommentByIdAsync(int commentId);
         Task<Comment?> AddCommentAsync(Comment comment);
-        Task<Comment?> EditCommentAsycn(int commentId ,Comment comment);
+        Task<Comment?> EditCommentAsync(int commentId, Comment comment);
         Task<Comment?> RemoveCommentAsync(int commentId);
     }
 }

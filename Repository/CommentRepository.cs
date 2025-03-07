@@ -27,19 +27,27 @@ namespace MainApi.Repository
             return comment;
         }
 
-        public Task<Comment?> EditCommentAsycn(int commentId, Comment comment)
+        public async Task<Comment?> EditCommentAsync(int commentId, Comment commentModel)
         {
-            throw new NotImplementedException();
+            Comment? comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
+            if (comment != null)
+            {
+                comment.Text = commentModel.Text;
+                comment.Rating = commentModel.Rating;
+                await _context.SaveChangesAsync();
+                return comment;
+            }
+            return null;
         }
 
         public async Task<Comment?> GetCommentByIdAsync(int commentId)
         {
-           Comment? comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
-           if (comment == null)
-           {
+            Comment? comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
+            if (comment == null)
+            {
                 return null;
-           }
-           return comment;
+            }
+            return comment;
         }
 
         public async Task<Comment?> RemoveCommentAsync(int commentId)
