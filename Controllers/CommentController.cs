@@ -70,5 +70,12 @@ namespace MainApi.Controllers
                 return NotFound("User is not found");
             }
         }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> RemoveComment([FromRoute] int id)
+        {
+            Comment? comment = await _commentRepository.RemoveCommentAsync(id);
+            if (comment == null) return NotFound();
+            return NoContent();
+        }
     }
 }
