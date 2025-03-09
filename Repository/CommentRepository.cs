@@ -1,6 +1,8 @@
 using MainApi.Data;
 using MainApi.Interfaces;
+using MainApi.Models;
 using MainApi.Models.Products;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository
@@ -8,9 +10,11 @@ namespace MainApi.Repository
     public class CommentRepository : ICommentRepository
     {
         private readonly ApplicationDbContext _context;
-        public CommentRepository(ApplicationDbContext context)
+        private readonly UserManager<AppUser> _userManager;
+        public CommentRepository(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         public async Task<Comment?> AddCommentAsync(Comment comment)
         {
@@ -27,10 +31,10 @@ namespace MainApi.Repository
             return comment;
         }
 
-        public async Task<Comment?> EditCommentAsync(int commentId, Comment commentModel)
+        public async Task<Comment?> EditCommentAsync(int commentId, Comment commentModel, string username)
         {
-            Comment? comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
-            if (comment != null)
+            Comment? comment = await _context.Comments.Include(u => u.AppUser).FirstOrDefaultAsync(c => c.Id == commentId);
+            if (comment != null && comment.AppUser?.UserName == username)
             {
                 comment.Text = commentModel.Text;
                 comment.Rating = commentModel.Rating;

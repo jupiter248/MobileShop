@@ -70,6 +70,27 @@ namespace MainApi.Controllers
                 return NotFound("User is not found");
             }
         }
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> EditComment([FromRoute] int id, EditCommentRequestDto editCommentRequestDto)
+        {
+            string username = User.GetUsername();
+            if (username != null)
+            {
+                Comment? commentModel = await _commentRepository.EditCommentAsync(id, editCommentRequestDto.ToCommentFromEdit(), username);
+                if (commentModel != null)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return NotFound("Comment is not found");
+                }
+            }
+            else
+            {
+                return NotFound("User is not found");
+            }
+        }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveComment([FromRoute] int id)
         {
