@@ -16,19 +16,28 @@ namespace MainApi.Repository
             _context = context;
             _userManager = userManager;
         }
-        public async Task<Comment?> AddCommentAsync(Comment comment)
+        public async Task<Comment?> AddCommentAsync(Comment comment, string username)
         {
-            var commentExists = await _context.Comments.FirstOrDefaultAsync(c => c.Id == comment.Id);
-            if (commentExists == null)
+            AppUser? appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (appUser != null)
             {
-                await _context.AddAsync(comment);
-                await _context.SaveChangesAsync();
+                comment.AppUser = appUser;
+                Comment? commentExists = await _context.Comments.FirstOrDefaultAsync(c => c.Id == comment.Id);
+                if (commentExists == null)
+                {
+                    await _context.AddAsync(comment);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return null;
+                }
+                return comment;
             }
             else
             {
                 return null;
             }
-            return comment;
         }
 
         public async Task<Comment?> EditCommentAsync(int commentId, Comment commentModel, string username)
@@ -42,6 +51,13 @@ namespace MainApi.Repository
                 return comment;
             }
             return null;
+        }
+
+        public async Task<List<Comment>?> GetAllCommentAsync()
+        {
+            List<Comment>? comments = await _context.Comments.Include(u => u.AppUser).Include(p => p.Product).ToListAsync();
+            if (comments == null) return null;
+            return comments;
         }
 
         public async Task<Comment?> GetCommentByIdAsync(int commentId)
@@ -61,6 +77,7 @@ namespace MainApi.Repository
             {
                 _context.Remove(comment);
                 await _context.SaveChangesAsync();
+                return comment;
             }
             return null;
         }

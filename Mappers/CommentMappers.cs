@@ -13,6 +13,7 @@ namespace MainApi.Mappers
         {
             return new CommentDto()
             {
+                Id = comment.Id,
                 Rating = comment.Rating,
                 Text = comment.Text,
                 ProductName = comment.Product.ProductName,

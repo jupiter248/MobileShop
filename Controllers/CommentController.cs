@@ -28,6 +28,14 @@ namespace MainApi.Controllers
             _userManager = userManager;
             _productRepository = productRepository;
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAllComments()
+        {
+            List<Comment>? comments = await _commentRepository.GetAllCommentAsync();
+            if (comments == null) return NotFound();
+            List<CommentDto>? commentDtos = comments.Select(c => c.ToCommentDto()).ToList();
+            return Ok(commentDtos);
+        }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetCommentById([FromRoute] int id)
         {
@@ -41,38 +49,33 @@ namespace MainApi.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             string username = User.GetUsername();
-            AppUser? appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == username);
-            if (appUser != null)
+
+            Product? product = await _productRepository.GetProductByIdAsync(id);
+            if (product != null)
             {
-                Product? product = await _productRepository.GetProductByIdAsync(id);
-                if (product != null)
+                Comment? comment = addCommentRequestDto.ToCommentFromAdd(id);
+                comment.Product = product;
+                Comment? commentModel = await _commentRepository.AddCommentAsync(comment, username);
+                if (commentModel != null)
                 {
-                    Comment? comment = addCommentRequestDto.ToCommentFromAdd(id);
-                    comment.AppUser = appUser;
-                    comment.Product = product;
-                    Comment? commentModel = await _commentRepository.AddCommentAsync(comment);
-                    if (commentModel != null)
-                    {
-                        return CreatedAtAction(nameof(GetCommentById), new { id = commentModel.Id }, commentModel.ToCommentDto());
-                    }
-                    else
-                    {
-                        return BadRequest();
-                    }
+                    return CreatedAtAction(nameof(GetCommentById), new { id = commentModel.Id }, commentModel.ToCommentDto());
                 }
                 else
                 {
-                    return NotFound("Product is not found");
+                    return BadRequest();
                 }
             }
             else
             {
-                return NotFound("User is not found");
+                return NotFound("Product is not found");
             }
+
         }
+        [Authorize]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> EditComment([FromRoute] int id, EditCommentRequestDto editCommentRequestDto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             string username = User.GetUsername();
             if (username != null)
             {
@@ -91,6 +94,7 @@ namespace MainApi.Controllers
                 return NotFound("User is not found");
             }
         }
+        [Authorize]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveComment([FromRoute] int id)
         {
