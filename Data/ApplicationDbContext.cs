@@ -2,6 +2,7 @@ using System;
 using MainApi.Models;
 using MainApi.Models.Orders;
 using MainApi.Models.Products;
+using MainApi.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<OrderStatus> OrderStatuses { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<Address> Addresses { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -34,6 +36,12 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
         modelBuilder.Entity<AppUser>()
             .HasMany(c => c.Comments)
             .WithOne(u => u.AppUser)
+            .HasForeignKey(u => u.UserId)
+            .IsRequired();
+
+        modelBuilder.Entity<AppUser>()
+            .HasMany(a => a.Addresses)
+            .WithOne(u => u.appUser)
             .HasForeignKey(u => u.UserId)
             .IsRequired();
 

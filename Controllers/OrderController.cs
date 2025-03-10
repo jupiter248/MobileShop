@@ -11,6 +11,7 @@ using MainApi.Mappers;
 using MainApi.Models;
 using MainApi.Models.Orders;
 using MainApi.Models.Products;
+using MainApi.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

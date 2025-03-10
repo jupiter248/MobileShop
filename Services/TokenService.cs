@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MainApi.Interfaces;
 using MainApi.Models;
+using MainApi.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;

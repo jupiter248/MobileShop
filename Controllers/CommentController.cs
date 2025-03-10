@@ -20,12 +20,10 @@ namespace MainApi.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
-        private readonly UserManager<AppUser> _userManager;
         private readonly IProductRepository _productRepository;
-        public CommentController(ICommentRepository commentRepository, UserManager<AppUser> userManager, IProductRepository productRepository)
+        public CommentController(ICommentRepository commentRepository, IProductRepository productRepository)
         {
             _commentRepository = commentRepository;
-            _userManager = userManager;
             _productRepository = productRepository;
         }
         [HttpGet]

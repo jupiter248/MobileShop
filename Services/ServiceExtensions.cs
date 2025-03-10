@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models;
+using MainApi.Models.User;
 using MainApi.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;

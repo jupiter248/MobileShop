@@ -2,6 +2,7 @@ using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models;
 using MainApi.Models.Products;
+using MainApi.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

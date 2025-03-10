@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Dtos.Account;
 using MainApi.Interfaces;
 using MainApi.Models;
+using MainApi.Models.User;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

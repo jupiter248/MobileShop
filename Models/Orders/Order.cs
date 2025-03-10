@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using MainApi.Dtos.Account;
+using MainApi.Models.User;
 
 namespace MainApi.Models.Orders
 {
