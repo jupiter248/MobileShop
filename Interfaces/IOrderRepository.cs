@@ -9,7 +9,7 @@ namespace MainApi.Interfaces
 {
     public interface IOrderRepository
     {
-        Task<List<Order>?> GetAllOrdersAsync();
+        Task<List<Order>?> GetAllOrdersAsync(string username);
         Task<Order?> GetOrderByIdAsync(int orderId);
         Task<OrderStatus?> GetOrderStatusByIdAsync(int orderStatusId);
         Task<Order?> AddOrderAsync(Order order);

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MainApi.Dtos.Account;
 using MainApi.Interfaces;
 using MainApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,6 +21,7 @@ namespace MainApi.Controllers
         {
             _userRepository = userRepository;
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllUser()
         {

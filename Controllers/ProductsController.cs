@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainApi.Controllers;
-[Authorize]
 [Route("api/product")]
 [ApiController]
 public class ProductController : ControllerBase
@@ -33,18 +32,16 @@ public class ProductController : ControllerBase
         List<ProductDto>? productsDto = products.Select(p => p.ToProductDto()).ToList();
         return Ok(productsDto);
     }
+    [Authorize(Roles = "Admin")]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetProductById([FromRoute] int id)
     {
-        // var username = User.GetUsername();
-        // var appUser = await _userManager.FindByNameAsync(username);
-        // if (appUser == null) return BadRequest("User not found");
-
         Product? product = await _productRepo.GetProductByIdAsync(id);
         if (product == null)
             return BadRequest();
         return Ok(product.ToProductDto());
     }
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> AddProduct([FromBody] CreateProductRequestDto createProductRequestDto, int categoryId)
     {
@@ -53,6 +50,7 @@ public class ProductController : ControllerBase
         await _productRepo.AddProductAsync(product);
         return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product.ToProductDto());
     }
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductRequestDto updateProductRequestDto, int categoryId)
     {
@@ -61,6 +59,7 @@ public class ProductController : ControllerBase
         if (product == null) return NotFound();
         return NoContent();
     }
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> RemoveProduct([FromRoute] int id)
     {

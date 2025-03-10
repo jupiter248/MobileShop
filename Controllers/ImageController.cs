@@ -8,6 +8,7 @@ using MainApi.Interfaces;
 using MainApi.Mappers;
 using MainApi.Models;
 using MainApi.Models.Products;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -25,6 +26,7 @@ namespace MainApi.Controllers
             _imageRepo = imageRepo;
             _productRepo = productRepo;
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllImages()
         {
@@ -33,6 +35,7 @@ namespace MainApi.Controllers
                 return BadRequest();
             return Ok(images);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetImageById([FromRoute] int id)
         {
@@ -41,6 +44,7 @@ namespace MainApi.Controllers
                 return NotFound();
             return Ok(image);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddImage([FromForm] UploadImage uploadImage, int productId)
         {
@@ -56,6 +60,7 @@ namespace MainApi.Controllers
             else return BadRequest();
 
         }
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> EditImage([FromBody] EditImageRequestDto editImageRequestDto, int imageId)
         {
@@ -63,6 +68,7 @@ namespace MainApi.Controllers
             if (image == null) return NotFound();
             return NoContent();
         }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveImage([FromRoute] int id)
         {

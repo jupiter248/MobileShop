@@ -29,10 +29,20 @@ namespace MainApi.Repository
             return order;
         }
 
-        public async Task<List<Order>?> GetAllOrdersAsync()
+        public async Task<List<Order>?> GetAllOrdersAsync(string username)
         {
-            List<Order>? orders = await _context.Orders.Include(i => i.OrderItems).Include(u => u.User).Include(s => s.OrderStatus).ToListAsync();
-            return orders;
+            if (username != null)
+            {
+                List<Order>? orders = await _context.Orders
+                .Include(i => i.OrderItems).Include(u => u.User).Include(s => s.OrderStatus)
+                .Where(o => o.User.UserName == username)
+                .ToListAsync();
+                return orders;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<Order?> GetOrderByIdAsync(int orderId)

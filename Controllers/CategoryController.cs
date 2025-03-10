@@ -8,6 +8,7 @@ using MainApi.Interfaces;
 using MainApi.Mappers;
 using MainApi.Models;
 using MainApi.Models.Products;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainApi.Controllers
@@ -28,6 +29,7 @@ namespace MainApi.Controllers
             if (categories == null) return BadRequest();
             return Ok(categories);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetCategoryById([FromRoute] int id)
         {
@@ -35,6 +37,7 @@ namespace MainApi.Controllers
             if (category == null) return BadRequest();
             return Ok(category.ToCategoryDto());
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddCategory([FromBody] AddCategoryRequestDto addCategoryRequestDto)
         {
@@ -44,6 +47,7 @@ namespace MainApi.Controllers
             await _categoryRepository.AddCategoryAsync(addCategoryRequestDto.ToCategoryFromAddCategoryDto());
             return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category.ToCategoryDto());
         }
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] UpdateCategoryRequestDto updateCategoryRequestDto)
         {
@@ -52,6 +56,7 @@ namespace MainApi.Controllers
             if (category == null) return NotFound();
             return NoContent();
         }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveCategory([FromRoute] int id)
         {

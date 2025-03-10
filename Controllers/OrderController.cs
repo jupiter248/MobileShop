@@ -33,10 +33,12 @@ namespace MainApi.Controllers
             _productRepository = productRepository;
             _userManager = userManager;
         }
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
-            List<Order>? orders = await _orderRepository.GetAllOrdersAsync();
+            string username = User.GetUsername();
+            List<Order>? orders = await _orderRepository.GetAllOrdersAsync(username);
             if (orders == null)
             {
                 return BadRequest();
@@ -44,6 +46,7 @@ namespace MainApi.Controllers
             List<OrderDto>? ordersDto = orders.Select(o => o.ToOrderDto()).ToList();
             return Ok(ordersDto);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetOrderById([FromRoute] int id)
         {
@@ -100,6 +103,7 @@ namespace MainApi.Controllers
                 return BadRequest();
             }
         }
+        [Authorize]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> AddOrderItemsToOrder([FromRoute] int id, [FromBody] AddOrderItemRequestDto addOrderItemRequestDto)
         {
@@ -114,6 +118,7 @@ namespace MainApi.Controllers
                 return BadRequest();
             }
         }
+        [Authorize]
         [Route("OrderStatus/{id:int}")]
         [HttpPut]
         public async Task<IActionResult> UpdateOrderStatus([FromRoute] int id, [FromBody] int statusId)
@@ -130,6 +135,7 @@ namespace MainApi.Controllers
             if (order == null) return NotFound();
             return NoContent();
         }
+        [Authorize]
         [Route("OrderItem/{id:int}")]
         [HttpDelete]
         public async Task<IActionResult> RemoveOrderItem([FromRoute] int id, [FromBody] int orderItemId)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using MainApi.Dtos.Comment;
 using MainApi.Dtos.Image;
 using MainApi.Models;
 
@@ -19,4 +20,5 @@ public class ProductDto
     public int? categoryId { get; set; }
     public string categoryName { get; set; } = string.Empty;
     public List<ImageDto> Images { get; set; }
+    public List<CommentDto> Comments { get; set; }
 }
