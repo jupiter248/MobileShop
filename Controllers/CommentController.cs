@@ -26,10 +26,12 @@ namespace MainApi.Controllers
             _commentRepository = commentRepository;
             _productRepository = productRepository;
         }
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllComments()
         {
-            List<Comment>? comments = await _commentRepository.GetAllCommentAsync();
+            string username = User.GetUsername();
+            List<Comment>? comments = await _commentRepository.GetAllCommentAsync(username);
             if (comments == null) return NotFound();
             List<CommentDto>? commentDtos = comments.Select(c => c.ToCommentDto()).ToList();
             return Ok(commentDtos);

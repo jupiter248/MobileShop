@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models;
@@ -54,9 +55,9 @@ namespace MainApi.Repository
             return null;
         }
 
-        public async Task<List<Comment>?> GetAllCommentAsync()
+        public async Task<List<Comment>?> GetAllCommentAsync(string username)
         {
-            List<Comment>? comments = await _context.Comments.Include(u => u.AppUser).Include(p => p.Product).ToListAsync();
+            List<Comment>? comments = await _context.Comments.Include(u => u.AppUser).Include(p => p.Product).Where(c => c.AppUser.UserName == username).ToListAsync();
             if (comments == null) return null;
             return comments;
         }
