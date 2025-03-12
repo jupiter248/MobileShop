@@ -19,19 +19,38 @@ namespace MainApi.Repository
             _context = context;
             _userManager = userManager;
         }
-        public Task<Address?> AddAddressAsync(Address address, string username)
+        public async Task<Address?> AddAddressAsync(Address address)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(address);
+            await _context.SaveChangesAsync();
+            return address;
         }
 
-        public Task<Address?> EditAddressAsync(int addressId, Address address, string username)
+        public async Task<Address?> EditAddressAsync(int addressId, Address address, string username)
         {
-            throw new NotImplementedException();
+            Address? currentAddress = await _context.Addresses.Include(a => a.appUser).FirstOrDefaultAsync(a => a.Id == addressId);
+            if (currentAddress != null && currentAddress.appUser.UserName == username)
+            {
+                currentAddress.Country = address.Country;
+                currentAddress.City = address.City;
+                currentAddress.State = address.State;
+                currentAddress.Street = address.Street;
+                currentAddress.Plate = address.Plate;
+                currentAddress.PostalCode = address.PostalCode;
+                await _context.SaveChangesAsync();
+                return currentAddress;
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public Task<Address?> GetAddressByIdAsync(int addressId)
+        public async Task<Address?> GetAddressByIdAsync(int addressId)
         {
-            throw new NotImplementedException();
+            Address? address = await _context.Addresses.Include(u => u.appUser).FirstOrDefaultAsync(a => a.Id == addressId);
+            if (address == null) return null;
+            return address;
         }
 
         public async Task<List<Address>?> GetAllAddressAsync(string username)
@@ -41,9 +60,16 @@ namespace MainApi.Repository
             return addresses;
         }
 
-        public Task<Address?> RemoveAddressAsync(int addressId, string username)
+        public async Task<Address?> RemoveAddressAsync(int addressId, string username)
         {
-            throw new NotImplementedException();
+            Address? address = await _context.Addresses.Include(u => u.appUser).FirstOrDefaultAsync(a => a.Id == addressId);
+            if (address != null && address.appUser.UserName == username)
+            {
+                _context.Remove(address);
+                await _context.SaveChangesAsync();
+                return address;
+            }
+            return null;
         }
     }
 }

@@ -9,5 +9,6 @@ namespace MainApi.Interfaces
     public interface IUserRepository
     {
         Task<List<UserDto>> GetAllUsers();
+        Task<UserDto> GetUserByUsername(string username);
     }
 }

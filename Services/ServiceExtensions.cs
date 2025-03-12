@@ -112,6 +112,7 @@ namespace MainApi.Services
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
         }
     }
 }

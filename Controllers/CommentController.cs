@@ -31,6 +31,7 @@ namespace MainApi.Controllers
         public async Task<IActionResult> GetAllComments()
         {
             string username = User.GetUsername();
+            if (username == null) return NotFound();
             List<Comment>? comments = await _commentRepository.GetAllCommentAsync(username);
             if (comments == null) return NotFound();
             List<CommentDto>? commentDtos = comments.Select(c => c.ToCommentDto()).ToList();
