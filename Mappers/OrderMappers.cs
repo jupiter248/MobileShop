@@ -18,8 +18,8 @@ namespace MainApi.Mappers
                 Id = order.Id,
                 TotalAmount = order.TotalAmount,
                 UserName = order.User.UserName,
-                OrderDate = order.OrderDate,
                 StatusName = order.OrderStatus.StatusName,
+                OrderDate = order.OrderDate,
                 OrderItems = order.OrderItems.Select(i => i.ToOrderItemDto()).ToList()
             };
         }
