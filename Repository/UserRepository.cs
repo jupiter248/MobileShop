@@ -19,7 +19,7 @@ namespace MainApi.Repository
         {
             _userManager = userManager;
         }
-        public async Task<List<UserDto>> GetAllUsers()
+        public async Task<List<UserDto>?> GetAllUsers()
         {
             var users = await _userManager.Users.ToListAsync();
             var userDtos = users.Select(u =>
@@ -31,6 +31,13 @@ namespace MainApi.Repository
                 }
             ).ToList();
             return userDtos;
+        }
+
+        public async Task<AppUser?> GetUserByUsername(string username)
+        {
+            AppUser? appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (appUser == null) return null;
+            return appUser;
         }
     }
 }
