@@ -30,7 +30,7 @@ namespace MainApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllComments()
         {
-            string username = User.GetUsername();
+            string? username = User.GetUsername();
             if (username == null) return NotFound();
             List<Comment>? comments = await _commentRepository.GetAllCommentAsync(username);
             if (comments == null) return NotFound();
@@ -50,8 +50,8 @@ namespace MainApi.Controllers
         public async Task<IActionResult> AddComment([FromRoute] int id, AddCommentRequestDto addCommentRequestDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            string username = User.GetUsername();
-
+            string? username = User.GetUsername();
+            if (string.IsNullOrWhiteSpace(username)) return NotFound("Username is invalid");
             Product? product = await _productRepository.GetProductByIdAsync(id);
             if (product != null)
             {
@@ -78,7 +78,7 @@ namespace MainApi.Controllers
         public async Task<IActionResult> EditComment([FromRoute] int id, EditCommentRequestDto editCommentRequestDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            string username = User.GetUsername();
+            string? username = User.GetUsername();
             if (username != null)
             {
                 Comment? commentModel = await _commentRepository.EditCommentAsync(id, editCommentRequestDto.ToCommentFromEdit(), username);

@@ -37,7 +37,8 @@ namespace MainApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
-            string username = User.GetUsername();
+            string? username = User.GetUsername();
+            if (string.IsNullOrWhiteSpace(username)) return NotFound("Username is invalid");
             List<Order>? orders = await _orderRepository.GetAllOrdersAsync(username);
             if (orders == null)
             {
@@ -62,8 +63,8 @@ namespace MainApi.Controllers
         public async Task<IActionResult> AddOrder([FromBody] AddOrderRequestDto addOrderRequestDto)
         {
             string? username = User.GetUsername();
+            if (string.IsNullOrWhiteSpace(username)) return NotFound("Username is invalid");
             AppUser? appUser = await _userManager.FindByNameAsync(username);
-
             Order? orderModel = addOrderRequestDto.ToOrderFromAdd();
             if (appUser != null)
             {
