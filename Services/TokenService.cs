@@ -31,8 +31,8 @@ namespace MainApi.Services
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Email , appUser.Email ?? string.Empty),
                 new Claim(JwtRegisteredClaimNames.GivenName , appUser.UserName ?? string.Empty),
+                new Claim(JwtRegisteredClaimNames.Email , appUser.Email ?? string.Empty),
             };
 
             foreach (var role in roles)

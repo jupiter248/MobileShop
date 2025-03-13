@@ -12,7 +12,7 @@ namespace MainApi.Extensions
         {
             // get the authorize user  
             string reference = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname";
-            string? username = user.Claims.SingleOrDefault(x => x.Type.Equals(reference)).Value;
+            string? username = user.Claims.FirstOrDefault(x => x.Type == reference)?.Value;
             if (username != null)
             {
                 return username;
