@@ -24,6 +24,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<OrderStatus> OrderStatuses { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Address> Addresses { get; set; }
+    public DbSet<WishList> WishLists { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -44,6 +45,17 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
             .WithOne(u => u.appUser)
             .HasForeignKey(u => u.UserId)
             .IsRequired();
+
+        modelBuilder.Entity<WishList>(x => x.HasKey(p => new { p.UserId, p.ProductId }));
+        modelBuilder.Entity<WishList>()
+            .HasOne(u => u.AppUser)
+            .WithMany(f => f.WishLists)
+            .HasForeignKey(u => u.UserId);
+        modelBuilder.Entity<WishList>()
+            .HasOne(p => p.Product)
+            .WithMany(f => f.WishLists)
+            .HasForeignKey(p => p.ProductId);
+
 
         modelBuilder.Entity<Product>().HasData(
             new Product
