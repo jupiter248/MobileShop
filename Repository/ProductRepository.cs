@@ -26,7 +26,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<List<Product>?> GetAllProductsAsync()
     {
-        var products = await _context.Products.Include(i => i.Images).Include(c => c.Category).Include(c => c.Comments).ToListAsync();
+        var products = await _context.Products.Include(i => i.Images).Include(c => c.Category).Include(c => c.Comments).ThenInclude(u => u.AppUser).ToListAsync();
         return products;
     }
 

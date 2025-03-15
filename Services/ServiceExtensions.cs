@@ -113,6 +113,8 @@ namespace MainApi.Services
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IWishListRepository, WishListRepository>();
+
         }
     }
 }
