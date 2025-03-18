@@ -12,6 +12,6 @@ namespace MainApi.Models.Products.SpecificationAttributes
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        List<SpecificationAttributeOption> SpecificationAttributeOptions { get; set; } = new List<SpecificationAttributeOption>();
+        public List<SpecificationAttributeOption> SpecificationAttributeOptions { get; set; } = new List<SpecificationAttributeOption>();
     }
 }

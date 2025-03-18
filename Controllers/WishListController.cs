@@ -31,7 +31,7 @@ namespace MainApi.Controllers
         {
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
-            List<WishList>? wishLists = await _wishListRepo.GetUserPortfolioAsync(username);
+            List<WishList>? wishLists = await _wishListRepo.GetUserWishListAsync(username);
             List<ProductDto> productDtos = wishLists
             .Select(p => new ProductDto
             {

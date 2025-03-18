@@ -33,7 +33,7 @@ namespace MainApi.Repository
 
         }
 
-        public async Task<List<WishList>> GetUserPortfolioAsync(string username)
+        public async Task<List<WishList>> GetUserWishListAsync(string username)
         {
             List<WishList> wishLists = await _context.WishLists.Include(p => p.Product).ThenInclude(c => c.Category).Where(u => u.AppUser.UserName == username).ToListAsync();
             return wishLists;

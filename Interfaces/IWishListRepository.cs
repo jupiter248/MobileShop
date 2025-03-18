@@ -9,7 +9,7 @@ namespace MainApi.Interfaces
 {
     public interface IWishListRepository
     {
-        Task<List<WishList>> GetUserPortfolioAsync(string username);
+        Task<List<WishList>> GetUserWishListAsync(string username);
         Task<WishList?> AddWishListAsync(WishList wishList);
         Task<WishList?> RemoveWishListAsync(int productId, string username);
     }
