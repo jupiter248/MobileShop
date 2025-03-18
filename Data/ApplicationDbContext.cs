@@ -2,6 +2,8 @@ using System;
 using MainApi.Models;
 using MainApi.Models.Orders;
 using MainApi.Models.Products;
+using MainApi.Models.Products.ProductAttributes;
+using MainApi.Models.Products.SpecificationAttributes;
 using MainApi.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -25,6 +27,13 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<WishList> WishLists { get; set; }
+    public DbSet<PredefinedProductAttributeValue> PredefinedProductAttributeValues { get; set; }
+    public DbSet<Product_ProductAttribute_Mapping> ProductAttributeMappings { get; set; }
+    public DbSet<ProductAttribute> ProductAttributes { get; set; }
+    public DbSet<ProductAttributeValue> ProductAttributeValues { get; set; }
+    public DbSet<Product_SpecificationAttribute_Mapping> SpecificationAttributeMappings { get; set; }
+    public DbSet<SpecificationAttribute> SpecificationAttributes { get; set; }
+    public DbSet<SpecificationAttributeOption> SpecificationAttributeOptions { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

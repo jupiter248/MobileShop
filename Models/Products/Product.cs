@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using MainApi.Models.Products.ProductAttributes;
+using MainApi.Models.Products.SpecificationAttributes;
 using MainApi.Models.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +25,8 @@ namespace MainApi.Models.Products
         public List<Image> Images { get; set; } = new List<Image>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public List<WishList> WishLists { get; set; } = new List<WishList>();
-        
+        public List<Product_ProductAttribute_Mapping> Product_ProductAttribute_Mappings { get; set; } = new List<Product_ProductAttribute_Mapping>();
+        public List<Product_SpecificationAttribute_Mapping> Product_SpecificationAttribute_Mappings { get; set; } = new List<Product_SpecificationAttribute_Mapping>();
 
     }
 }
