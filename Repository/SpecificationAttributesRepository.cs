@@ -6,6 +6,7 @@ using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models.Products.SpecificationAttributes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository
 {
@@ -17,27 +18,30 @@ namespace MainApi.Repository
             _context = context;
         }
 
-        public Task<SpecificationAttribute> AddSpecificationAttributeAsync(SpecificationAttribute specificationAttribute)
+        public async Task<SpecificationAttribute?> AddSpecificationAttributeAsync(SpecificationAttribute specificationAttribute)
+        {
+            await _context.SpecificationAttributes.AddAsync(specificationAttribute);
+            await _context.SaveChangesAsync();
+            return specificationAttribute;
+        }
+
+        public Task<SpecificationAttributeOption?> AddSpecificationOptionAsync(SpecificationAttributeOption option)
         {
             throw new NotImplementedException();
         }
 
-        public Task<SpecificationAttributeOption> AddSpecificationOptionAsync(SpecificationAttributeOption option)
+        public Task<Product_SpecificationAttribute_Mapping?> AssignSpecificationToProductAsync(Product_SpecificationAttribute_Mapping product_SpecificationAttribute_Mapping)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Product_SpecificationAttribute_Mapping> AssignSpecificationToProductAsync(Product_SpecificationAttribute_Mapping product_SpecificationAttribute_Mapping)
+        public async Task<List<SpecificationAttribute>> GetAllSpecificationAttributesAsync()
         {
-            throw new NotImplementedException();
+            List<SpecificationAttribute> specificationAttributes = await _context.SpecificationAttributes.Include(o => o.SpecificationAttributeOptions).ToListAsync();
+            return specificationAttributes;
         }
 
-        public List<Task<SpecificationAttribute>> GetAllSpecificationAttributesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Task<SpecificationAttributeOption>> GetProductAttributesByProductIdAsync(int productId)
+        public Task<List<SpecificationAttributeOption>> GetProductSpecificationAttributesByProductIdAsync(int productId)
         {
             throw new NotImplementedException();
         }
