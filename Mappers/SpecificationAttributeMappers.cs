@@ -35,5 +35,15 @@ namespace MainApi.Mappers
                 Name = specificationAttributeOption.Name
             };
         }
+        public static Product_SpecificationAttribute_Mapping ToProductSpecificationAttributeMappingFromAdd(this AddAssignToProductRequestDto addAssignToProductRequestDto)
+        {
+            return new Product_SpecificationAttribute_Mapping()
+            {
+                ProductId = addAssignToProductRequestDto.ProductId,
+                SpecificationAttributeOptionId = addAssignToProductRequestDto.SpecificationAttributeOptionId,
+                AllowFiltering = addAssignToProductRequestDto.AllowFiltering,
+                ShowOnProductPage = addAssignToProductRequestDto.ShowOnProductPage
+            };
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Data;
 using MainApi.Interfaces;
+using MainApi.Models.Products.ProductAttributes;
 using MainApi.Models.Products.SpecificationAttributes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,9 +33,17 @@ namespace MainApi.Repository
             return option;
         }
 
-        public Task<Product_SpecificationAttribute_Mapping?> AssignSpecificationToProductAsync(Product_SpecificationAttribute_Mapping product_SpecificationAttribute_Mapping)
+        public async Task<Product_SpecificationAttribute_Mapping?> AssignSpecificationToProductAsync(Product_SpecificationAttribute_Mapping product_Specification)
         {
-            throw new NotImplementedException();
+            Product_SpecificationAttribute_Mapping? mappedModel = await _context.SpecificationAttributeMappings
+            .FirstOrDefaultAsync(m => m.ProductId == product_Specification.ProductId && m.SpecificationAttributeOptionId == product_Specification.SpecificationAttributeOptionId);
+            if (mappedModel == null)
+            {
+                await _context.SpecificationAttributeMappings.AddAsync(product_Specification);
+                await _context.SaveChangesAsync();
+                return product_Specification;
+            }
+            return null;
         }
 
         public async Task<List<SpecificationAttribute>> GetAllSpecificationAttributesAsync()
@@ -43,9 +52,16 @@ namespace MainApi.Repository
             return specificationAttributes;
         }
 
-        public Task<List<SpecificationAttributeOption>> GetProductSpecificationAttributesByProductIdAsync(int productId)
+        public async Task<List<SpecificationAttributeOption>?> GetProductSpecificationAttributesByProductIdAsync(int productId)
         {
-            throw new NotImplementedException();
+            List<Product_SpecificationAttribute_Mapping> product_Specifications = await _context.SpecificationAttributeMappings.Include(o => o.SpecificationAttributeOption)
+            .Where(m => m.ProductId == productId).ToListAsync();
+            List<SpecificationAttributeOption?> options = product_Specifications.Select(m => m.SpecificationAttributeOption).ToList();
+            if (options == null)
+            {
+                return null;
+            }
+            return options;
         }
 
         public async Task<bool> SpecificationAttributeExistsAsync(string name)
@@ -66,6 +82,16 @@ namespace MainApi.Repository
                 return null;
             }
             return specificationAttribute;
+        }
+
+        public async Task<SpecificationAttributeOption?> GetSpecificationAttributeOptionById(int optionId)
+        {
+            SpecificationAttributeOption? option = await _context.SpecificationAttributeOptions.FirstOrDefaultAsync(o => o.Id == optionId);
+            if (option == null)
+            {
+                return null;
+            }
+            return option;
         }
     }
 }

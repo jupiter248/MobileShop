@@ -11,7 +11,7 @@ namespace MainApi.Models.Products.SpecificationAttributes
         [Key]
         public int Id { get; set; }
         public required string Name { get; set; }
-        public int SpecificationAttributeId { get; set; }
+        public required int SpecificationAttributeId { get; set; }
         public SpecificationAttribute? SpecificationAttribute { get; set; }
         public List<Product_SpecificationAttribute_Mapping> Product_SpecificationAttribute_Mappings { get; set; } = new List<Product_SpecificationAttribute_Mapping>();
     }

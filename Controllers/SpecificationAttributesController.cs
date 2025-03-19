@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 using MainApi.Dtos.SpecificationAttributes;
 using MainApi.Interfaces;
 using MainApi.Mappers;
+using MainApi.Models.Products;
 using MainApi.Models.Products.SpecificationAttributes;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +17,11 @@ namespace MainApi.Controllers
     public class SpecificationAttributesController : ControllerBase
     {
         private readonly ISpecificationAttributesRepository _specificationAttributesRepo;
-        public SpecificationAttributesController(ISpecificationAttributesRepository specificationAttributesRepo)
+        private readonly IProductRepository _productRepo;
+        public SpecificationAttributesController(ISpecificationAttributesRepository specificationAttributesRepo, IProductRepository productRepo)
         {
             _specificationAttributesRepo = specificationAttributesRepo;
+            _productRepo = productRepo;
         }
         [HttpPost]
         public async Task<IActionResult> AddSpecificationAttribute([FromBody] AddSpecificationAttributeRequestDto addSpecificationAttributeRequestDto)
@@ -53,6 +57,38 @@ namespace MainApi.Controllers
             };
             await _specificationAttributesRepo.AddSpecificationOptionAsync(optionModel);
             return Created();
+        }
+        [HttpPost("assign-to-product")]
+        public async Task<IActionResult> AssignToProduct([FromBody] AddAssignToProductRequestDto addAssignToProductRequestDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            Product? product = await _productRepo.GetProductByIdAsync(addAssignToProductRequestDto.ProductId);
+            if (product == null) return BadRequest("Product not found");
+
+            SpecificationAttributeOption? option = await _specificationAttributesRepo.GetSpecificationAttributeOptionById(addAssignToProductRequestDto.SpecificationAttributeOptionId);
+            if (option == null) return BadRequest("Option not found");
+
+            Product_SpecificationAttribute_Mapping mappedModel = addAssignToProductRequestDto.ToProductSpecificationAttributeMappingFromAdd();
+            mappedModel.SpecificationAttributeOption = option;
+            mappedModel.Product = product;
+
+            await _specificationAttributesRepo.AssignSpecificationToProductAsync(mappedModel);
+
+            if (mappedModel == null)
+            {
+                return BadRequest("Can not create");
+            }
+
+            return Created();
+        }
+        [HttpGet("product-specification/{productId:int}")]
+        public async Task<IActionResult> GetProductSpecification([FromRoute] int productId)
+        {
+            List<SpecificationAttributeOption>? options = await _specificationAttributesRepo.GetProductSpecificationAttributesByProductIdAsync(productId);
+            if (options == null) return NotFound();
+            List<SpecificationAttributeOptionDto> optionDtos = options.Select(o => o.ToSpecificationAttributeOptionDto()).ToList();
+            return Ok(optionDtos);
         }
     }
 }
