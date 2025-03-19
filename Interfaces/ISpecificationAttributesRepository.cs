@@ -15,5 +15,7 @@ namespace MainApi.Interfaces
         Task<SpecificationAttribute?> AddSpecificationAttributeAsync(SpecificationAttribute specificationAttribute);
         Task<SpecificationAttributeOption?> AddSpecificationOptionAsync(SpecificationAttributeOption option);
         Task<Product_SpecificationAttribute_Mapping?> AssignSpecificationToProductAsync(Product_SpecificationAttribute_Mapping product_SpecificationAttribute_Mapping);
+        Task<bool> SpecificationAttributeExistsAsync(string name);
+        Task<SpecificationAttribute?> GetSpecificationAttributeByName(string name);
     }
 }

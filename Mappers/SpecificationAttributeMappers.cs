@@ -16,7 +16,7 @@ namespace MainApi.Mappers
                 Id = specificationAttribute.Id,
                 Description = specificationAttribute.Description,
                 Name = specificationAttribute.Name,
-                Options = specificationAttribute.SpecificationAttributeOptions
+                Options = specificationAttribute.SpecificationAttributeOptions.Select(o => o.ToSpecificationAttributeOptionDto()).ToList()
             };
         }
         public static SpecificationAttribute ToSpecificationAttributeFromAddDto(this AddSpecificationAttributeRequestDto addSpecificationAttributeRequestDto)
@@ -25,6 +25,14 @@ namespace MainApi.Mappers
             {
                 Name = addSpecificationAttributeRequestDto.Name,
                 Description = addSpecificationAttributeRequestDto.Description
+            };
+        }
+        public static SpecificationAttributeOptionDto ToSpecificationAttributeOptionDto(this SpecificationAttributeOption specificationAttributeOption)
+        {
+            return new SpecificationAttributeOptionDto()
+            {
+                Id = specificationAttributeOption.Id,
+                Name = specificationAttributeOption.Name
             };
         }
     }

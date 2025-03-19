@@ -11,6 +11,6 @@ namespace MainApi.Dtos.SpecificationAttributes
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public List<SpecificationAttributeOption>? Options { get; set; }
+        public List<SpecificationAttributeOptionDto>? Options { get; set; }
     }
 }

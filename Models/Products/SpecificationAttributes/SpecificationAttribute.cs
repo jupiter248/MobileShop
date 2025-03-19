@@ -10,7 +10,7 @@ namespace MainApi.Models.Products.SpecificationAttributes
     {
         [Key]
         public int Id { get; set; }
-        public string? Name { get; set; }
+        public required string Name { get; set; }
         public string? Description { get; set; }
         public List<SpecificationAttributeOption> SpecificationAttributeOptions { get; set; } = new List<SpecificationAttributeOption>();
     }

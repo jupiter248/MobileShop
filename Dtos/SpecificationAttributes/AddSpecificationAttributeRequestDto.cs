@@ -10,8 +10,8 @@ namespace MainApi.Dtos.SpecificationAttributes
     {
         [Required]
         [MaxLength(25, ErrorMessage = "Specification can not be over 25 character")]
-        public string? Name { get; set; }
+        public required string Name { get; set; }
         [Required]
-        public string? Description { get; set; }
+        public required string Description { get; set; }
     }
 }
