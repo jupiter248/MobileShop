@@ -87,7 +87,16 @@ namespace MainApi.Controllers
         {
             List<SpecificationAttributeOption>? options = await _specificationAttributesRepo.GetProductSpecificationAttributesByProductIdAsync(productId);
             if (options == null) return NotFound();
-            List<SpecificationAttributeOptionDto> optionDtos = options.Select(o => o.ToSpecificationAttributeOptionDto()).ToList();
+            List<ProductSpecificationAttributeDto> optionDtos = options
+            .Select(o =>
+            {
+                return new ProductSpecificationAttributeDto()
+                {
+                    SpecificationName = o.SpecificationAttribute.Name,
+                    SpecificationValue = o.Name
+                };
+            }
+            ).ToList();
             return Ok(optionDtos);
         }
     }

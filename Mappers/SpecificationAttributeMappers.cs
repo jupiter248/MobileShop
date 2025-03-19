@@ -42,7 +42,8 @@ namespace MainApi.Mappers
                 ProductId = addAssignToProductRequestDto.ProductId,
                 SpecificationAttributeOptionId = addAssignToProductRequestDto.SpecificationAttributeOptionId,
                 AllowFiltering = addAssignToProductRequestDto.AllowFiltering,
-                ShowOnProductPage = addAssignToProductRequestDto.ShowOnProductPage
+                ShowOnProductPage = addAssignToProductRequestDto.ShowOnProductPage,
+                
             };
         }
     }

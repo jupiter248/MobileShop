@@ -54,7 +54,7 @@ namespace MainApi.Repository
 
         public async Task<List<SpecificationAttributeOption>?> GetProductSpecificationAttributesByProductIdAsync(int productId)
         {
-            List<Product_SpecificationAttribute_Mapping> product_Specifications = await _context.SpecificationAttributeMappings.Include(o => o.SpecificationAttributeOption)
+            List<Product_SpecificationAttribute_Mapping> product_Specifications = await _context.SpecificationAttributeMappings.Include(o => o.SpecificationAttributeOption).ThenInclude(a => a.SpecificationAttribute)
             .Where(m => m.ProductId == productId).ToListAsync();
             List<SpecificationAttributeOption?> options = product_Specifications.Select(m => m.SpecificationAttributeOption).ToList();
             if (options == null)
