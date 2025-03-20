@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace MainApi.Models.Orders
 {
-    public class OrderStatus
+    public class ShippingStatus
     {
         [Key]
         public int Id { get; set; }
         public required string StatusName { get; set; }
         public required string Description { get; set; }
         public List<Order> Orders { get; set; } = new List<Order>();
+        public List<OrderShipment> OrderShipment { get; set; } = new List<OrderShipment>();
+
     }
 }
