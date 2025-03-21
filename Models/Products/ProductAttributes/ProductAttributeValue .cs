@@ -14,7 +14,5 @@ namespace MainApi.Models.Products.ProductAttributes
         public Product_ProductAttribute_Mapping? Product_ProductAttribute_Mapping { get; set; }
         public string? Name { get; set; }
         public decimal PriceAdjustment { get; set; }
-        public int Quantity { get; set;}
-
     }
 }

@@ -115,6 +115,8 @@ namespace MainApi.Services
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IWishListRepository, WishListRepository>();
             services.AddScoped<ISpecificationAttributesRepository, SpecificationAttributesRepository>();
+            services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
+
 
         }
     }
