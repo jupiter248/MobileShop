@@ -15,5 +15,8 @@ namespace MainApi.Interfaces
         Task<Product_ProductAttribute_Mapping> GetAllProductAttributeMappingAsync(int productId);
         Task<ProductAttributeCombination> AddProductAttributeCombinationAsync(ProductAttributeCombination productAttributeCombination);
         Task<ProductAttributeCombination> GetAllProductAttributeCombinationAsync(int productId);
+        Task<bool> ProductAttributeExistsByName(string name);
+        Task<bool> PredefinedProductAttributeValueExistsByName(string name);
+
     }
 }

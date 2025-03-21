@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MainApi.Models.Products.ProductAttributes
+namespace MainApi.Dtos.ProductAttributes
 {
-    public class PredefinedProductAttributeValue
+    public class AddPredefinedProductAttributeValueRequestDto
     {
-        [Key]
-        public int Id { get; set; }
+        [Required]
+        [MaxLength(25, ErrorMessage = "Predefined attribute name can not be over 25 character")]
         public required string Name { get; set; }
+        [Required]
         public required int ProductAttributeId { get; set; }
-        public ProductAttribute? ProductAttribute { get; set; }
     }
 }

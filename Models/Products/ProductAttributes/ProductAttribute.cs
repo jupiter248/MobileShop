@@ -10,8 +10,8 @@ namespace MainApi.Models.Products.ProductAttributes
     {
         [Key]
         public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
+        public required string Name { get; set; }
+        public required string Description { get; set; }
         public List<PredefinedProductAttributeValue> PredefinedProductAttributeValues { get; set; } = new List<PredefinedProductAttributeValue>();
         public List<Product_ProductAttribute_Mapping> Product_ProductAttribute_Mappings { get; set; } = new List<Product_ProductAttribute_Mapping>();
     }

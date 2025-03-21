@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models.Products.ProductAttributes;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository
 {
@@ -16,16 +17,19 @@ namespace MainApi.Repository
             _context = context;
         }
 
-        public Task<PredefinedProductAttributeValue> AddPredefinedProductAttributeValueAsync(PredefinedProductAttributeValue predefinedProductAttributeValue)
+        public async Task<PredefinedProductAttributeValue> AddPredefinedProductAttributeValueAsync(PredefinedProductAttributeValue predefinedProductAttributeValue)
         {
-            throw new NotImplementedException();
+            await _context.PredefinedProductAttributeValues.AddAsync(predefinedProductAttributeValue);
+            await _context.SaveChangesAsync();
+            return predefinedProductAttributeValue;
         }
 
-        public Task<ProductAttribute> AddProductAttributeAsync(ProductAttribute productAttribute)
+        public async Task<ProductAttribute> AddProductAttributeAsync(ProductAttribute productAttribute)
         {
-            throw new NotImplementedException();
+            await _context.ProductAttributes.AddAsync(productAttribute);
+            await _context.SaveChangesAsync();
+            return productAttribute;
         }
-
         public Task<ProductAttributeCombination> AddProductAttributeCombinationAsync(ProductAttributeCombination productAttributeCombination)
         {
             throw new NotImplementedException();
@@ -46,9 +50,35 @@ namespace MainApi.Repository
             throw new NotImplementedException();
         }
 
-        public Task<List<ProductAttribute>> GetAllProductAttributesAsync()
+        public async Task<List<ProductAttribute>> GetAllProductAttributesAsync()
         {
-            throw new NotImplementedException();
+            return await _context.ProductAttributes.Include(a => a.PredefinedProductAttributeValues).ToListAsync();
+        }
+
+        public async Task<bool> PredefinedProductAttributeValueExistsByName(string name)
+        {
+            PredefinedProductAttributeValue? PredefinedProductAttributeValue = await _context.PredefinedProductAttributeValues.FirstOrDefaultAsync(a => a.Name.ToLower() == name.ToLower());
+            if (PredefinedProductAttributeValue == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public async Task<bool> ProductAttributeExistsByName(string name)
+        {
+            ProductAttribute? productAttribute = await _context.ProductAttributes.FirstOrDefaultAsync(a => a.Name.ToLower() == name.ToLower());
+            if (productAttribute == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }
