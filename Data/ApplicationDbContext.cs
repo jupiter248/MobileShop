@@ -31,6 +31,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Product_ProductAttribute_Mapping> ProductAttributeMappings { get; set; }
     public DbSet<ProductAttribute> ProductAttributes { get; set; }
     public DbSet<ProductAttributeValue> ProductAttributeValues { get; set; }
+    public DbSet<ProductAttributeCombination> ProductAttributeCombinations { get; set; }
     public DbSet<Product_SpecificationAttribute_Mapping> SpecificationAttributeMappings { get; set; }
     public DbSet<SpecificationAttribute> SpecificationAttributes { get; set; }
     public DbSet<SpecificationAttributeOption> SpecificationAttributeOptions { get; set; }

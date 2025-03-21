@@ -27,6 +27,6 @@ namespace MainApi.Models.Products
         public List<WishList> WishLists { get; set; } = new List<WishList>();
         public List<Product_ProductAttribute_Mapping> Product_ProductAttribute_Mappings { get; set; } = new List<Product_ProductAttribute_Mapping>();
         public List<Product_SpecificationAttribute_Mapping> Product_SpecificationAttribute_Mappings { get; set; } = new List<Product_SpecificationAttribute_Mapping>();
-
+        public List<ProductAttributeCombination> ProductAttributeCombination { get; set; } = new List<ProductAttributeCombination>();
     }
 }

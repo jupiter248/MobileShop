@@ -13,20 +13,20 @@ namespace MainApi.Models.Orders
     {
         [Key]
         public int Id { get; set; }
-        public required string UserId { get; set; }
+        public string? UserId { get; set; }
         public AppUser? User { get; set; }
         public required int StatusId { get; set; }
         public OrderStatus? OrderStatus { get; set; }
-        public required int ShippingStatusId { get; set; }
-        public ShippingStatus? ShippingStatus { get; set; }
-        public required int AddressId { get; set; }
-        public Address? Address { get; set; }
-        public required decimal TotalAmount { get; set; }
-        public required Guid OrderGuid { get; set; }
-        public required DateTime OrderDate { get; set; } = DateTime.Now;
+        // public required int ShippingStatusId { get; set; }
+        // public ShippingStatus? ShippingStatus { get; set; }
+        // public required int AddressId { get; set; }
+        // public Address? Address { get; set; }
+        public decimal TotalAmount { get; set; }
+        // public required Guid OrderGuid { get; set; }
+        public  DateTime OrderDate { get; set; } = DateTime.Now;
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-        public List<OrderDiscount> OrderDiscounts { get; set; } = new List<OrderDiscount>();
-        public List<OrderShipment> OrderShipment { get; set; } = new List<OrderShipment>();
+        // public List<OrderDiscount> OrderDiscounts { get; set; } = new List<OrderDiscount>();
+        // public List<OrderShipment> OrderShipment { get; set; } = new List<OrderShipment>();
 
 
     }
