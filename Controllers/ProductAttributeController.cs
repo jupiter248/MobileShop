@@ -17,10 +17,12 @@ namespace MainApi.Controllers
     {
         private readonly IProductAttributeRepository _productAttributeRepo;
         private readonly IProductRepository _productRepo;
-        public ProductAttributeController(IProductAttributeRepository productAttributeRepo, IProductRepository productRepo)
+        private readonly ISKUService _sKUService;
+        public ProductAttributeController(IProductAttributeRepository productAttributeRepo, IProductRepository productRepo, ISKUService sKUService)
         {
             _productAttributeRepo = productAttributeRepo;
             _productRepo = productRepo;
+            _sKUService = sKUService;
         }
         [HttpPost]
         public async Task<IActionResult> AddProductAttribute([FromBody] AddProductAttributeRequestDto addProductAttributeRequestDto)
@@ -98,5 +100,44 @@ namespace MainApi.Controllers
             }).ToList();
             return Ok(productAttributeMappingDtos);
         }
+        [HttpPost("combination")]
+        public async Task<IActionResult> AddAttributeCombination([FromBody] AddProductAttributeCombinationRequestDto requestDto)
+        {
+            Product? product = await _productRepo.GetProductByIdAsync(requestDto.ProductId);
+            if (product == null)
+            {
+                return NotFound("Product not found");
+            }
+
+            List<PredefinedProductAttributeValue> selectedValues = await _productAttributeRepo.GetAttributeValuesById(requestDto.SelectedValueIds);
+            if (selectedValues.Count != requestDto.SelectedValueIds.Count)
+            {
+                return BadRequest("Invalid attribute selections");
+            }
+
+            string attributeString = string.Join(" - ", selectedValues.Select(v => v.Name));
+            string Sku = _sKUService.GenerateSKU(product.ProductName, selectedValues.Select(s => s.Name).ToList());
+
+            ProductAttributeCombination combination = new ProductAttributeCombination()
+            {
+                ProductId = requestDto.ProductId,
+                FinalPrice = requestDto.FinalPrice,
+                Quantity = requestDto.Quantity,
+                Product = product,
+                AttributeCombination = attributeString,
+                Sku = Sku
+            };
+            await _productAttributeRepo.AddProductAttributeCombinationAsync(combination);
+
+            return Created();
+        }
+        [HttpGet("combination{productId:int}")]
+        public async Task<IActionResult> GetAllAttributeCombinations([FromRoute] int productId)
+        {
+            List<ProductAttributeCombination> combinations = await _productAttributeRepo.GetAllProductAttributeCombinationAsync(productId);
+            List<ProductAttributeCombinationDto> combinationDtos = combinations.Select(c => c.ToProductAttributeCombinationDto()).ToList();
+            return Ok(combinationDtos);
+        }
+
     }
 }

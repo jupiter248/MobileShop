@@ -46,7 +46,7 @@ namespace MainApi.Repository
 
         public async Task<List<ProductAttributeCombination>> GetAllProductAttributeCombinationAsync(int productId)
         {
-            return await _context.ProductAttributeCombinations.ToListAsync();
+            return await _context.ProductAttributeCombinations.Where(p => p.ProductId == productId).ToListAsync();
         }
 
         public async Task<List<Product_ProductAttribute_Mapping>> GetAllProductAttributeMappingAsync(int productId)
@@ -57,6 +57,13 @@ namespace MainApi.Repository
         public async Task<List<ProductAttribute>> GetAllProductAttributesAsync()
         {
             return await _context.ProductAttributes.Include(a => a.PredefinedProductAttributeValues).ToListAsync();
+        }
+
+        public async Task<List<PredefinedProductAttributeValue>> GetAttributeValuesById(List<int> Ids)
+        {
+            return await _context.PredefinedProductAttributeValues
+            .Where(v => Ids.Contains(v.Id))
+            .ToListAsync();
         }
 
         public async Task<ProductAttribute?> GetProductAttributeByIdAsync(int productAttributeId)

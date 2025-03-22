@@ -18,6 +18,7 @@ namespace MainApi.Interfaces
         Task<bool> ProductAttributeExistsByName(string name);
         Task<ProductAttribute?> GetProductAttributeByIdAsync(int ProductAttributeId);
         Task<bool> PredefinedProductAttributeValueExistsByName(string name);
+        Task<List<PredefinedProductAttributeValue>> GetAttributeValuesById(List<int> Ids);
 
     }
 }

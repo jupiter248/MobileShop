@@ -35,12 +35,24 @@ namespace MainApi.Mappers
                 Description = addProductAttributeRequestDto.Description
             };
         }
-         public static PredefinedProductAttributeValue ToPredefinedProductAttributeValueFromAdd(this AddPredefinedProductAttributeValueRequestDto addPredefinedProductAttributeValueRequestDto)
+        public static PredefinedProductAttributeValue ToPredefinedProductAttributeValueFromAdd(this AddPredefinedProductAttributeValueRequestDto addPredefinedProductAttributeValueRequestDto)
         {
             return new PredefinedProductAttributeValue()
             {
                 Name = addPredefinedProductAttributeValueRequestDto.Name,
                 ProductAttributeId = addPredefinedProductAttributeValueRequestDto.ProductAttributeId
+            };
+        }
+        public static ProductAttributeCombinationDto ToProductAttributeCombinationDto(this ProductAttributeCombination combination)
+        {
+            return new ProductAttributeCombinationDto()
+            {
+                Id = combination.Id,
+                AttributeCombination = combination.AttributeCombination,
+                FinalPrice = combination.FinalPrice,
+                ProductId = combination.ProductId,
+                Quantity = combination.Quantity,
+                Sku = combination.Sku
             };
         }
     }
