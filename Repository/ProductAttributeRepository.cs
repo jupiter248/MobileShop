@@ -30,29 +30,43 @@ namespace MainApi.Repository
             await _context.SaveChangesAsync();
             return productAttribute;
         }
-        public Task<ProductAttributeCombination> AddProductAttributeCombinationAsync(ProductAttributeCombination productAttributeCombination)
+        public async Task<ProductAttributeCombination> AddProductAttributeCombinationAsync(ProductAttributeCombination productAttributeCombination)
         {
-            throw new NotImplementedException();
+            await _context.ProductAttributeCombinations.AddAsync(productAttributeCombination);
+            await _context.SaveChangesAsync();
+            return productAttributeCombination;
         }
 
-        public Task<Product_ProductAttribute_Mapping> AddProductAttributeMappingAsync(Product_ProductAttribute_Mapping product_ProductAttribute_Mapping)
+        public async Task<Product_ProductAttribute_Mapping> AddProductAttributeMappingAsync(Product_ProductAttribute_Mapping product_ProductAttribute_Mapping)
         {
-            throw new NotImplementedException();
+            await _context.ProductAttributeMappings.AddAsync(product_ProductAttribute_Mapping);
+            await _context.SaveChangesAsync();
+            return product_ProductAttribute_Mapping;
         }
 
-        public Task<ProductAttributeCombination> GetAllProductAttributeCombinationAsync(int productId)
+        public async Task<List<ProductAttributeCombination>> GetAllProductAttributeCombinationAsync(int productId)
         {
-            throw new NotImplementedException();
+            return await _context.ProductAttributeCombinations.ToListAsync();
         }
 
-        public Task<Product_ProductAttribute_Mapping> GetAllProductAttributeMappingAsync(int productId)
+        public async Task<List<Product_ProductAttribute_Mapping>> GetAllProductAttributeMappingAsync(int productId)
         {
-            throw new NotImplementedException();
+            return await _context.ProductAttributeMappings.Include(m => m.ProductAttribute).ThenInclude(a => a.PredefinedProductAttributeValues).Include(m => m.ProductAttributeValues).Where(m => m.ProductId == productId).ToListAsync();
         }
 
         public async Task<List<ProductAttribute>> GetAllProductAttributesAsync()
         {
             return await _context.ProductAttributes.Include(a => a.PredefinedProductAttributeValues).ToListAsync();
+        }
+
+        public async Task<ProductAttribute?> GetProductAttributeByIdAsync(int productAttributeId)
+        {
+            ProductAttribute? productAttribute = await _context.ProductAttributes.FirstOrDefaultAsync(a => a.Id == productAttributeId);
+            if (productAttribute == null)
+            {
+                return null;
+            }
+            return productAttribute;
         }
 
         public async Task<bool> PredefinedProductAttributeValueExistsByName(string name)

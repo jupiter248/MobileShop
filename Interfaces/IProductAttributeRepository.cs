@@ -12,10 +12,11 @@ namespace MainApi.Interfaces
         Task<ProductAttribute> AddProductAttributeAsync(ProductAttribute productAttribute);
         Task<PredefinedProductAttributeValue> AddPredefinedProductAttributeValueAsync(PredefinedProductAttributeValue predefinedProductAttributeValue);
         Task<Product_ProductAttribute_Mapping> AddProductAttributeMappingAsync(Product_ProductAttribute_Mapping product_ProductAttribute_Mapping);
-        Task<Product_ProductAttribute_Mapping> GetAllProductAttributeMappingAsync(int productId);
+        Task<List<Product_ProductAttribute_Mapping>> GetAllProductAttributeMappingAsync(int productId);
         Task<ProductAttributeCombination> AddProductAttributeCombinationAsync(ProductAttributeCombination productAttributeCombination);
-        Task<ProductAttributeCombination> GetAllProductAttributeCombinationAsync(int productId);
+        Task<List<ProductAttributeCombination>> GetAllProductAttributeCombinationAsync(int productId);
         Task<bool> ProductAttributeExistsByName(string name);
+        Task<ProductAttribute?> GetProductAttributeByIdAsync(int ProductAttributeId);
         Task<bool> PredefinedProductAttributeValueExistsByName(string name);
 
     }

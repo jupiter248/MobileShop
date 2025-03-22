@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Dtos.ProductAttributes;
 using MainApi.Interfaces;
 using MainApi.Mappers;
+using MainApi.Models.Products;
 using MainApi.Models.Products.ProductAttributes;
 using Microsoft.AspNetCore.Mvc;
 
@@ -55,6 +56,47 @@ namespace MainApi.Controllers
 
             await _productAttributeRepo.AddPredefinedProductAttributeValueAsync(addPredefinedProductAttributeValueRequestDto.ToPredefinedProductAttributeValueFromAdd());
             return Created();
+        }
+        [HttpPost("assign-to-product")]
+        public async Task<IActionResult> AssignToProduct([FromBody] AddProductAttributeMappingRequestDto addProductAttributeMappingRequestDto)
+        {
+            Product? product = await _productRepo.GetProductByIdAsync(addProductAttributeMappingRequestDto.ProductId);
+            if (product == null)
+            {
+                return NotFound("Product not found");
+            }
+            ProductAttribute? productAttribute = await _productAttributeRepo.GetProductAttributeByIdAsync(addProductAttributeMappingRequestDto.ProductAttributeId);
+            if (productAttribute == null)
+            {
+                return NotFound("Product attribute not found");
+            }
+
+            Product_ProductAttribute_Mapping? mappingModel = new Product_ProductAttribute_Mapping()
+            {
+                IsRequired = addProductAttributeMappingRequestDto.IsRequired,
+                Product = product,
+                ProductAttribute = productAttribute,
+                ProductAttributeId = addProductAttributeMappingRequestDto.ProductAttributeId,
+                ProductId = addProductAttributeMappingRequestDto.ProductId
+            };
+
+            await _productAttributeRepo.AddProductAttributeMappingAsync(mappingModel);
+            return Created();
+        }
+        [HttpGet("assigned-attribute{productId:int}")]
+        public async Task<IActionResult> GetAllAssignedProductAttribute([FromRoute] int productId)
+        {
+            List<Product_ProductAttribute_Mapping> product_ProductAttribute_Mappings = await _productAttributeRepo.GetAllProductAttributeMappingAsync(productId);
+            List<ProductAttributeMappingDto> productAttributeMappingDtos = product_ProductAttribute_Mappings.Select(m =>
+            {
+                return new ProductAttributeMappingDto()
+                {
+                    Id = m.Id,
+                    IsRequired = m.IsRequired,
+                    AttributeDto = m.ProductAttribute.ToProductAttributeDto()
+                };
+            }).ToList();
+            return Ok(productAttributeMappingDtos);
         }
     }
 }
