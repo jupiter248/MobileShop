@@ -44,6 +44,12 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
             .HasForeignKey(p => p.ProductId)
             .IsRequired();
 
+        modelBuilder.Entity<Product>()
+            .HasMany(i => i.Images)
+            .WithOne(p => p.Product)
+            .HasForeignKey(p => p.ProductId)
+            .IsRequired();
+
         modelBuilder.Entity<AppUser>()
             .HasMany(c => c.Comments)
             .WithOne(u => u.AppUser)
@@ -67,32 +73,23 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
             .HasForeignKey(p => p.ProductId);
 
 
-        modelBuilder.Entity<Product>().HasData(
-            new Product
-            {
-                Id = 1,
-                ProductName = "Mobile",
-                Brand = "Samsung",
-                Model = "A15",
-                Price = 15000000,
-                Quantity = 8,
-                Description = "test test test test"
-            }
-        );
-        List<IdentityRole> roles = new List<IdentityRole>
-        {
-            new IdentityRole
-            {
-                Name = "Admin",
-                NormalizedName = "ADMIN"
-            },
-            new IdentityRole
-            {
-                Name = "User",
-                NormalizedName = "USER"
-            }
-        };
-        modelBuilder.Entity<IdentityRole>().HasData(roles);
+
+        // List<IdentityRole> roles = new List<IdentityRole>
+        // {
+        //     new IdentityRole
+        //     {
+        //         Name = "Admin",
+        //         NormalizedName = "ADMIN"
+        //     },
+        //     new IdentityRole
+        //     {
+        //         Name = "User",
+        //         NormalizedName = "USER"
+        //     }
+        // };
+
+
+        // modelBuilder.Entity<IdentityRole>().HasData(roles);
     }
 
 }

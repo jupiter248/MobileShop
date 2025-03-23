@@ -19,6 +19,11 @@ namespace MainApi.Interfaces
         Task<ProductAttribute?> GetProductAttributeByIdAsync(int ProductAttributeId);
         Task<bool> PredefinedProductAttributeValueExistsByName(string name);
         Task<List<PredefinedProductAttributeValue>> GetAttributeValuesById(List<int> Ids);
+        Task<ProductAttribute?> DeleteProductAttribute(int productAttributeId);
+        Task<ProductAttributeCombination?> DeleteProductAttributeCombination(int ProductAttributeCombinationId);
+        Task<PredefinedProductAttributeValue?> DeletePredefinedProductAttributeValue(int PredefinedProductAttributeValueId);
+
+
 
     }
 }

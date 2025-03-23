@@ -95,7 +95,7 @@ namespace MainApi.Controllers
                 {
                     Id = m.Id,
                     IsRequired = m.IsRequired,
-                    AttributeDto = m.ProductAttribute.ToProductAttributeDto()
+                    Attribute = m.ProductAttribute.ToProductAttributeDto()
                 };
             }).ToList();
             return Ok(productAttributeMappingDtos);
@@ -115,7 +115,7 @@ namespace MainApi.Controllers
                 return BadRequest("Invalid attribute selections");
             }
 
-            string attributeString = string.Join(" - ", selectedValues.Select(v => v.Name));
+            // string attributeString = string.Join(" - ", selectedValues.Select(v => v.Name));
             string Sku = _sKUService.GenerateSKU(product.ProductName, selectedValues.Select(s => s.Name).ToList());
 
             ProductAttributeCombination combination = new ProductAttributeCombination()
@@ -124,7 +124,7 @@ namespace MainApi.Controllers
                 FinalPrice = requestDto.FinalPrice,
                 Quantity = requestDto.Quantity,
                 Product = product,
-                AttributeCombination = attributeString,
+                AttributeCombination = requestDto.SelectedValueIds,
                 Sku = Sku
             };
             await _productAttributeRepo.AddProductAttributeCombinationAsync(combination);
@@ -137,6 +137,27 @@ namespace MainApi.Controllers
             List<ProductAttributeCombination> combinations = await _productAttributeRepo.GetAllProductAttributeCombinationAsync(productId);
             List<ProductAttributeCombinationDto> combinationDtos = combinations.Select(c => c.ToProductAttributeCombinationDto()).ToList();
             return Ok(combinationDtos);
+        }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> RemoveProductAttribute([FromRoute] int id)
+        {
+            ProductAttribute? productAttribute = await _productAttributeRepo.DeleteProductAttribute(id);
+            if (productAttribute == null) return NotFound("productAttribute not found");
+            return NoContent();
+        }
+        [HttpDelete("predefined{id:int}")]
+        public async Task<IActionResult> RemovePredefinedProductAttributeValue([FromRoute] int id)
+        {
+            PredefinedProductAttributeValue? value = await _productAttributeRepo.DeletePredefinedProductAttributeValue(id);
+            if (value == null) return NotFound("value not found");
+            return NoContent();
+        }
+        [HttpDelete("combination{id:int}")]
+        public async Task<IActionResult> RemoveProductAttributeCombination([FromRoute] int id)
+        {
+            ProductAttributeCombination? combination = await _productAttributeRepo.DeleteProductAttributeCombination(id);
+            if (combination == null) return NotFound("productAttribute not found");
+            return NoContent();
         }
 
     }

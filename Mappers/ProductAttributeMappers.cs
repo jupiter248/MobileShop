@@ -16,7 +16,7 @@ namespace MainApi.Mappers
                 Id = productAttribute.Id,
                 Name = productAttribute.Name,
                 Description = productAttribute.Description,
-                PredefinedProductAttributeValues = productAttribute.PredefinedProductAttributeValues.Select(p => p.ToPredefinedProductAttributeValueDto()).ToList()
+                Values   = productAttribute.PredefinedProductAttributeValues.Select(p => p.ToPredefinedProductAttributeValueDto()).ToList()
             };
         }
         public static PredefinedProductAttributeValueDto ToPredefinedProductAttributeValueDto(this PredefinedProductAttributeValue predefinedProductAttributeValue)

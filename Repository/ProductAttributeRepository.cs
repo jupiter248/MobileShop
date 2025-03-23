@@ -44,6 +44,33 @@ namespace MainApi.Repository
             return product_ProductAttribute_Mapping;
         }
 
+        public async Task<PredefinedProductAttributeValue?> DeletePredefinedProductAttributeValue(int predefinedProductAttributeValueId)
+        {
+            PredefinedProductAttributeValue? value = await _context.PredefinedProductAttributeValues.FirstOrDefaultAsync(v => v.Id == predefinedProductAttributeValueId);
+            if (value == null) return null;
+            _context.Remove(value);
+            await _context.SaveChangesAsync();
+            return value;
+        }
+
+        public async Task<ProductAttribute?> DeleteProductAttribute(int productAttributeId)
+        {
+            ProductAttribute? value = await _context.ProductAttributes.FirstOrDefaultAsync(v => v.Id == productAttributeId);
+            if (value == null) return null;
+            _context.Remove(value);
+            await _context.SaveChangesAsync();
+            return value;
+        }
+
+        public async Task<ProductAttributeCombination?> DeleteProductAttributeCombination(int ProductAttributeCombinationId)
+        {
+            ProductAttributeCombination? value = await _context.ProductAttributeCombinations.FirstOrDefaultAsync(v => v.Id == ProductAttributeCombinationId);
+            if (value == null) return null;
+            _context.Remove(value);
+            await _context.SaveChangesAsync();
+            return value;
+        }
+
         public async Task<List<ProductAttributeCombination>> GetAllProductAttributeCombinationAsync(int productId)
         {
             return await _context.ProductAttributeCombinations.Where(p => p.ProductId == productId).ToListAsync();

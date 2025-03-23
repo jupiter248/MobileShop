@@ -11,6 +11,6 @@ namespace MainApi.Dtos.ProductAttributes
         public int Id { get; set; }
         public required string Name { get; set; }
         public required string Description { get; set; }
-        public List<PredefinedProductAttributeValueDto>? PredefinedProductAttributeValues { get; set; }
+        public List<PredefinedProductAttributeValueDto>? Values { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace MainApi.Dtos.ProductAttributes
     {
         public int Id { get; set; }
         public bool IsRequired { get; set; }
-        public required ProductAttributeDto AttributeDto { get; set; }
+        public required ProductAttributeDto Attribute { get; set; }
 
 
     }

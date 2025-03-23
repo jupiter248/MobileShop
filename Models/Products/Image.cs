@@ -12,7 +12,7 @@ namespace MainApi.Models.Products
         public int Id { get; set; }
         public string ImageName { get; set; } = string.Empty;
         public string Url { get; set; } = string.Empty;
-        public int? ProductId { get; set; }
+        public required int ProductId { get; set; }
         public Product? Product { get; set; }
         public Boolean IsPrimary { get; set; }
         public DateTime DateAdded { get; set; } = DateTime.Now;
