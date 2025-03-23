@@ -15,6 +15,7 @@ namespace MainApi.Models.User
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public List<Address> Addresses { get; set; } = new List<Address>();
         public List<WishList> WishLists { get; set; } = new List<WishList>();
-        
+        public List<CartItem> CartItems { get; set; } = new List<CartItem>();
+
     }
 }

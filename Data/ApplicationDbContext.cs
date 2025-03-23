@@ -24,6 +24,11 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<OrderStatus> OrderStatuses { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<OrderDiscount> OrderDiscounts { get; set; }
+    public DbSet<OrderShipment> OrderShipments { get; set; }
+    public DbSet<ShipmentItem> ShipmentItems { get; set; }
+    public DbSet<ShippingStatus> ShippingStatuses { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<WishList> WishLists { get; set; }

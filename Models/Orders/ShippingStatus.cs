@@ -12,7 +12,6 @@ namespace MainApi.Models.Orders
         public int Id { get; set; }
         public required string StatusName { get; set; }
         public required string Description { get; set; }
-        public List<Order> Orders { get; set; } = new List<Order>();
         public List<OrderShipment> OrderShipment { get; set; } = new List<OrderShipment>();
 
     }

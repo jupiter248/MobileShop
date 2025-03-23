@@ -46,6 +46,7 @@ namespace MainApi.Mappers
                 Street = editAddressRequestDto.City,
                 Plate = editAddressRequestDto.Plate,
                 PostalCode = editAddressRequestDto.PostalCode,
+                
             };
         }
     }

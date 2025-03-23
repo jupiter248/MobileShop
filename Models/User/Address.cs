@@ -1,21 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using MainApi.Models.Orders;
 
 namespace MainApi.Models.User
 {
     public class Address
     {
+        [Key]
         public int Id { get; set; }
         public string? UserId { get; set; }
-        public AppUser appUser { get; set; }
-        public string? Country { get; set; }
-        public string? City { get; set; }
-        public string? State { get; set; }
-        public string? Street { get; set; }
-        public string? Plate { get; set; }
-        public string? PostalCode { get; set; }
+        public AppUser? appUser { get; set; }
+        public required string Country { get; set; }
+        public required string City { get; set; }
+        public required string State { get; set; }
+        public required string Street { get; set; }
+        public required string Plate { get; set; }
+        public required string PostalCode { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public List<Order> Orders { get; set; } = new List<Order>();
     }
 }

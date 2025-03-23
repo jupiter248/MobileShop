@@ -17,5 +17,7 @@ namespace MainApi.Models.Orders
         public Product? Product { get; set; }
         public int Quantity { get; set; }
         public decimal PriceAtPurchase { get; set; }
+        public required string AttributeXml { get; set; }
+
     }
 }

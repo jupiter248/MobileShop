@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace MainApi.Models.Orders
 {
-    public class OrderItemAttribute
+    public class ShipmentItem
     {
         [Key]
         public int Id { get; set; }
+        public required int OrderShipmentId { get; set; }
         public required int OrderItemId { get; set; }
-        public required int ProductAttributeId { get; set; }
-        public required string Value { get; set; }
+        public OrderItem? OrderItem { get; set; }
     }
 }
