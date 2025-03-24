@@ -86,6 +86,7 @@ namespace MainApi.Repository
             return await _context.ProductAttributes.Include(a => a.PredefinedProductAttributeValues).ToListAsync();
         }
 
+
         public async Task<List<PredefinedProductAttributeValue>> GetAttributeValuesById(List<int> Ids)
         {
             return await _context.PredefinedProductAttributeValues
