@@ -99,5 +99,35 @@ namespace MainApi.Controllers
             ).ToList();
             return Ok(optionDtos);
         }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteSpecification([FromRoute] int id)
+        {
+            bool specificationDeleted = await _specificationAttributesRepo.DeleteSpecificationAttributeAsync(id);
+            if (specificationDeleted == false)
+            {
+                return NotFound("Specification not found");
+            }
+            return NoContent();
+        }
+        [HttpDelete("option{id:int}")]
+        public async Task<IActionResult> DeleteSpecificationOption([FromRoute] int id)
+        {
+            bool specificationOptionDeleted = await _specificationAttributesRepo.DeleteSpecificationOptionAsync(id);
+            if (specificationOptionDeleted == false)
+            {
+                return NotFound("Specification option not found");
+            }
+            return NoContent();
+        }
+        [HttpDelete("assigned{id:int}")]
+        public async Task<IActionResult> DeleteSpecificationAssigned([FromRoute] int id)
+        {
+            bool specificationAssignedDeleted = await _specificationAttributesRepo.DeleteAssignedSpecificationAsync(id);
+            if (specificationAssignedDeleted == false)
+            {
+                return NotFound("Specification assigned not found");
+            }
+            return NoContent();
+        }
     }
 }

@@ -93,5 +93,41 @@ namespace MainApi.Repository
             }
             return option;
         }
+
+        public async Task<bool> DeleteSpecificationAttributeAsync(int specificationAttributeId)
+        {
+            SpecificationAttribute? specification = await _context.SpecificationAttributes.FindAsync(specificationAttributeId);
+            if (specification == null)
+            {
+                return false;
+            }
+            _context.Remove(specification);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteSpecificationOptionAsync(int specificationOptionId)
+        {
+            SpecificationAttributeOption? option = await _context.SpecificationAttributeOptions.FindAsync(specificationOptionId);
+            if (option == null)
+            {
+                return false;
+            }
+            _context.Remove(option);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteAssignedSpecificationAsync(int mappingId)
+        {
+            Product_SpecificationAttribute_Mapping? mappedModel = await _context.SpecificationAttributeMappings.FindAsync(mappingId);
+            if (mappedModel == null)
+            {
+                return false;
+            }
+            _context.Remove(mappedModel);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

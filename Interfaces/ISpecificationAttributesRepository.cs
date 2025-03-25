@@ -18,6 +18,11 @@ namespace MainApi.Interfaces
         Task<bool> SpecificationAttributeExistsAsync(string name);
         Task<SpecificationAttribute?> GetSpecificationAttributeByName(string name);
         Task<SpecificationAttributeOption?> GetSpecificationAttributeOptionById(int optionId);
+        Task<bool> DeleteSpecificationAttributeAsync(int specificationAttributeId);
+        Task<bool> DeleteSpecificationOptionAsync(int specificationOptionId);
+        Task<bool> DeleteAssignedSpecificationAsync(int mappingId);
+
+
 
     }
 }
