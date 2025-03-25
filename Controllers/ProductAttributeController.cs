@@ -151,7 +151,6 @@ namespace MainApi.Controllers
                 FinalPrice = g.First().FinalPrice,
                 Quantity = g.Sum(v => v.Quantity),
                 ProductId = productId,
-                Sku = g.First().Sku,
                 Attributes = new Dictionary<string, string>
                 {
                     {"Storage" , g.Key.Storage ?? string.Empty},
@@ -162,7 +161,8 @@ namespace MainApi.Controllers
                 {
                     Name = v.CombinationAttributes.FirstOrDefault(a => a.AttributeValue.ProductAttribute.Name == "Color").AttributeValue.Name,
                     Stock = v.Quantity,
-                    Price = v.FinalPrice
+                    Price = v.FinalPrice,
+                    Sku = v.Sku
                 }).ToList()
 
             }).ToList();

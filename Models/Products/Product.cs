@@ -16,7 +16,7 @@ namespace MainApi.Models.Products
         [Key]
         public int Id { get; set; }
         public string ProductName { get; set; } = string.Empty;
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public Category? Category { get; set; }
         public string Brand { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
@@ -28,7 +28,7 @@ namespace MainApi.Models.Products
         public List<WishList> WishLists { get; set; } = new List<WishList>();
         public List<Product_ProductAttribute_Mapping> Product_ProductAttribute_Mappings { get; set; } = new List<Product_ProductAttribute_Mapping>();
         public List<Product_SpecificationAttribute_Mapping> Product_SpecificationAttribute_Mappings { get; set; } = new List<Product_SpecificationAttribute_Mapping>();
-        public List<ProductCombination> ProductAttributeCombination { get; set; } = new List<ProductCombination>();
+        public List<ProductCombination> ProductCombination { get; set; } = new List<ProductCombination>();
         public List<CartItem> CartItems { get; set; } = new List<CartItem>();
         public List<OrderItem> orderItems { get; set; } = new List<OrderItem>();
         

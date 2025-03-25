@@ -43,15 +43,5 @@ namespace MainApi.Mappers
                 ProductAttributeId = addPredefinedProductAttributeValueRequestDto.ProductAttributeId
             };
         }
-        public static ProductCombinationDto ToProductAttributeCombinationDto(this ProductCombination combination)
-        {
-            return new ProductCombinationDto()
-            {
-                FinalPrice = combination.FinalPrice,
-                ProductId = combination.ProductId,
-                Quantity = combination.Quantity,
-                Sku = combination.Sku,
-            };
-        }
     }
 }

@@ -37,7 +37,7 @@ namespace MainApi.Controllers
             {
                 Id = p.ProductId,
                 Brand = p.Product.Brand,
-                categoryName = p.Product.Category.CategoryName,
+                categoryId = p.Product.CategoryId,
                 Description = p.Product.Description,
                 Model = p.Product.Model,
                 Price = p.Product.Price,

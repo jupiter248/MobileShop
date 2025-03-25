@@ -28,10 +28,6 @@ namespace MainApi.Interfaces
         //AttributeCombination
         Task<ProductCombination> AddProductAttributeCombinationAsync(ProductCombination productCombination);
         Task<List<ProductCombination>> GetAllProductAttributeCombinationAsync(int productId);
-        // Task<ProductAttributeCombination?> GetAttributeCombinationByAttributeIdsAsync(List<int> Ids);
         Task<ProductCombination?> DeleteProductAttributeCombination(int ProductAttributeCombinationId);
-
-
-
     }
 }

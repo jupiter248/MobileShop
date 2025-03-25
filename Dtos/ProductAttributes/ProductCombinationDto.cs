@@ -11,7 +11,6 @@ namespace MainApi.Dtos.ProductAttributes
         public required int ProductId { get; set; }
         public required int Quantity { get; set; }
         public required decimal FinalPrice { get; set; }
-        public required string Sku { get; set; }
         public Dictionary<string, string>? Attributes { get; set; }
         public List<ColorOptionDto>? AvailableColors { get; set; }
     }

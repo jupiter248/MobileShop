@@ -17,7 +17,7 @@ public class ProductDto
     public decimal Price { get; set; }
     public int Quantity { get; set; }
     public string Description { get; set; } = string.Empty;
-    public string categoryName { get; set; } = string.Empty;
+    public int categoryId { get; set; }
     public List<ImageDto>? Images { get; set; }
     public List<CommentDto>? Comments { get; set; }
 }
