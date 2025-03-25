@@ -30,9 +30,9 @@ namespace MainApi.Repository
             await _context.SaveChangesAsync();
             return productAttribute;
         }
-        public async Task<ProductAttributeCombination> AddProductAttributeCombinationAsync(ProductAttributeCombination productAttributeCombination)
+        public async Task<ProductCombination> AddProductAttributeCombinationAsync(ProductCombination productAttributeCombination)
         {
-            await _context.ProductAttributeCombinations.AddAsync(productAttributeCombination);
+            await _context.ProductCombinations.AddAsync(productAttributeCombination);
             await _context.SaveChangesAsync();
             return productAttributeCombination;
         }
@@ -62,18 +62,20 @@ namespace MainApi.Repository
             return value;
         }
 
-        public async Task<ProductAttributeCombination?> DeleteProductAttributeCombination(int ProductAttributeCombinationId)
+        public async Task<ProductCombination?> DeleteProductAttributeCombination(int ProductAttributeCombinationId)
         {
-            ProductAttributeCombination? value = await _context.ProductAttributeCombinations.FirstOrDefaultAsync(v => v.Id == ProductAttributeCombinationId);
+            ProductCombination? value = await _context.ProductCombinations.FirstOrDefaultAsync(v => v.Id == ProductAttributeCombinationId);
             if (value == null) return null;
             _context.Remove(value);
             await _context.SaveChangesAsync();
             return value;
         }
 
-        public async Task<List<ProductAttributeCombination>> GetAllProductAttributeCombinationAsync(int productId)
+        public async Task<List<ProductCombination>> GetAllProductAttributeCombinationAsync(int productId)
         {
-            return await _context.ProductAttributeCombinations.Where(p => p.ProductId == productId).ToListAsync();
+            return await _context.ProductCombinations.Include(c => c.CombinationAttributes)
+            .ThenInclude(c => c.AttributeValue).ThenInclude(c => c.ProductAttribute)
+            .Where(p => p.ProductId == productId).ToListAsync();
         }
 
         public async Task<List<Product_ProductAttribute_Mapping>> GetAllProductAttributeMappingAsync(int productId)

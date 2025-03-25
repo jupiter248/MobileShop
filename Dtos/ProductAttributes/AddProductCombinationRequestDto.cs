@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MainApi.Dtos.ProductAttributes
 {
-    public class AddProductAttributeCombinationRequestDto
+    public class AddProductCombinationRequestDto
     {
         public required int ProductId { get; set; }
         public required List<int> SelectedValueIds { get; set; } // List of value IDs

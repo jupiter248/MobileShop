@@ -8,6 +8,7 @@ using MainApi.Mappers;
 using MainApi.Models.Products;
 using MainApi.Models.Products.ProductAttributes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client.Extensions.Msal;
 
 namespace MainApi.Controllers
 {
@@ -101,7 +102,7 @@ namespace MainApi.Controllers
             return Ok(productAttributeMappingDtos);
         }
         [HttpPost("combination")]
-        public async Task<IActionResult> AddAttributeCombination([FromBody] AddProductAttributeCombinationRequestDto requestDto)
+        public async Task<IActionResult> AddAttributeCombination([FromBody] AddProductCombinationRequestDto requestDto)
         {
             Product? product = await _productRepo.GetProductByIdAsync(requestDto.ProductId);
             if (product == null)
@@ -118,14 +119,18 @@ namespace MainApi.Controllers
             // string attributeString = string.Join(" - ", selectedValues.Select(v => v.Name));
             string Sku = _sKUService.GenerateSKU(product.ProductName, selectedValues.Select(s => s.Name).ToList());
 
-            ProductAttributeCombination combination = new ProductAttributeCombination()
+            ProductCombination combination = new ProductCombination()
             {
                 ProductId = requestDto.ProductId,
                 FinalPrice = requestDto.FinalPrice,
                 Quantity = requestDto.Quantity,
                 Product = product,
-                AttributeCombination = requestDto.SelectedValueIds,
-                Sku = Sku
+                Sku = Sku,
+                CombinationAttributes = selectedValues.Select(a => new ProductCombinationAttribute
+                {
+                    AttributeValueId = a.Id,
+                    AttributeValue = a,
+                }).ToList()
             };
             await _productAttributeRepo.AddProductAttributeCombinationAsync(combination);
 
@@ -134,8 +139,36 @@ namespace MainApi.Controllers
         [HttpGet("combination{productId:int}")]
         public async Task<IActionResult> GetAllAttributeCombinations([FromRoute] int productId)
         {
-            List<ProductAttributeCombination> combinations = await _productAttributeRepo.GetAllProductAttributeCombinationAsync(productId);
-            List<ProductAttributeCombinationDto> combinationDtos = combinations.Select(c => c.ToProductAttributeCombinationDto()).ToList();
+            List<ProductCombination> combinations = await _productAttributeRepo.GetAllProductAttributeCombinationAsync(productId);
+
+            List<ProductCombinationDto> combinationDtos = combinations.GroupBy(c => new
+            {
+                Storage = c.CombinationAttributes?.FirstOrDefault(a => a.AttributeValue?.ProductAttribute?.Name == "Storage")?.AttributeValue.Name,
+                RAM = c.CombinationAttributes?.FirstOrDefault(a => a.AttributeValue?.ProductAttribute?.Name == "RAM")?.AttributeValue.Name
+            })
+            .Select(g => new ProductCombinationDto
+            {
+                FinalPrice = g.First().FinalPrice,
+                Quantity = g.Sum(v => v.Quantity),
+                ProductId = productId,
+                Sku = g.First().Sku,
+                Attributes = new Dictionary<string, string>
+                {
+                    {"Storage" , g.Key.Storage ?? string.Empty},
+                    {"RAM" , g.Key.RAM ?? string.Empty},
+                },
+
+                AvailableColors = g.Select(v => new ColorOptionDto
+                {
+                    Name = v.CombinationAttributes.FirstOrDefault(a => a.AttributeValue.ProductAttribute.Name == "Color").AttributeValue.Name,
+                    Stock = v.Quantity,
+                    Price = v.FinalPrice
+                }).ToList()
+
+            }).ToList();
+
+            // List<ProductCombinationDto> combinationDtos = combinations.Select(c => c.ToProductAttributeCombinationDto()).ToList();
+
             return Ok(combinationDtos);
         }
         [HttpDelete("{id:int}")]
@@ -155,7 +188,7 @@ namespace MainApi.Controllers
         [HttpDelete("combination{id:int}")]
         public async Task<IActionResult> RemoveProductAttributeCombination([FromRoute] int id)
         {
-            ProductAttributeCombination? combination = await _productAttributeRepo.DeleteProductAttributeCombination(id);
+            ProductCombination? combination = await _productAttributeRepo.DeleteProductAttributeCombination(id);
             if (combination == null) return NotFound("productAttribute not found");
             return NoContent();
         }

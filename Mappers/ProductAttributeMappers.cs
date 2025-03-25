@@ -16,7 +16,7 @@ namespace MainApi.Mappers
                 Id = productAttribute.Id,
                 Name = productAttribute.Name,
                 Description = productAttribute.Description,
-                Values   = productAttribute.PredefinedProductAttributeValues.Select(p => p.ToPredefinedProductAttributeValueDto()).ToList()
+                Values = productAttribute.PredefinedProductAttributeValues.Select(p => p.ToPredefinedProductAttributeValueDto()).ToList()
             };
         }
         public static PredefinedProductAttributeValueDto ToPredefinedProductAttributeValueDto(this PredefinedProductAttributeValue predefinedProductAttributeValue)
@@ -43,16 +43,14 @@ namespace MainApi.Mappers
                 ProductAttributeId = addPredefinedProductAttributeValueRequestDto.ProductAttributeId
             };
         }
-        public static ProductAttributeCombinationDto ToProductAttributeCombinationDto(this ProductAttributeCombination combination)
+        public static ProductCombinationDto ToProductAttributeCombinationDto(this ProductCombination combination)
         {
-            return new ProductAttributeCombinationDto()
+            return new ProductCombinationDto()
             {
-                Id = combination.Id,
-                AttributeCombination = combination.AttributeCombination,
                 FinalPrice = combination.FinalPrice,
                 ProductId = combination.ProductId,
                 Quantity = combination.Quantity,
-                Sku = combination.Sku
+                Sku = combination.Sku,
             };
         }
     }

@@ -26,10 +26,10 @@ namespace MainApi.Interfaces
         Task<List<Product_ProductAttribute_Mapping>> GetAllProductAttributeMappingAsync(int productId);
 
         //AttributeCombination
-        Task<ProductAttributeCombination> AddProductAttributeCombinationAsync(ProductAttributeCombination productAttributeCombination);
-        Task<List<ProductAttributeCombination>> GetAllProductAttributeCombinationAsync(int productId);
+        Task<ProductCombination> AddProductAttributeCombinationAsync(ProductCombination productCombination);
+        Task<List<ProductCombination>> GetAllProductAttributeCombinationAsync(int productId);
         // Task<ProductAttributeCombination?> GetAttributeCombinationByAttributeIdsAsync(List<int> Ids);
-        Task<ProductAttributeCombination?> DeleteProductAttributeCombination(int ProductAttributeCombinationId);
+        Task<ProductCombination?> DeleteProductAttributeCombination(int ProductAttributeCombinationId);
 
 
 
