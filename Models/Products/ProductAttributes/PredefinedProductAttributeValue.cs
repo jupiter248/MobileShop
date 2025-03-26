@@ -12,6 +12,6 @@ namespace MainApi.Models.Products.ProductAttributes
         public int Id { get; set; }
         public required string Name { get; set; }
         public required int ProductAttributeId { get; set; }
-        public ProductAttribute? ProductAttribute { get; set; }
+        public required ProductAttribute ProductAttribute { get; set; }
     }
 }

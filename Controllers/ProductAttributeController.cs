@@ -56,8 +56,12 @@ namespace MainApi.Controllers
             {
                 return BadRequest("This predefined attribute value already made");
             }
-
-            await _productAttributeRepo.AddPredefinedProductAttributeValueAsync(addPredefinedProductAttributeValueRequestDto.ToPredefinedProductAttributeValueFromAdd());
+            ProductAttribute? productAttribute = await _productAttributeRepo.GetProductAttributeByIdAsync(addPredefinedProductAttributeValueRequestDto.ProductAttributeId);
+            if (productAttribute == null)
+            {
+                return NotFound("This attribute name not found");
+            }
+            await _productAttributeRepo.AddPredefinedProductAttributeValueAsync(addPredefinedProductAttributeValueRequestDto.ToPredefinedProductAttributeValueFromAdd(productAttribute));
             return Created();
         }
         [HttpPost("assign-to-product")]
