@@ -23,7 +23,7 @@ namespace MainApi.Services
         public TokenService(IConfiguration config)
         {
             _config = config;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"] ?? string.Empty));
         }
 
         public string CreateToken(AppUser appUser, IList<string> roles)

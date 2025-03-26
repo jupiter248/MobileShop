@@ -37,7 +37,7 @@ namespace MainApi.Controllers
         {
             Address? address = await _addressRepo.GetAddressByIdAsync(id);
             if (address == null) return NotFound();
-            if (address.appUser.UserName == null) return NotFound();
+            if (address.appUser?.UserName == null) return NotFound();
             return Ok(address.ToAddressDto(address.appUser.UserName));
         }
         [HttpPost]
@@ -48,8 +48,7 @@ namespace MainApi.Controllers
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
             AppUser? appUser = await _userRepo.GetUserByUsername(username);
             if (appUser == null) return NotFound("User is not found");
-            Address? addressModel = addAddressRequestDto.ToAddressFromAdd();
-            addressModel.appUser = appUser;
+            Address? addressModel = addAddressRequestDto.ToAddressFromAdd(appUser);
             Address? address = await _addressRepo.AddAddressAsync(addressModel);
             if (address != null)
             {

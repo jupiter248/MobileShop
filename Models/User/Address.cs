@@ -13,7 +13,7 @@ namespace MainApi.Models.User
         [Key]
         public int Id { get; set; }
         public string? UserId { get; set; }
-        public AppUser? appUser { get; set; }
+        public  AppUser? appUser { get; set; }
         public required string Country { get; set; }
         public required string City { get; set; }
         public required string State { get; set; }

@@ -29,7 +29,7 @@ namespace MainApi.Repository
         public async Task<Address?> EditAddressAsync(int addressId, Address address, string username)
         {
             Address? currentAddress = await _context.Addresses.Include(a => a.appUser).FirstOrDefaultAsync(a => a.Id == addressId);
-            if (currentAddress != null && currentAddress.appUser.UserName == username)
+            if (currentAddress != null && currentAddress.appUser?.UserName == username)
             {
                 currentAddress.Country = address.Country;
                 currentAddress.City = address.City;
@@ -63,7 +63,7 @@ namespace MainApi.Repository
         public async Task<Address?> RemoveAddressAsync(int addressId, string username)
         {
             Address? address = await _context.Addresses.Include(u => u.appUser).FirstOrDefaultAsync(a => a.Id == addressId);
-            if (address != null && address.appUser.UserName == username)
+            if (address != null && address.appUser?.UserName == username)
             {
                 _context.Remove(address);
                 await _context.SaveChangesAsync();

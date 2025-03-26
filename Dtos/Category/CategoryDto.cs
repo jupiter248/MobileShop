@@ -12,6 +12,6 @@ namespace MainApi.Dtos.Category
         public int Id { get; set; }
         public string CategoryName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public List<ProductDto> Products { get; set; }
+        public List<ProductDto>? Products { get; set; }
     }
 }

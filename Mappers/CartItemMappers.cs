@@ -33,6 +33,7 @@ namespace MainApi.Mappers
                 AttributeXml = attributeXml,
                 AppUser = appUser,
                 UserId = appUser.Id,
+                TotalPrice = addCartItemRequestDto.Price * addCartItemRequestDto.Quantity
             };
         }
     }

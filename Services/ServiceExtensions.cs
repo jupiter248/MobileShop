@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models;
+using MainApi.Models.Orders;
 using MainApi.Models.User;
 using MainApi.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -106,6 +107,7 @@ namespace MainApi.Services
         public static void AddCustomServices(this IServiceCollection services)
         {
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IXmlService, XmlService>();
             services.AddScoped<ISKUService, SKUService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -117,6 +119,8 @@ namespace MainApi.Services
             services.AddScoped<IWishListRepository, WishListRepository>();
             services.AddScoped<ISpecificationAttributesRepository, SpecificationAttributesRepository>();
             services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
+
 
 
         }

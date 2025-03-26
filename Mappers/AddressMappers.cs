@@ -24,7 +24,7 @@ namespace MainApi.Mappers
                 Username = username
             };
         }
-        public static Address ToAddressFromAdd(this AddAddressRequestDto addAddressRequestDto)
+        public static Address ToAddressFromAdd(this AddAddressRequestDto addAddressRequestDto, AppUser appUser)
         {
             return new Address()
             {
@@ -34,6 +34,7 @@ namespace MainApi.Mappers
                 Street = addAddressRequestDto.City,
                 Plate = addAddressRequestDto.Plate,
                 PostalCode = addAddressRequestDto.PostalCode,
+                appUser = appUser
             };
         }
         public static Address ToAddressFromEdit(this EditAddressRequestDto editAddressRequestDto)
@@ -46,7 +47,6 @@ namespace MainApi.Mappers
                 Street = editAddressRequestDto.City,
                 Plate = editAddressRequestDto.Plate,
                 PostalCode = editAddressRequestDto.PostalCode,
-                
             };
         }
     }

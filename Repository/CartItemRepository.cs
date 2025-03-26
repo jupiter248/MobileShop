@@ -22,7 +22,7 @@ namespace MainApi.Repository
             _userManager = userManager;
         }
 
-        public async Task<CartItem> AddToCartItems(CartItem cartItem)
+        public async Task<CartItem> AddCartItemAsync(CartItem cartItem)
         {
             await _context.AddAsync(cartItem);
             await _context.SaveChangesAsync();
@@ -46,7 +46,7 @@ namespace MainApi.Repository
             return cartItems;
         }
 
-        public async Task<bool> RemoveCartItem(int cartItemId, string username)
+        public async Task<bool> RemoveCartItemAsync(int cartItemId, string username)
         {
             CartItem? cartItem = await _context.CartItems.FirstOrDefaultAsync(c => c.Id == cartItemId && c.AppUser.UserName == username);
             if (cartItem == null)
@@ -58,7 +58,7 @@ namespace MainApi.Repository
             return true;
         }
 
-        public async Task<CartItem?> UpdateCartItemQuantity(int cartItemId, string username, int quantity)
+        public async Task<CartItem?> UpdateCartItemQuantityAsync(int cartItemId, string username, int quantity)
         {
             CartItem? cartItem = await _context.CartItems.FirstOrDefaultAsync(c => c.Id == cartItemId && c.AppUser.UserName == username);
             if (cartItem == null)

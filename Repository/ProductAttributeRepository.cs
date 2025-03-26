@@ -92,6 +92,7 @@ namespace MainApi.Repository
         public async Task<List<PredefinedProductAttributeValue>> GetAttributeValuesById(List<int> Ids)
         {
             return await _context.PredefinedProductAttributeValues
+            .Include(v => v.ProductAttribute)
             .Where(v => Ids.Contains(v.Id))
             .ToListAsync();
         }
