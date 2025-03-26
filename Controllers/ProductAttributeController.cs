@@ -117,6 +117,8 @@ namespace MainApi.Controllers
             }
 
             // string attributeString = string.Join(" - ", selectedValues.Select(v => v.Name));
+
+
             string Sku = _sKUService.GenerateSKU(product.ProductName, selectedValues.Select(s => s.Name).ToList());
 
             ProductCombination combination = new ProductCombination()
@@ -140,6 +142,8 @@ namespace MainApi.Controllers
         public async Task<IActionResult> GetAllAttributeCombinations([FromRoute] int productId)
         {
             List<ProductCombination> combinations = await _productAttributeRepo.GetAllProductAttributeCombinationAsync(productId);
+            // var productCombinationAttribute = combinations.Select(c => c.CombinationAttributes.Select(a => a.AttributeValue.ProductAttribute.Name).ToList()).ToList();
+            // var ex = productCombinationAttribute.Select(a => a.Except(new List<string>() { "Color" }).ToList()).ToList();
 
             List<ProductCombinationDto> combinationDtos = combinations.GroupBy(c => new
             {
@@ -148,7 +152,6 @@ namespace MainApi.Controllers
             })
             .Select(g => new ProductCombinationDto
             {
-                FinalPrice = g.First().FinalPrice,
                 Quantity = g.Sum(v => v.Quantity),
                 ProductId = productId,
                 Attributes = new Dictionary<string, string>

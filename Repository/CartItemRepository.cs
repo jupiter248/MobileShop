@@ -5,40 +5,69 @@ using System.Threading.Tasks;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models.Orders;
+using MainApi.Models.User;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository
 {
     public class CartItemRepository : ICartItemRepository
     {
         private readonly ApplicationDbContext _context;
-        public CartItemRepository(ApplicationDbContext context)
+        private readonly UserManager<AppUser> _userManager;
+
+        public CartItemRepository(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public Task<CartItem> AddToCartItems(CartItem cartItem)
+        public async Task<CartItem> AddToCartItems(CartItem cartItem)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(cartItem);
+            await _context.SaveChangesAsync();
+            return cartItem;
         }
 
-        public Task<CartItem> GetCartItemByIdAsync(int cartItemId)
+        public async Task<CartItem?> GetCartItemByIdAsync(int cartItemId)
         {
-            throw new NotImplementedException();
+            CartItem? cartItem = await _context.CartItems.FindAsync(cartItemId);
+            if (cartItem == null)
+            {
+                return null;
+            }
+            return cartItem;
         }
 
-        public Task<List<CartItem>> GetUserCartItemsAsync(string username)
+        public async Task<List<CartItem>> GetUserCartItemsAsync(string username)
         {
-            throw new NotImplementedException();
+
+            List<CartItem> cartItems = await _context.CartItems.Include(c => c.AppUser).Where(c => c.AppUser.UserName == username).ToListAsync();
+            return cartItems;
         }
 
-        public Task<bool> RemoveCartItem(int cartItemId, string username)
+        public async Task<bool> RemoveCartItem(int cartItemId, string username)
         {
-            throw new NotImplementedException();
+            CartItem? cartItem = await _context.CartItems.FirstOrDefaultAsync(c => c.Id == cartItemId && c.AppUser.UserName == username);
+            if (cartItem == null)
+            {
+                return false;
+            }
+            _context.Remove(cartItem);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<CartItem> UpdateCartItemQuantity(int cartItemId, string username)
+        public async Task<CartItem?> UpdateCartItemQuantity(int cartItemId, string username, int quantity)
         {
-            throw new NotImplementedException();
+            CartItem? cartItem = await _context.CartItems.FirstOrDefaultAsync(c => c.Id == cartItemId && c.AppUser.UserName == username);
+            if (cartItem == null)
+            {
+                return null;
+            }
+            cartItem.Quantity = quantity;
+            await _context.SaveChangesAsync();
+            return cartItem;
         }
     }
 }
