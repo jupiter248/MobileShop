@@ -46,5 +46,22 @@ namespace MainApi.Mappers
                 PriceAtPurchase = orderItem.PriceAtPurchase
             };
         }
+        public static OrderStatusesDto ToOrderStatusDto(this OrderStatus orderStatus)
+        {
+            return new OrderStatusesDto()
+            {
+                Id = orderStatus.Id,
+                Name = orderStatus.StatusName,
+                Description = orderStatus.Description
+            };
+        }
+        public static OrderStatus ToOrderStatus(this AddOrderStatusRequestDto statusRequestDto)
+        {
+            return new OrderStatus()
+            {
+                StatusName = statusRequestDto.Name,
+                Description = statusRequestDto.Description
+            };
+        }
     }
 }

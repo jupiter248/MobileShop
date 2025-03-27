@@ -18,7 +18,7 @@ namespace MainApi.Repository
             _context = context;
         }
 
-        public async Task<Order?> AddOrderAsync(Order order)
+        public async Task<Order> AddOrderAsync(Order order)
         {
             await _context.Orders.AddAsync(order);
             foreach (var item in order.OrderItems)
@@ -29,28 +29,35 @@ namespace MainApi.Repository
             return order;
         }
 
-        public Task<OrderStatus?> AddOrderStatusAsync(OrderStatus orderStatus)
+        public async Task<OrderStatus> AddOrderStatusAsync(OrderStatus orderStatus)
         {
-            throw new NotImplementedException();
+            await _context.OrderStatuses.AddAsync(orderStatus);
+            await _context.SaveChangesAsync();
+            return orderStatus;
         }
 
-        public async Task<List<Order>?> GetAllOrdersAsync(string username)
+        public async Task<List<Order>> GetAllOrdersAsync(string username)
         {
             List<Order>? orders = await _context.Orders
-            .Include(i => i.OrderItems).Include(u => u.User).Include(s => s.OrderStatus).Include(o=> o.Address)
+            .Include(i => i.OrderItems).Include(u => u.User).Include(s => s.OrderStatus).Include(o => o.Address)
             .Where(o => o.User.UserName == username)
             .ToListAsync();
             return orders;
         }
 
+        public async Task<List<OrderStatus>> GetAllOrderStatusesAsync()
+        {
+            return await _context.OrderStatuses.ToListAsync();
+        }
+
         public async Task<Order?> GetOrderByIdAsync(int orderId)
         {
-            Order? order = await _context.Orders.Include(i => i.OrderItems).Include(u => u.User).Include(s => s.OrderStatus).FirstOrDefaultAsync(o => o.Id == orderId);
-            if (order != null)
+            Order? order = await _context.Orders.Include(o => o.Address).Include(i => i.OrderItems).Include(u => u.User).Include(s => s.OrderStatus).FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order == null)
             {
-                return order;
+                return null;
             }
-            return null;
+            return order;
         }
 
         public async Task<OrderStatus?> GetOrderStatusByNameAsync(string statusName)
@@ -58,102 +65,6 @@ namespace MainApi.Repository
             OrderStatus? orderStatus = await _context.OrderStatuses.FirstOrDefaultAsync(s => s.StatusName.ToLower() == statusName.ToLower());
             if (orderStatus == null) return null;
             return orderStatus;
-        }
-
-        public Task<OrderStatus?> GetOrderStatusByNameAsync(int orderStatusId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Order?> RemoveOrderAsync(int orderId)
-        {
-            Order? order = await _context.Orders.Include(i => i.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
-            if (order != null)
-            {
-                _context.Orders.Remove(order);
-                foreach (var item in order.OrderItems)
-                {
-                    _context.OrderItems.Remove(item);
-                }
-                await _context.SaveChangesAsync();
-            }
-            return order;
-        }
-
-        public async Task<Order?> RemoveOrderItemsAsync(int orderId, int orderItemId)
-        {
-            Order? order = await _context.Orders.Include(i => i.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
-            if (order != null)
-            {
-                OrderItem? orderItem = order.OrderItems.FirstOrDefault(i => i.Id == orderItemId);
-                if (orderItem != null)
-                {
-                    if (orderItem.Quantity > 1)
-                    {
-                        orderItem.Quantity -= 1;
-                        await _context.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        order.OrderItems.RemoveAll(i => i.Id == orderItem.Id);
-                        await _context.SaveChangesAsync();
-                    }
-                    return order;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public async Task<Order?> UpdateOrderItemAsync(OrderItem orderItem, int orderId)
-        {
-            Order? order = await _context.Orders.Include(i => i.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
-            if (order != null)
-            {
-                order.OrderItems.Add(orderItem);
-                await _context.SaveChangesAsync();
-                return order;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public async Task<Order?> UpdateOrderStatusAsync(int orderId, int statusId)
-        {
-            Order? order = await _context.Orders.Include(i => i.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
-            if (order != null)
-            {
-                order.StatusId = statusId;
-                if (statusId == 2)
-                {
-                    foreach (var item in order.OrderItems)
-                    {
-                        var product = await _context.Products.FirstOrDefaultAsync(p => item.ProductId == p.Id);
-                        if (product != null)
-                        {
-                            product.Quantity -= item.Quantity;
-                            if (product.Quantity < 0)
-                            {
-                                return null;
-                            }
-                            else
-                            {
-                                await _context.SaveChangesAsync();
-                            }
-                        }
-                    }
-                }
-                await _context.SaveChangesAsync();
-            }
-            return order;
         }
     }
 }

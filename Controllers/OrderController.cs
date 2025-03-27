@@ -19,7 +19,7 @@ namespace MainApi.Controllers
 {
 
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/order")]
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepo;
@@ -37,7 +37,7 @@ namespace MainApi.Controllers
             _cartItemRepo = cartItemRepo;
             _addressRepo = addressRepo;
         }
-        // [Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
@@ -52,18 +52,18 @@ namespace MainApi.Controllers
             List<OrderDto>? ordersDto = orders.Select(o => o.ToOrderDto()).ToList();
             return Ok(ordersDto);
         }
-        // [Authorize(Roles = "Admin")]
-        // [HttpGet("{id:int}")]
-        // public async Task<IActionResult> GetOrderById([FromRoute] int id)
-        // {
-        //     Order? order = await _orderRepository.GetOrderByIdAsync(id);
-        //     if (order == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     return Ok(order.ToOrderDto());
-        // }
-        // [Authorize]
+        [Authorize(Roles = "Admin")]
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetOrderById([FromRoute] int id)
+        {
+            Order? order = await _orderRepo.GetOrderByIdAsync(id);
+            if (order == null)
+            {
+                return NotFound("Order not found");
+            }
+            return Ok(order.ToOrderDto());
+        }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddOrder([FromBody] AddOrderRequestDto addOrderRequestDto)
         {
@@ -98,46 +98,21 @@ namespace MainApi.Controllers
             Order order = await _orderRepo.AddOrderAsync(newOrder);
             return Created();
         }
-        // [Authorize]
-        // [HttpPut("{id:int}")]
-        // public async Task<IActionResult> AddOrderItemsToOrder([FromRoute] int id, [FromBody] AddOrderItemRequestDto addOrderItemRequestDto)
-        // {
-        //     var orderItems = addOrderItemRequestDto.ToOrderItemFromAdd();
-        //     var order = await _orderRepository.UpdateOrderItemAsync(orderItems, id);
-        //     if (order != null)
-        //     {
-        //         return NoContent();
-        //     }
-        //     else
-        //     {
-        //         return BadRequest();
-        //     }
-        // }
-        // [Authorize]
-        // [Route("OrderStatus/{id:int}")]
-        // [HttpPut]
-        // public async Task<IActionResult> UpdateOrderStatus([FromRoute] int id, [FromBody] int statusId)
-        // {
-        //     Order? order = await _orderRepository.UpdateOrderStatusAsync(id, statusId);
-        //     if (order == null) return NotFound();
-
-        //     return NoContent();
-        // }
-        // [HttpDelete("{id:int}")]
-        // public async Task<IActionResult> RemoveOrder([FromRoute] int id)
-        // {
-        //     Order? order = await _orderRepository.RemoveOrderAsync(id);
-        //     if (order == null) return NotFound();
-        //     return NoContent();
-        // }
-        // [Authorize]
-        // [Route("OrderItem/{id:int}")]
-        // [HttpDelete]
-        // public async Task<IActionResult> RemoveOrderItem([FromRoute] int id, [FromBody] int orderItemId)
-        // {
-        //     Order? order = await _orderRepository.RemoveOrderItemsAsync(id, orderItemId);
-        //     if (order == null) return NotFound();
-        //     return NoContent();
-        // }
+        [Authorize(Roles = "Admin")]
+        [HttpPost("status")]
+        public async Task<IActionResult> AddOrderStatus([FromBody] AddOrderStatusRequestDto statusRequestDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            await _orderRepo.AddOrderStatusAsync(statusRequestDto.ToOrderStatus());
+            return Created();
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("status")]
+        public async Task<IActionResult> GetAllOrderStatuses()
+        {
+            List<OrderStatus> orderStatuses = await _orderRepo.GetAllOrderStatusesAsync();
+            List<OrderStatusesDto> statusesDtos = orderStatuses.Select(s => s.ToOrderStatusDto()).ToList();
+            return Ok(statusesDtos);
+        }
     }
 }
