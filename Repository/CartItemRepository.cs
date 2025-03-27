@@ -66,6 +66,7 @@ namespace MainApi.Repository
                 return null;
             }
             cartItem.Quantity = quantity;
+            cartItem.TotalPrice = quantity * cartItem.BasePrice;
             await _context.SaveChangesAsync();
             return cartItem;
         }

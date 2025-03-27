@@ -71,5 +71,41 @@ namespace MainApi.Controllers
             List<CartItemDto> cartItemDtos = cartItems.Select(c => c.ToCartItemDto()).ToList();
             return Ok(cartItemDtos);
         }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetCartItemById([FromRoute] int id)
+        {
+            CartItem? cartItem = await _cartItemRepo.GetCartItemByIdAsync(id);
+            if (cartItem == null)
+            {
+                return NotFound("Cart item not found");
+            }
+            return Ok(cartItem);
+        }
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateQuantity([FromRoute] int id, [FromBody] int quantity)
+        {
+            string? username = User.GetUsername();
+            if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
+
+            CartItem? cartItem = await _cartItemRepo.UpdateCartItemQuantityAsync(id, username, quantity);
+            if (cartItem == null)
+            {
+                return NotFound("Cart item not found");
+            }
+            return NoContent();
+        }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteCartItem([FromRoute] int id)
+        {
+            string? username = User.GetUsername();
+            if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
+
+            bool cartItemDeleted = await _cartItemRepo.RemoveCartItemAsync(id, username);
+            if (cartItemDeleted == false)
+            {
+                return NotFound("Cart item not found");
+            }
+            return NoContent();
+        }
     }
 }
