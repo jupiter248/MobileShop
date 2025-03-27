@@ -9,6 +9,7 @@ namespace MainApi.Interfaces
     public interface ICartItemRepository
     {
         Task<List<CartItem>> GetUserCartItemsAsync(string username);
+        Task<List<CartItem>> GetCartItemsById(List<int> Ids);
         Task<CartItem?> GetCartItemByIdAsync(int cartItemId);
         Task<CartItem> AddCartItemAsync(CartItem cartItem);
         Task<bool> RemoveCartItemAsync(int cartItemId, string username);

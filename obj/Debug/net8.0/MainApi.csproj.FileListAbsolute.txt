@@ -598,3 +598,6 @@ C:\Users\mohammad\Desktop\USProject\Backend\MainApi\bin\Debug\net8.0\Microsoft.A
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi\bin\Debug\net8.0\MainApi.staticwebassets.endpoints.json
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi\obj\Debug\net8.0\staticwebassets\msbuild.MainApi.Microsoft.AspNetCore.StaticWebAssetEndpoints.props

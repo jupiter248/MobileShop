@@ -24,7 +24,5 @@ namespace MainApi.Models.Orders
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
         public List<OrderDiscount> OrderDiscounts { get; set; } = new List<OrderDiscount>();
         public List<OrderShipment> OrderShipment { get; set; } = new List<OrderShipment>();
-
-
     }
 }

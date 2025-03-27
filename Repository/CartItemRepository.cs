@@ -39,6 +39,16 @@ namespace MainApi.Repository
             return cartItem;
         }
 
+        public async Task<List<CartItem>> GetCartItemsById(List<int> Ids)
+        {
+            List<CartItem> cartItems = new List<CartItem>();
+            foreach (int id in Ids)
+            {
+                cartItems.Add(await _context.CartItems.FirstOrDefaultAsync(c => c.Id == id));
+            }
+            return cartItems;
+        }
+
         public async Task<List<CartItem>> GetUserCartItemsAsync(string username)
         {
 

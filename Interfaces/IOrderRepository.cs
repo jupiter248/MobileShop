@@ -11,10 +11,9 @@ namespace MainApi.Interfaces
     {
         Task<List<Order>?> GetAllOrdersAsync(string username);
         Task<Order?> GetOrderByIdAsync(int orderId);
-        Task<OrderStatus?> GetOrderStatusByIdAsync(int orderStatusId);
-        Task<Order?> AddOrderAsync(Order order);
-        Task<Order?> UpdateOrderStatusAsync(int orderId, int statusId);
-        Task<Order?> UpdateOrderItemAsync(OrderItem orderItem, int orderId);
+        Task<OrderStatus?> AddOrderStatusAsync(OrderStatus orderStatus);
+        Task<OrderStatus?> GetOrderStatusByNameAsync(string statusName);
+        Task<Order> AddOrderAsync(Order order);
         Task<Order?> RemoveOrderAsync(int orderId);
         Task<Order?> RemoveOrderItemsAsync(int orderItemId, int orderId);
     }

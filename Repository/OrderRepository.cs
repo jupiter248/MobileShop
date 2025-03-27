@@ -29,20 +29,18 @@ namespace MainApi.Repository
             return order;
         }
 
+        public Task<OrderStatus?> AddOrderStatusAsync(OrderStatus orderStatus)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<Order>?> GetAllOrdersAsync(string username)
         {
-            if (username != null)
-            {
-                List<Order>? orders = await _context.Orders
-                .Include(i => i.OrderItems).Include(u => u.User).Include(s => s.OrderStatus)
-                .Where(o => o.User.UserName == username)
-                .ToListAsync();
-                return orders;
-            }
-            else
-            {
-                return null;
-            }
+            List<Order>? orders = await _context.Orders
+            .Include(i => i.OrderItems).Include(u => u.User).Include(s => s.OrderStatus).Include(o=> o.Address)
+            .Where(o => o.User.UserName == username)
+            .ToListAsync();
+            return orders;
         }
 
         public async Task<Order?> GetOrderByIdAsync(int orderId)
@@ -55,11 +53,16 @@ namespace MainApi.Repository
             return null;
         }
 
-        public async Task<OrderStatus?> GetOrderStatusByIdAsync(int orderStatusId)
+        public async Task<OrderStatus?> GetOrderStatusByNameAsync(string statusName)
         {
-            OrderStatus? orderStatus = await _context.OrderStatuses.FirstOrDefaultAsync(s => s.Id == orderStatusId);
-            if (orderStatus != null) return orderStatus;
-            return null;
+            OrderStatus? orderStatus = await _context.OrderStatuses.FirstOrDefaultAsync(s => s.StatusName.ToLower() == statusName.ToLower());
+            if (orderStatus == null) return null;
+            return orderStatus;
+        }
+
+        public Task<OrderStatus?> GetOrderStatusByNameAsync(int orderStatusId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Order?> RemoveOrderAsync(int orderId)

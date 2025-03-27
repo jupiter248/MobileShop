@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MainApi.Dtos.Order;
+using MainApi.Dtos.Orders;
 using MainApi.Dtos.Orders.Order;
-using MainApi.Dtos.Orders.OrderItem;
 using MainApi.Extensions;
 using MainApi.Interfaces;
 using MainApi.Mappers;
@@ -23,30 +22,36 @@ namespace MainApi.Controllers
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderRepository _orderRepo;
         private readonly IProductRepository _productRepository;
         private readonly UserManager<AppUser> _userManager;
+        private readonly ICartItemRepository _cartItemRepo;
+        private readonly IAddressRepository _addressRepo;
 
-        public OrderController(IOrderRepository orderRepository, IProductRepository productRepository, UserManager<AppUser> userManager)
+
+        public OrderController(IOrderRepository orderRepo, IAddressRepository addressRepo, IProductRepository productRepository, UserManager<AppUser> userManager, ICartItemRepository cartItemRepo)
         {
-            _orderRepository = orderRepository;
+            _orderRepo = orderRepo;
             _productRepository = productRepository;
             _userManager = userManager;
+            _cartItemRepo = cartItemRepo;
+            _addressRepo = addressRepo;
         }
         // [Authorize]
-        // [HttpGet]
-        // public async Task<IActionResult> GetAllOrders()
-        // {
-        //     string? username = User.GetUsername();
-        //     if (string.IsNullOrWhiteSpace(username)) return NotFound("Username is invalid");
-        //     List<Order>? orders = await _orderRepository.GetAllOrdersAsync(username);
-        //     if (orders == null)
-        //     {
-        //         return BadRequest();
-        //     }
-        //     List<OrderDto>? ordersDto = orders.Select(o => o.ToOrderDto()).ToList();
-        //     return Ok(ordersDto);
-        // }
+        [HttpGet]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            string? username = User.GetUsername();
+            if (string.IsNullOrWhiteSpace(username)) return NotFound("Username is invalid");
+
+            List<Order>? orders = await _orderRepo.GetAllOrdersAsync(username);
+            if (orders == null)
+            {
+                return BadRequest();
+            }
+            List<OrderDto>? ordersDto = orders.Select(o => o.ToOrderDto()).ToList();
+            return Ok(ordersDto);
+        }
         // [Authorize(Roles = "Admin")]
         // [HttpGet("{id:int}")]
         // public async Task<IActionResult> GetOrderById([FromRoute] int id)
@@ -59,51 +64,40 @@ namespace MainApi.Controllers
         //     return Ok(order.ToOrderDto());
         // }
         // [Authorize]
-        // [HttpPost]
-        // public async Task<IActionResult> AddOrder([FromBody] AddOrderRequestDto addOrderRequestDto)
-        // {
-        //     string? username = User.GetUsername();
-        //     if (string.IsNullOrWhiteSpace(username)) return NotFound("Username is invalid");
-        //     AppUser? appUser = await _userManager.FindByNameAsync(username);
-        //     Order? orderModel = addOrderRequestDto.ToOrderFromAdd();
-        //     if (appUser != null)
-        //     {
-        //         orderModel.UserId = appUser.Id;
-        //         orderModel.User = appUser;
-        //     }
-        //     OrderStatus? orderStatus = await _orderRepository.GetOrderStatusByIdAsync(addOrderRequestDto.StatusId);
-        //     if (orderStatus != null)
-        //     {
-        //         orderModel.OrderStatus = orderStatus;
-        //     }
-        //     decimal totalAmount = 0;
+        [HttpPost]
+        public async Task<IActionResult> AddOrder([FromBody] AddOrderRequestDto addOrderRequestDto)
+        {
+            string? username = User.GetUsername();
+            if (string.IsNullOrWhiteSpace(username)) return NotFound("Username is invalid");
 
-        //     List<OrderItem> orderItems = orderModel.OrderItems.ToList();
-        //     foreach (var item1 in orderItems)
-        //     {
-        //         var productExists = await _productRepository.ProductExistsAsync(item1.ProductId);
-        //         if (productExists)
-        //         {
-        //             Product? product = await _productRepository.GetProductByIdAsync(item1.ProductId);
-        //             if (product != null)
-        //             {
-        //                 item1.PriceAtPurchase = product.Price * item1.Quantity;
-        //             }
-        //         }
-        //         totalAmount += item1.PriceAtPurchase;
-        //     }
-        //     orderModel.TotalAmount = totalAmount;
+            AppUser? appUser = await _userManager.FindByNameAsync(username);
+            if (appUser == null) return NotFound("User not found");
 
-        //     Order? order = await _orderRepository.AddOrderAsync(orderModel);
-        //     if (order != null)
-        //     {
-        //         return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order.ToOrderDto());
-        //     }
-        //     else
-        //     {
-        //         return BadRequest();
-        //     }
-        // }
+            List<CartItem> cartItems = await _cartItemRepo.GetCartItemsById(addOrderRequestDto.CartItemsIds);
+            if (cartItems == null) return BadRequest("Cart item id is invalid");
+
+            Address? address = await _addressRepo.GetAddressByIdAsync(addOrderRequestDto.AddressId);
+            if (address == null) return NotFound("Address not found");
+
+            List<OrderItem> orderItems = cartItems.Select(c => c.ToOrderItem()).ToList();
+            decimal[] arrays = orderItems.Select(i => i.PriceAtPurchase).ToArray();
+
+            OrderStatus? orderStatus = await _orderRepo.GetOrderStatusByNameAsync("Pending");
+            Order newOrder = new Order()
+            {
+                Address = address,
+                AddressId = address.Id,
+                User = appUser,
+                UserId = appUser.Id,
+                TotalAmount = arrays.Sum(),
+                StatusId = orderStatus.Id,
+                OrderStatus = orderStatus,
+                OrderItems = orderItems
+            };
+
+            Order order = await _orderRepo.AddOrderAsync(newOrder);
+            return Created();
+        }
         // [Authorize]
         // [HttpPut("{id:int}")]
         // public async Task<IActionResult> AddOrderItemsToOrder([FromRoute] int id, [FromBody] AddOrderItemRequestDto addOrderItemRequestDto)
