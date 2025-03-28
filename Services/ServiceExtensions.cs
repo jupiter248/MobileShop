@@ -120,9 +120,7 @@ namespace MainApi.Services
             services.AddScoped<ISpecificationAttributesRepository, SpecificationAttributesRepository>();
             services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();
-
-
-
+            services.AddScoped<IOrderShipment, OrderShipmentRepository>();
         }
     }
 }
