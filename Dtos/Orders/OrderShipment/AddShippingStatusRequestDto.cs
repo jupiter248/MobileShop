@@ -4,15 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MainApi.Models.Orders
+namespace MainApi.Dtos.Orders.OrderShipment
 {
-    public class ShippingStatus
+    public class AddShippingStatusRequestDto
     {
-        [Key]
-        public int Id { get; set; }
+        [MaxLength(25, ErrorMessage = "Status name can not be over 25 characters")]
         public required string Name { get; set; }
         public required string Description { get; set; }
-        public List<OrderShipment> OrderShipment { get; set; } = new List<OrderShipment>();
-
     }
 }
