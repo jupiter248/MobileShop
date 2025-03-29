@@ -22,6 +22,6 @@ namespace MainApi.Interfaces
         Task<List<ShippingStatus>> GetAllShippingStatusAsync();
         Task<ShippingStatus?> GetShippingStatusByNameAsync(string name);
         Task<ShippingStatus> AddShippingStatusAsync(ShippingStatus shippingStatus);
-        Task<bool> RemoveShippingStatusAsync(string shippingStatusName);
+        Task<bool> RemoveShippingStatusAsync(int id);
     }
 }

@@ -35,7 +35,7 @@ namespace MainApi.Controllers
             _productRepository = productRepository;
             _userManager = userManager;
             _cartItemRepo = cartItemRepo;
-            _addressRepo = addressRepo;
+            _addressRepo = addressRepo; 
         }
         [Authorize]
         [HttpGet]

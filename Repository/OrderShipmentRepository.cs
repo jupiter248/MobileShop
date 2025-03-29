@@ -49,6 +49,8 @@ namespace MainApi.Repository
                 return false;
             }
             _context.Remove(shipment);
+            await _context.SaveChangesAsync();
+
             return true;
         }
 
@@ -72,6 +74,8 @@ namespace MainApi.Repository
                 return false;
             }
             _context.Remove(shipmentItem);
+            await _context.SaveChangesAsync();
+
             return true;
         }
 
@@ -98,14 +102,15 @@ namespace MainApi.Repository
             }
             return shippingStatus;
         }
-        public async Task<bool> RemoveShippingStatusAsync(string shippingStatusName)
+        public async Task<bool> RemoveShippingStatusAsync(int id)
         {
-            ShippingStatus? shippingStatus = await _context.ShippingStatuses.FirstOrDefaultAsync(s => s.Name.ToLower() == shippingStatusName.ToLower());
+            ShippingStatus? shippingStatus = await _context.ShippingStatuses.FindAsync(id);
             if (shippingStatus == null)
             {
                 return false;
             }
             _context.Remove(shippingStatus);
+            await _context.SaveChangesAsync();
             return true;
         }
     }

@@ -45,6 +45,7 @@ namespace MainApi.Mappers
         {
             return new OrderShipmentItemDto()
             {
+                id = shipmentItem.Id,
                 OrderItemId = shipmentItem.OrderItemId,
                 OrderItem = shipmentItem.OrderItem
             };
