@@ -43,12 +43,14 @@ namespace MainApi.Repository
 
         public async Task<bool> DeleteShipmentAsync(int shipmentId)
         {
-            OrderShipment? shipment = await _context.OrderShipments.FindAsync(shipmentId);
+            OrderShipment? shipment = await _context.OrderShipments.Include(s => s.ShipmentItems).FirstOrDefaultAsync(s => s.Id == shipmentId);
             if (shipment == null)
             {
                 return false;
             }
+            shipment.ShipmentItems.Select(s => _context.Remove(s));
             _context.Remove(shipment);
+
             await _context.SaveChangesAsync();
 
             return true;
