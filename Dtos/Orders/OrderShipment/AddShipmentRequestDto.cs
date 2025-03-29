@@ -10,8 +10,8 @@ namespace MainApi.Dtos.Orders.OrderShipment
         public required int OrderId { get; set; }
         public required string TrackingNumber { get; set; }
         public required decimal TotalWeight { get; set; }
-        public DateTime ShippedDate { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public List<int>? ShipmentItemsIds { get; set; }
+        public DateTime? ShippedDate { get; set; }
+        public required string StatusName { get; set; }
+        public required List<int> OrderItemsIds { get; set; }
     }
 }

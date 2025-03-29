@@ -83,6 +83,7 @@ namespace MainApi.Controllers
             decimal[] arrays = orderItems.Select(i => i.PriceAtPurchase).ToArray();
 
             OrderStatus? orderStatus = await _orderRepo.GetOrderStatusByNameAsync("Pending");
+            if (orderStatus == null) return NotFound("Order status not found");
             Order newOrder = new Order()
             {
                 Address = address,

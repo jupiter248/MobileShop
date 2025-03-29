@@ -60,6 +60,11 @@ namespace MainApi.Repository
             return order;
         }
 
+        public async Task<List<OrderItem>> GetOrderItemsByIdAsync(List<int> Ids)
+        {
+            return await _context.OrderItems.Where(i => Ids.Contains(i.Id)).ToListAsync();
+        }
+
         public async Task<OrderStatus?> GetOrderStatusByNameAsync(string statusName)
         {
             OrderStatus? orderStatus = await _context.OrderStatuses.FirstOrDefaultAsync(s => s.StatusName.ToLower() == statusName.ToLower());

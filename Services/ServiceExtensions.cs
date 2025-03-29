@@ -75,7 +75,7 @@ namespace MainApi.Services
             var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
             var logger = loggerFactory.CreateLogger<Program>();
             var jwtSettings = config.GetSection("JWT");
-            string signingKeyString = jwtSettings["SigningKey"];
+            string signingKeyString = jwtSettings["SigningKey"] ?? string.Empty;
             if (string.IsNullOrWhiteSpace(signingKeyString))
                 throw new InvalidOperationException("JWT key is not configured properly.");
 
@@ -120,7 +120,7 @@ namespace MainApi.Services
             services.AddScoped<ISpecificationAttributesRepository, SpecificationAttributesRepository>();
             services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();
-            services.AddScoped<IOrderShipment, OrderShipmentRepository>();
+            services.AddScoped<IOrderShipmentRepository, OrderShipmentRepository>();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace MainApi.Models.Orders
     {
         [Key]
         public int Id { get; set; }
-        public required int OrderShipmentId { get; set; }
+        public  int? OrderShipmentId { get; set; }
         public required int OrderItemId { get; set; }
         public OrderItem? OrderItem { get; set; }
     }

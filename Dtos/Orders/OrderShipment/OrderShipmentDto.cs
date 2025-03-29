@@ -14,8 +14,8 @@ namespace MainApi.Dtos.Orders.OrderShipment
         public required int OrderId { get; set; }
         public required string TrackingNumber { get; set; }
         public required decimal TotalWeight { get; set; }
-        public DateTime ShippedDate { get; set; }
-        public DateTime DeliveredDate { get; set; }
+        public DateTime? ShippedDate { get; set; }
+        public DateTime? DeliveredDate { get; set; }
         public required string ShippingStatusName { get; set; }
         public DateTime CreatedOn { get; set; }
         public List<OrderShipmentItemDto>? ShipmentItemDtos { get; set; }

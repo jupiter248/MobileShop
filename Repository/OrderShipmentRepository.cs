@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MainApi.Repository
 {
 
-    public class OrderShipmentRepository : IOrderShipment
+    public class OrderShipmentRepository : IOrderShipmentRepository
     {
         private readonly ApplicationDbContext _context;
         public OrderShipmentRepository(ApplicationDbContext context)
@@ -22,7 +22,7 @@ namespace MainApi.Repository
 
         public async Task<List<OrderShipment>> GetAllOrderShipmentAsync(int orderId)
         {
-            return await _context.OrderShipments.Include(s => s.ShipmentItems).ToListAsync();
+            return await _context.OrderShipments.Where(s => s.OrderId == orderId).Include(s => s.ShipmentItems).Include(s => s.ShippingStatus).ToListAsync();
         }
         public async Task<OrderShipment> AddOrderShipmentAsync(OrderShipment orderShipment)
         {

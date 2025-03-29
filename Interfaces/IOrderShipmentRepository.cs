@@ -6,7 +6,7 @@ using MainApi.Models.Orders;
 
 namespace MainApi.Interfaces
 {
-    public interface IOrderShipment
+    public interface IOrderShipmentRepository
     {
         //Shipment 
         Task<List<OrderShipment>> GetAllOrderShipmentAsync(int orderId);

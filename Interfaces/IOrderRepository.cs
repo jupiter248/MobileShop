@@ -15,5 +15,6 @@ namespace MainApi.Interfaces
         Task<OrderStatus?> GetOrderStatusByNameAsync(string statusName);
         Task<List<OrderStatus>> GetAllOrderStatusesAsync();
         Task<Order> AddOrderAsync(Order order);
+        Task<List<OrderItem>> GetOrderItemsByIdAsync(List<int> Ids);
     }
 }
