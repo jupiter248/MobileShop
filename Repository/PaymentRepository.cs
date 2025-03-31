@@ -15,10 +15,29 @@ namespace MainApi.Repository
         {
             _context = context;
         }
+
+
+        //Payment
+
+
         public Task<Payment> CreatePaymentAsync(Payment payment)
         {
             throw new NotImplementedException();
         }
+
+        public Task<Payment> GetPaymentByAuthorityAsync(string authority)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdatePaymentStatusAsync(string authority, string status, string transactionId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        //Payment Status
+
 
         public Task<PaymentStatus> CreatePaymentStatusAsync(PaymentStatus paymentStatus)
         {
@@ -35,17 +54,8 @@ namespace MainApi.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Payment> GetPaymentByAuthorityAsync(string authority)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<PaymentStatus> GetPaymentStatusByNameAsync(string statusName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdatePaymentStatusAsync(string authority, string status, string transactionId)
         {
             throw new NotImplementedException();
         }

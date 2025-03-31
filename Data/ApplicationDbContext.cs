@@ -1,6 +1,7 @@
 using System;
 using MainApi.Models;
 using MainApi.Models.Orders;
+using MainApi.Models.Payments;
 using MainApi.Models.Products;
 using MainApi.Models.Products.ProductAttributes;
 using MainApi.Models.Products.SpecificationAttributes;
@@ -41,6 +42,9 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Product_SpecificationAttribute_Mapping> SpecificationAttributeMappings { get; set; }
     public DbSet<SpecificationAttribute> SpecificationAttributes { get; set; }
     public DbSet<SpecificationAttributeOption> SpecificationAttributeOptions { get; set; }
+    public DbSet<Payment> Payments { get; set; }
+    public DbSet<PaymentStatus> PaymentStatuses { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -23,7 +23,8 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddCustomServices();
 
-builder.Services.AddCors(opt => {
+builder.Services.AddCors(opt =>
+{
     opt.AddPolicy("HelloConnection", policy =>
     {
         policy.AllowAnyMethod()
@@ -31,6 +32,7 @@ builder.Services.AddCors(opt => {
         .AllowAnyOrigin();
     });
 });
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
