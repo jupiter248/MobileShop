@@ -106,9 +106,13 @@ namespace MainApi.Services
         }
         public static void AddCustomServices(this IServiceCollection services)
         {
+            //Services
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IXmlService, XmlService>();
             services.AddScoped<ISKUService, SKUService>();
+            services.AddScoped<IPaymentService, PaymentService>();
+
+            //Repositories
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -121,6 +125,8 @@ namespace MainApi.Services
             services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();
             services.AddScoped<IOrderShipmentRepository, OrderShipmentRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+
         }
     }
 }

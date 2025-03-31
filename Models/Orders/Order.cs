@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using MainApi.Dtos.Account;
+using MainApi.Models.Payments;
 using MainApi.Models.User;
 
 namespace MainApi.Models.Orders
@@ -24,5 +25,8 @@ namespace MainApi.Models.Orders
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
         public List<OrderDiscount> OrderDiscounts { get; set; } = new List<OrderDiscount>();
         public List<OrderShipment> OrderShipment { get; set; } = new List<OrderShipment>();
+        public List<Payment> Payments { get; set; } = new List<Payment>();
+
+
     }
 }
