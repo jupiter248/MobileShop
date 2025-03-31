@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Dtos.Payment;
 using MainApi.Extensions;
 using MainApi.Interfaces;
+using MainApi.Models.Payments;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainApi.Controllers
@@ -14,9 +15,14 @@ namespace MainApi.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
-        public PaymentController(IPaymentService paymentService)
+        private readonly IPaymentRepository _paymentRepo;
+
+        public PaymentController(IPaymentService paymentService, IPaymentRepository paymentRepo)
         {
             _paymentService = paymentService;
+            _paymentService = paymentService;
+            _paymentRepo = paymentRepo;
+
         }
 
         [HttpPost]
@@ -36,6 +42,42 @@ namespace MainApi.Controllers
                 return Ok(new { message = "Payment verified successfully" });
             else
                 return BadRequest(new { message = "Payment verification failed" });
+        }
+        [HttpPost("status")]
+        public async Task<IActionResult> AddPaymentStatus([FromQuery] string name, [FromQuery] string description)
+        {
+
+            PaymentStatus paymentStatus = new PaymentStatus()
+            {
+                Description = description,
+                Name = name
+            };
+            PaymentStatus? paymentModel = await _paymentRepo.CreatePaymentStatusAsync(paymentStatus);
+            if (paymentModel == null)
+            {
+                return BadRequest("This status already made");
+            }
+            return Ok(paymentStatus);
+        }
+        [HttpGet("status")]
+        public async Task<IActionResult> GetAllPaymentStatuses()
+        {
+            List<PaymentStatus> paymentStatuses = await _paymentRepo.GetAllPaymentStatusesAsync();
+            var PaymentStatusDto = paymentStatuses.Select(s => new
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Description = s.Description
+            });
+            return Ok(paymentStatuses);
+        }
+        [HttpDelete("status{id:int}")]
+        public async Task<IActionResult> DeletePaymentStatuses([FromRoute] int id)
+        {
+            PaymentStatus? paymentStatuses = await _paymentRepo.DeletePaymentStatusAsync(id);
+            if (paymentStatuses == null) return NotFound("Status not found");
+
+            return NoContent();
         }
     }
 }

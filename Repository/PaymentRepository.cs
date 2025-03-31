@@ -48,8 +48,13 @@ namespace MainApi.Repository
         //Payment Status
 
 
-        public async Task<PaymentStatus> CreatePaymentStatusAsync(PaymentStatus paymentStatus)
+        public async Task<PaymentStatus?> CreatePaymentStatusAsync(PaymentStatus paymentStatus)
         {
+            PaymentStatus? status = await _context.PaymentStatuses.FirstOrDefaultAsync(s => s.Name.ToLower() == paymentStatus.Name.ToLower());
+            if (status != null)
+            {
+                return null;
+            }
             await _context.AddAsync(paymentStatus);
             await _context.SaveChangesAsync();
             return paymentStatus;
