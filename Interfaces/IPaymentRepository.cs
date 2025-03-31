@@ -9,14 +9,14 @@ namespace MainApi.Interfaces
     public interface IPaymentRepository
     {
         Task<Payment> CreatePaymentAsync(Payment payment);
-        Task<Payment> GetPaymentByAuthorityAsync(string authority);
-        Task UpdatePaymentStatusAsync(string authority, string status, string transactionId);
+        Task<Payment?> GetPaymentByAuthorityAsync(string authority);
+        Task UpdatePaymentStatusAsync(string authority, PaymentStatus status, string transactionId);
 
         // Payment Status
         Task<PaymentStatus> CreatePaymentStatusAsync(PaymentStatus paymentStatus);
         Task<List<PaymentStatus>> GetAllPaymentStatusesAsync();
-        Task<PaymentStatus> GetPaymentStatusByNameAsync(string statusName);
-        Task<PaymentStatus> DeletePaymentStatusAsync(int id);
+        Task<PaymentStatus?> GetPaymentStatusByNameAsync(string statusName);
+        Task<PaymentStatus?> DeletePaymentStatusAsync(int id);
 
 
     }

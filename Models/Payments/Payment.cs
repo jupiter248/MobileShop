@@ -12,7 +12,7 @@ namespace MainApi.Models.Payments
         [Key]
         public int Id { get; set; }
         public required int OrderId { get; set; }
-        public required int UserId { get; set; }
+        public required string UserId { get; set; }
         public required AppUser AppUser { get; set; }
         public required decimal Amount { get; set; }
         public required int StatusId { get; set; }

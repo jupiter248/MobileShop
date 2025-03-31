@@ -34,10 +34,6 @@ namespace MainApi.Repository
         public async Task<OrderShipment?> GetShipmentByIdAsync(int shipmentId)
         {
             OrderShipment? shipment = await _context.OrderShipments.FindAsync(shipmentId);
-            if (shipment == null)
-            {
-                return null;
-            }
             return shipment;
         }
 

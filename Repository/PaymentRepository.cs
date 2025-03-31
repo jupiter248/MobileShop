@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Data;
 using MainApi.Interfaces;
 using MainApi.Models.Payments;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Repository
 {
@@ -20,44 +21,61 @@ namespace MainApi.Repository
         //Payment
 
 
-        public Task<Payment> CreatePaymentAsync(Payment payment)
+        public async Task<Payment> CreatePaymentAsync(Payment payment)
         {
-            throw new NotImplementedException();
+            await _context.Payments.AddAsync(payment);
+            await _context.SaveChangesAsync();
+            return payment;
         }
 
-        public Task<Payment> GetPaymentByAuthorityAsync(string authority)
+        public async Task<Payment?> GetPaymentByAuthorityAsync(string authority)
         {
-            throw new NotImplementedException();
+            return await _context.Payments.FirstOrDefaultAsync(p => p.AuthorityCode == authority);
         }
 
-        public Task UpdatePaymentStatusAsync(string authority, string status, string transactionId)
+        public async Task UpdatePaymentStatusAsync(string authority, PaymentStatus status, string transactionId)
         {
-            throw new NotImplementedException();
+            Payment? payment = await _context.Payments.FirstOrDefaultAsync(p => p.AuthorityCode == authority);
+            if (payment == null) return;
+
+            payment.PaymentStatus = status;
+            payment.StatusId = status.Id;
+            payment.TransactionId = transactionId;
+            await _context.SaveChangesAsync();
         }
 
 
         //Payment Status
 
 
-        public Task<PaymentStatus> CreatePaymentStatusAsync(PaymentStatus paymentStatus)
+        public async Task<PaymentStatus> CreatePaymentStatusAsync(PaymentStatus paymentStatus)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(paymentStatus);
+            await _context.SaveChangesAsync();
+            return paymentStatus;
         }
 
-        public Task<PaymentStatus> DeletePaymentStatusAsync(int id)
+        public async Task<PaymentStatus?> DeletePaymentStatusAsync(int id)
         {
-            throw new NotImplementedException();
+            PaymentStatus? paymentStatus = await _context.PaymentStatuses.FindAsync(id);
+            if (paymentStatus != null)
+            {
+                _context.PaymentStatuses.Remove(paymentStatus);
+                await _context.SaveChangesAsync();
+            }
+            return paymentStatus;
         }
 
-        public Task<List<PaymentStatus>> GetAllPaymentStatusesAsync()
+        public async Task<List<PaymentStatus>> GetAllPaymentStatusesAsync()
         {
-            throw new NotImplementedException();
+            return await _context.PaymentStatuses.ToListAsync();
+
         }
 
 
-        public Task<PaymentStatus> GetPaymentStatusByNameAsync(string statusName)
+        public async Task<PaymentStatus?> GetPaymentStatusByNameAsync(string statusName)
         {
-            throw new NotImplementedException();
+            return await _context.PaymentStatuses.FirstOrDefaultAsync(s => s.Name.ToLower() == statusName.ToLower());
         }
     }
 }
