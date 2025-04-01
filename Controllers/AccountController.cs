@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using MainApi.Dtos.Account;
+using MainApi.Dtos.Account.ForgotPassword;
 using MainApi.Interfaces;
 using MainApi.Models;
 using MainApi.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,12 +24,14 @@ namespace MainApi.Controllers
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IUserRepository _userRepository;
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager, IUserRepository userRepository)
+        private readonly IEmailService _emailService;
+        public AccountController(UserManager<AppUser> userManager, IEmailService emailService, ITokenService tokenService, SignInManager<AppUser> signInManager, IUserRepository userRepository)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
             _userRepository = userRepository;
+            _emailService = emailService;
         }
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterDto registerDto)
@@ -145,6 +150,47 @@ namespace MainApi.Controllers
                     Token = _tokenService.CreateToken(user, role)
                 }
             );
+        }
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto forgotPasswordRequest)
+        {
+            AppUser? appUser = await _userManager.FindByEmailAsync(forgotPasswordRequest.Email);
+            if (appUser == null) return BadRequest("Email is invalid");
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(appUser);
+            string resetLink = $"https://yourwebsite.com/reset-password?email={forgotPasswordRequest.Email}&token={WebUtility.UrlEncode(token)}";
+
+
+
+            bool emailSent = await _emailService.SendPasswordResetEmail(new SendPasswordResetEmailDto()
+            {
+                ResetLink = resetLink,
+                ToEmail = forgotPasswordRequest.Email
+            });
+
+            if (!emailSent)
+            {
+                return StatusCode(500, "Failed to send email.");
+            }
+
+            return Ok("Password reset link sent to your email.");
+        }
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto resetPasswordRequest)
+        {
+            AppUser? user = await _userManager.FindByEmailAsync(resetPasswordRequest.Email);
+            if (user == null) return BadRequest("Invalid email.");
+
+            if (resetPasswordRequest.NewPassword != resetPasswordRequest.RepeatPassword) return BadRequest("The passwords are different");
+
+            // Reset the password using the token
+            var result = await _userManager.ResetPasswordAsync(user, WebUtility.UrlDecode(resetPasswordRequest.Token), resetPasswordRequest.NewPassword);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok("Password has been reset successfully.");
         }
     }
 }

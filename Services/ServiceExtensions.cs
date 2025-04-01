@@ -68,7 +68,8 @@ namespace MainApi.Services
                 option.Password.RequireUppercase = true;
                 option.Password.RequiredLength = 8;
                 option.Password.RequiredUniqueChars = 0;
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+             .AddDefaultTokenProviders();
         }
         public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration config)
         {
@@ -111,6 +112,8 @@ namespace MainApi.Services
             services.AddScoped<IXmlService, XmlService>();
             services.AddScoped<ISKUService, SKUService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IEmailService, EmailService>();
+
 
             //Repositories
             services.AddScoped<IProductRepository, ProductRepository>();
