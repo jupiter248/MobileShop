@@ -130,12 +130,15 @@ namespace MainApi.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(loginDto);
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == (loginDto.Username ?? String.Empty).ToLower());
+            AppUser? user = await _userManager.FindByNameAsync(loginDto.Username);
 
             if (user == null)
-                return Unauthorized("Invalid username!");
+                user = await _userManager.FindByEmailAsync(loginDto.Username);
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password ?? String.Empty, false);
+            if (user == null)
+                return Unauthorized("username or email does not exists");
+
+            var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, loginDto.RememberMe, false);
 
             if (result.Succeeded == false)
                 return Unauthorized("Password does not match with the user");

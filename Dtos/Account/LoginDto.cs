@@ -9,10 +9,15 @@ namespace MainApi.Dtos.Account
     public class LoginDto
     {
         [Required]
-        public string? Username { get; set; }
+        [Display(Name = "Email or Username")]
+        public required string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        public string? Password { get; set; }
+        public required string Password { get; set; }
+
+        [Display(Name = "Remember Me")]
+        public bool RememberMe { get; set; }
+
     }
 }
