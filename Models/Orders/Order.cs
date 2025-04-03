@@ -26,7 +26,5 @@ namespace MainApi.Models.Orders
         public List<OrderDiscount> OrderDiscounts { get; set; } = new List<OrderDiscount>();
         public List<OrderShipment> OrderShipment { get; set; } = new List<OrderShipment>();
         public List<Payment> Payments { get; set; } = new List<Payment>();
-
-
     }
 }

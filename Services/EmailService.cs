@@ -41,8 +41,9 @@ namespace MainApi.Services
             {
                 From = new MailAddress(_fromEmail, _fromName),
                 Subject = "Password Reset Request",
-                Body = $"Click here to reset your password: {passwordResetEmailDto.ResetLink}",
-                IsBodyHtml = true
+                Body = $"This is your token to change your password \n {passwordResetEmailDto.ResetLink}",
+                IsBodyHtml = false
+                // Body = $"Click here to reset your password: <a href='{passwordResetEmailDto.ResetLink}'>Reset Password</a>",
             };
             mailMessage.To.Add(passwordResetEmailDto.ToEmail);
 

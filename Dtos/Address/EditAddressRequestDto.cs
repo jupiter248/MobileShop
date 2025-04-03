@@ -10,7 +10,7 @@ namespace MainApi.Dtos.Address
     {
         [Required]
         [MaxLength(25, ErrorMessage = "Country name can not be over 25 characters")]
-        public string Country { get; set; }
+        public required string Country { get; set; }
         [Required]
         [MaxLength(25, ErrorMessage = "City name can not be over 25 characters")]
         public required string City { get; set; }
