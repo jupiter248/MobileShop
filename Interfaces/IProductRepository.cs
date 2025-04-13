@@ -1,4 +1,5 @@
 using System;
+using MainApi.Dtos.Filtering;
 using MainApi.Models;
 using MainApi.Models.Products;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ namespace MainApi.Interfaces;
 
 public interface IProductRepository
 {
-    Task<List<Product>?> GetAllProductsAsync();
+    Task<List<Product>?> GetAllProductsAsync(ProductSortingDto sortingDto, ProductFilteringDto filteringDto);
     Task<Product?> GetProductByIdAsync(int productId);
     Task<Product?> AddProductAsync(Product product);
     Task<Product?> RemoveProductAsync(int productId);

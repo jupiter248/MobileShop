@@ -1,5 +1,6 @@
 using System;
 using MainApi.Data;
+using MainApi.Dtos.Filtering;
 using MainApi.Interfaces;
 using MainApi.Models;
 using MainApi.Models.Products;
@@ -24,10 +25,62 @@ public class ProductRepository : IProductRepository
         return products;
     }
 
-    public async Task<List<Product>?> GetAllProductsAsync()
+    public async Task<List<Product>?> GetAllProductsAsync(ProductSortingDto sortingDto, ProductFilteringDto filteringDto)
     {
-        var products = await _context.Products.Include(i => i.Images).Include(c => c.Comments).ThenInclude(u => u.AppUser).ToListAsync();
-        return products;
+        var products = _context.Products.Include(s => s.Product_SpecificationAttribute_Mappings).ThenInclude(o => o.SpecificationAttributeOption).Include(i => i.Images).Include(c => c.Comments).ThenInclude(u => u.AppUser).Include(p => p.Category).AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(filteringDto.Name))
+        {
+            products = products.Where(p => p.ProductName.ToLower().Contains(filteringDto.Name.ToLower().Replace(" ", "")));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filteringDto.Category))
+        {
+            products = products.Where(p => p.Category.CategoryName.ToLower().Contains(filteringDto.Category.ToLower()));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filteringDto.Brand))
+        {
+            products = products.Where(p => p.Brand.ToLower().Contains(filteringDto.Brand.ToLower()));
+        }
+
+        if (filteringDto.MinPrice.HasValue)
+        {
+            products = products.Where(p => p.Price >= filteringDto.MinPrice.Value);
+        }
+
+        if (filteringDto.MaxPrice.HasValue)
+        {
+            products = products.Where(p => p.Price <= filteringDto.MaxPrice.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(filteringDto.BatteryCapacity))
+        {
+            products = products
+                .Where(p => p.Product_SpecificationAttribute_Mappings
+                .Any(mapping => mapping.SpecificationAttributeOption.Name.ToLower().Replace(" ", "") == filteringDto.BatteryCapacity.ToLower().Replace(" ", "")));
+        }
+
+
+        if (sortingDto.NewestArrivals)
+        {
+            products = products.OrderByDescending(p => p.Model);
+        }
+
+        if (sortingDto.HighestPrice)
+        {
+            products = products.OrderByDescending(p => p.Price);
+        }
+
+        if (sortingDto.LowestPrice)
+        {
+            products = products.OrderBy(p => p.Price);
+        }
+
+
+        var skipNumber = (filteringDto.PageNumber - 1) * filteringDto.PageSize;
+
+        return await products.Skip(skipNumber).Take(filteringDto.PageSize).ToListAsync();
     }
 
     public async Task<Product?> GetProductByIdAsync(int productId)

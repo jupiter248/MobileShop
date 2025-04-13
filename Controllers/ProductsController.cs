@@ -1,3 +1,4 @@
+using MainApi.Dtos.Filtering;
 using MainApi.Dtos.Products;
 using MainApi.Extensions;
 using MainApi.Interfaces;
@@ -22,9 +23,9 @@ public class ProductController : ControllerBase
         _userManager = userManager;
     }
     [HttpGet]
-    public async Task<IActionResult> GetAllProduct()
+    public async Task<IActionResult> GetAllProduct([FromQuery] ProductSortingDto sortingDto, [FromQuery] ProductFilteringDto filteringDto)
     {
-        List<Product>? products = await _productRepo.GetAllProductsAsync();
+        List<Product>? products = await _productRepo.GetAllProductsAsync(sortingDto, filteringDto);
         if (products == null)
         {
             return BadRequest();
