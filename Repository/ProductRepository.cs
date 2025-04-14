@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using MainApi.Data;
 using MainApi.Dtos.Filtering;
 using MainApi.Interfaces;
@@ -54,13 +55,30 @@ public class ProductRepository : IProductRepository
             products = products.Where(p => p.Price <= filteringDto.MaxPrice.Value);
         }
 
+
         if (!string.IsNullOrWhiteSpace(filteringDto.BatteryCapacity))
         {
-            products = products
-                .Where(p => p.Product_SpecificationAttribute_Mappings
-                .Any(mapping => mapping.SpecificationAttributeOption.Name.ToLower().Replace(" ", "") == filteringDto.BatteryCapacity.ToLower().Replace(" ", "")));
-        }
+            var matches = Regex.Matches(filteringDto.BatteryCapacity, @"\d+");
+            if (matches.Count >= 2)
+            {
+                int min = int.Parse(matches[0].Value);
+                int max = int.Parse(matches[1].Value);
+                products = products
+                    .AsEnumerable()
+                    .Where(p => p.Product_SpecificationAttribute_Mappings
+                        .Any(mapping =>
+                        {
+                            var match = Regex.Match(mapping.SpecificationAttributeOption.Name ?? "", @"\d+");
+                            if (match.Success && int.TryParse(match.Value, out int value))
+                            {
+                                return value >= min && value <= max;
+                            }
+                            return false;
+                        }))
+                    .AsQueryable();
+            }
 
+        }
 
         if (sortingDto.NewestArrivals)
         {
@@ -80,7 +98,7 @@ public class ProductRepository : IProductRepository
 
         var skipNumber = (filteringDto.PageNumber - 1) * filteringDto.PageSize;
 
-        return await products.Skip(skipNumber).Take(filteringDto.PageSize).ToListAsync();
+        return products.Skip(skipNumber).Take(filteringDto.PageSize).ToList();
     }
 
     public async Task<Product?> GetProductByIdAsync(int productId)
