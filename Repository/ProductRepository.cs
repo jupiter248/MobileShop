@@ -107,6 +107,34 @@ public class ProductRepository : IProductRepository
                 .AsQueryable();
             }
         }
+        if (!string.IsNullOrWhiteSpace(filteringDto.RAMSize))
+        {
+            var matches = Regex.Matches(filteringDto.RAMSize, @"\d+");
+            if (matches.Count == 2)
+            {
+                int min = int.Parse(matches[0].Value);
+                int max = int.Parse(matches[1].Value);
+                products = products
+                .AsEnumerable()
+                .Where(c => c.ProductCombination
+                .Any(c => c.CombinationAttributes
+                    .Any(combination =>
+                    {
+                        if (combination.AttributeValue.ProductAttribute.Name.ToLower().Contains("ram"))
+                        {
+                            var match = Regex.Match(combination.AttributeValue.Name ?? "", @"\d+");
+                            if (match.Success)
+                            {
+                                return int.Parse(match.Value) >= min && int.Parse(match.Value) <= max;
+                            }
+                            return false;
+                        }
+                        return false;
+                    }
+                )))
+                .AsQueryable();
+            }
+        }
 
         if (sortingDto.NewestArrivals)
         {
