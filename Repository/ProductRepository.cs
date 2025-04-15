@@ -28,7 +28,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<List<Product>?> GetAllProductsAsync(ProductSortingDto sortingDto, ProductFilteringDto filteringDto)
     {
-        var products = _context.Products.Include(s => s.Product_SpecificationAttribute_Mappings).ThenInclude(o => o.SpecificationAttributeOption).Include(i => i.Images).Include(c => c.Comments).ThenInclude(u => u.AppUser).Include(p => p.Category).AsQueryable();
+        var products = _context.Products.Include(a => a.ProductCombination).ThenInclude(a => a.CombinationAttributes).ThenInclude(a => a.AttributeValue).ThenInclude(a => a.ProductAttribute).Include(s => s.Product_SpecificationAttribute_Mappings).ThenInclude(o => o.SpecificationAttributeOption).Include(i => i.Images).Include(c => c.Comments).ThenInclude(u => u.AppUser).Include(p => p.Category).AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(filteringDto.Name))
         {
@@ -59,7 +59,7 @@ public class ProductRepository : IProductRepository
         if (!string.IsNullOrWhiteSpace(filteringDto.BatteryCapacity))
         {
             var matches = Regex.Matches(filteringDto.BatteryCapacity, @"\d+");
-            if (matches.Count >= 2)
+            if (matches.Count == 2)
             {
                 int min = int.Parse(matches[0].Value);
                 int max = int.Parse(matches[1].Value);
@@ -78,6 +78,34 @@ public class ProductRepository : IProductRepository
                     .AsQueryable();
             }
 
+        }
+        if (!string.IsNullOrWhiteSpace(filteringDto.StorageCapacity))
+        {
+            var matches = Regex.Matches(filteringDto.StorageCapacity, @"\d+");
+            if (matches.Count == 2)
+            {
+                int min = int.Parse(matches[0].Value);
+                int max = int.Parse(matches[1].Value);
+                products = products
+                .AsEnumerable()
+                .Where(c => c.ProductCombination
+                .Any(c => c.CombinationAttributes
+                    .Any(combination =>
+                    {
+                        if (combination.AttributeValue.ProductAttribute.Name.ToLower().Contains("storage"))
+                        {
+                            var match = Regex.Match(combination.AttributeValue.Name ?? "", @"\d+");
+                            if (match.Success)
+                            {
+                                return int.Parse(match.Value) >= min && int.Parse(match.Value) <= max;
+                            }
+                            return false;
+                        }
+                        return false;
+                    }
+                )))
+                .AsQueryable();
+            }
         }
 
         if (sortingDto.NewestArrivals)

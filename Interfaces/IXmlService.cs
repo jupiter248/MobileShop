@@ -10,5 +10,6 @@ namespace MainApi.Interfaces
     public interface IXmlService
     {
         string GenerateAttributeXml(List<PredefinedProductAttributeValue> values);
+        List<PredefinedProductAttributeValue> ConvertToAttributeValueFromXml(string attributesXml);
     }
 }

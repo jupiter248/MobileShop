@@ -11,6 +11,7 @@ namespace MainApi.Services
 {
     public class XmlService : IXmlService
     {
+
         public string GenerateAttributeXml(List<PredefinedProductAttributeValue> values)
         {
             Dictionary<string, string> attributes = new Dictionary<string, string>();
@@ -25,6 +26,11 @@ namespace MainApi.Services
                 serializer.Serialize(writer, new XmlAttributeDto(attributes));
                 return writer.ToString();
             }
+        }
+        public List<PredefinedProductAttributeValue> ConvertToAttributeValueFromXml(string attributesXml)
+        {
+            List<PredefinedProductAttributeValue> predefinedProductAttributeValues = new List<PredefinedProductAttributeValue>();
+            return predefinedProductAttributeValues;
         }
     }
 }
