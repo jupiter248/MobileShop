@@ -1,4 +1,5 @@
 
+using MainApi.Interfaces;
 using MainApi.Models.Products;
 using MainApi.Models.Products.ProductAttributes;
 using MainApi.Models.Products.SpecificationAttributes;
@@ -61,7 +62,7 @@ namespace MainApi.Data
                 Address? address = new Address()
                 {
                     appUser = appUser1,
-                    UserId = appUser.Id,
+                    UserId = appUser1.Id,
                     Country = "Iran",
                     City = "Mashhad",
                     State = "Tabadkan",
@@ -100,12 +101,12 @@ namespace MainApi.Data
                 {
                     new Category
                     {
-                        CategoryName = "Mobiles",
+                        CategoryName = "موبایل",
                         Description = "TestTestTestTestTestTest"
                     },
                     new Category
                     {
-                        CategoryName = "Chargers",
+                        CategoryName = "شارژر",
                         Description = "TestTestTestTestTest"
                     }
                 };
@@ -124,6 +125,11 @@ namespace MainApi.Data
                     {
                         Name = "Storage",
                         Description = "The storage of device"
+                    },
+                    new ProductAttribute
+                    {
+                        Name = "Color",
+                        Description = "The storage of device"
                     }
                 };
                 _context.ProductAttributes.AddRange(productAttributes);
@@ -140,9 +146,37 @@ namespace MainApi.Data
                     },
                     new PredefinedProductAttributeValue
                     {
+                        Name = "8GB",
+                        ProductAttribute = productAttributes.FirstOrDefault(a => a.Name == "RAM"),
+                        ProductAttributeId = productAttributes.Where(a => a.Name == "RAM")
+                                             .Select(a => a.Id).FirstOrDefault()
+                    },
+                    new PredefinedProductAttributeValue
+                    {
                         Name = "128GB",
                         ProductAttribute = productAttributes.FirstOrDefault(a => a.Name == "Storage"),
                         ProductAttributeId = productAttributes.Where(a => a.Name == "Storage")
+                                             .Select(a => a.Id).FirstOrDefault()
+                    },
+                    new PredefinedProductAttributeValue
+                    {
+                        Name = "64GB",
+                        ProductAttribute = productAttributes.FirstOrDefault(a => a.Name == "Storage"),
+                        ProductAttributeId = productAttributes.Where(a => a.Name == "Storage")
+                                             .Select(a => a.Id).FirstOrDefault()
+                    },
+                    new PredefinedProductAttributeValue
+                    {
+                        Name = "Black",
+                        ProductAttribute = productAttributes.FirstOrDefault(a => a.Name == "Color"),
+                        ProductAttributeId = productAttributes.Where(a => a.Name == "Color")
+                                             .Select(a => a.Id).FirstOrDefault()
+                    },
+                    new PredefinedProductAttributeValue
+                    {
+                        Name = "Blue",
+                        ProductAttribute = productAttributes.FirstOrDefault(a => a.Name == "Color"),
+                        ProductAttributeId = productAttributes.Where(a => a.Name == "Color")
                                              .Select(a => a.Id).FirstOrDefault()
                     }
                 };
@@ -211,8 +245,8 @@ namespace MainApi.Data
                         Quantity = 5,
                         Description = "Test Test Test Test Test",
                         Price = 125000000,
-                        Category = categories.FirstOrDefault(c => c.CategoryName == "Mobiles"),
-                        CategoryId = categories.Where(item => item.CategoryName == "Mobiles")
+                        Category = categories.FirstOrDefault(c => c.CategoryName == "موبایل"),
+                        CategoryId = categories.Where(item => item.CategoryName == "موبایل")
                         .Select(item => (int)item.Id)
                         .FirstOrDefault()
                     },
@@ -224,13 +258,130 @@ namespace MainApi.Data
                         Quantity = 2,
                         Description = "Test Test Test Test Test",
                         Price = 50000000,
-                        Category = categories.FirstOrDefault(c => c.CategoryName == "Mobiles"),
-                        CategoryId = categories.Where(item => item.CategoryName == "Mobiles")
+                        Category = categories.FirstOrDefault(c => c.CategoryName == "موبایل"),
+                        CategoryId = categories.Where(item => item.CategoryName == "موبایل")
                         .Select(item => (int)item.Id)
                         .FirstOrDefault()
                     }
                 };
+                _context.Products.AddRange(products);
+                _context.SaveChangesAsync();
 
+                //Add Product Attribute Mapping
+                List<Product_ProductAttribute_Mapping> product_ProductAttribute_Mappings = new List<Product_ProductAttribute_Mapping>
+                {
+                    new Product_ProductAttribute_Mapping
+                    {
+                        Product = products[0],
+                        ProductId = products[0].Id,
+                        ProductAttribute = productAttributes.FirstOrDefault(a => a.Name == "RAM"),
+                        ProductAttributeId = productAttributes.FirstOrDefault(a => a.Name == "RAM").Id
+                    },
+                    new Product_ProductAttribute_Mapping
+                    {
+                        Product = products[0],
+                        ProductId = products[0].Id,
+                        ProductAttribute = productAttributes.FirstOrDefault(a => a.Name == "Storage"),
+                        ProductAttributeId = productAttributes.FirstOrDefault(a => a.Name == "Storage").Id
+                    },
+                    new Product_ProductAttribute_Mapping
+                    {
+                        Product = products[0],
+                        ProductId = products[0].Id,
+                        ProductAttribute = productAttributes.FirstOrDefault(a => a.Name == "Color"),
+                        ProductAttributeId = productAttributes.FirstOrDefault(a => a.Name == "Color").Id
+                    }
+                };
+                _context.ProductAttributeMappings.AddRange(product_ProductAttribute_Mappings);
+                _context.SaveChangesAsync();
+                //Add Product Combination Attribute
+                List<ProductCombination> productCombinations = new List<ProductCombination>
+                {
+                    new ProductCombination
+                    {
+                        FinalPrice = 130000000,
+                        Product = products[0],
+                        ProductId = products[0].Id,
+                        Quantity = 5,
+                        CombinationAttributes =  new List<ProductCombinationAttribute>
+                        {
+                            new ProductCombinationAttribute
+                            {
+                                AttributeValueId = predefinedProductAttributeValues[0].Id,
+                                AttributeValue = predefinedProductAttributeValues[0],
+                            },
+                            new ProductCombinationAttribute
+                            {
+                                AttributeValueId = predefinedProductAttributeValues[4].Id,
+                                AttributeValue = predefinedProductAttributeValues[4],
+                            }
+                        },
+                        Sku = "",
+                    },
+                    new ProductCombination
+                    {
+                        FinalPrice = 130000000,
+                        Product = products[0],
+                        ProductId = products[0].Id,
+                        Quantity = 5,
+                        CombinationAttributes =  new List<ProductCombinationAttribute>
+                        {
+                            new ProductCombinationAttribute
+                            {
+                                AttributeValueId = predefinedProductAttributeValues[1].Id,
+                                AttributeValue = predefinedProductAttributeValues[1],
+                            },
+                            new ProductCombinationAttribute
+                            {
+                                AttributeValueId = predefinedProductAttributeValues[5].Id,
+                                AttributeValue = predefinedProductAttributeValues[5],
+                            }
+                        },
+                        Sku = "",
+                    },
+                    new ProductCombination
+                    {
+                        FinalPrice = 140000000,
+                        Product = products[1],
+                        ProductId = products[1].Id,
+                        Quantity = 5,
+                        CombinationAttributes =  new List<ProductCombinationAttribute>
+                        {
+                            new ProductCombinationAttribute
+                            {
+                                AttributeValueId = predefinedProductAttributeValues[1].Id,
+                                AttributeValue = predefinedProductAttributeValues[1],
+                            },
+                            new ProductCombinationAttribute
+                            {
+                                AttributeValueId = predefinedProductAttributeValues[5].Id,
+                                AttributeValue = predefinedProductAttributeValues[5],
+                            }
+                        },
+                        Sku = "",
+                    },
+                    new ProductCombination
+                    {
+                        FinalPrice = 150000000,
+                        Product = products[1],
+                        ProductId = products[1].Id,
+                        Quantity = 4,
+                        CombinationAttributes =  new List<ProductCombinationAttribute>
+                        {
+                            new ProductCombinationAttribute
+                            {
+                                AttributeValueId = predefinedProductAttributeValues[2].Id,
+                                AttributeValue = predefinedProductAttributeValues[2],
+                            },
+                            new ProductCombinationAttribute
+                            {
+                                AttributeValueId = predefinedProductAttributeValues[5].Id,
+                                AttributeValue = predefinedProductAttributeValues[5],
+                            }
+                        },
+                        Sku = "",
+                    }
+                };
 
                 transaction.Commit();
                 Console.WriteLine("Database has been seeded successfully.");

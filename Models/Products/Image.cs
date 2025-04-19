@@ -14,7 +14,7 @@ namespace MainApi.Models.Products
         public string Url { get; set; } = string.Empty;
         public required int ProductId { get; set; }
         public Product? Product { get; set; }
-        public Boolean IsPrimary { get; set; }
+        public bool IsPrimary { get; set; }
         public DateTime DateAdded { get; set; } = DateTime.Now;
     }
 }
