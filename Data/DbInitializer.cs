@@ -82,7 +82,7 @@ namespace MainApi.Data
                 System.Console.WriteLine($"Error during seeding: {ex.Message}");
             }
         }
-        public static void ProductInitializer(ApplicationDbContext _context)
+        public static void ProductInitializer(ApplicationDbContext _context, ISKUService sKUService)
         {
             // Ensure the database is created
             _context.Database.EnsureCreated();
@@ -316,7 +316,11 @@ namespace MainApi.Data
                                 AttributeValue = predefinedProductAttributeValues[4],
                             }
                         },
-                        Sku = "",
+                        Sku = sKUService.GenerateSKU(products[0].ProductName , new List<string>
+                        {
+                            predefinedProductAttributeValues[0].Name,
+                            predefinedProductAttributeValues[4].Name
+                        }),
                     },
                     new ProductCombination
                     {
@@ -337,7 +341,11 @@ namespace MainApi.Data
                                 AttributeValue = predefinedProductAttributeValues[5],
                             }
                         },
-                        Sku = "",
+                        Sku = sKUService.GenerateSKU(products[0].ProductName , new List<string>
+                        {
+                            predefinedProductAttributeValues[1].Name,
+                            predefinedProductAttributeValues[5].Name
+                        }),
                     },
                     new ProductCombination
                     {
@@ -358,7 +366,11 @@ namespace MainApi.Data
                                 AttributeValue = predefinedProductAttributeValues[5],
                             }
                         },
-                        Sku = "",
+                        Sku = sKUService.GenerateSKU(products[1].ProductName , new List<string>
+                        {
+                            predefinedProductAttributeValues[1].Name,
+                            predefinedProductAttributeValues[5].Name
+                        }),
                     },
                     new ProductCombination
                     {
@@ -379,9 +391,51 @@ namespace MainApi.Data
                                 AttributeValue = predefinedProductAttributeValues[5],
                             }
                         },
-                        Sku = "",
+                        Sku = sKUService.GenerateSKU(products[1].ProductName , new List<string>
+                        {
+                            predefinedProductAttributeValues[2].Name,
+                            predefinedProductAttributeValues[5].Name
+                        }),
                     }
                 };
+                _context.ProductCombinations.AddRange(productCombinations);
+                _context.SaveChangesAsync();
+
+
+                //Add  Product_SpecificationAttribute_Mapping
+
+                List<Product_SpecificationAttribute_Mapping> product_Specifications = new List<Product_SpecificationAttribute_Mapping>
+                {
+                    new Product_SpecificationAttribute_Mapping
+                    {
+                        Product = products[0],
+                        ProductId = products[0].Id,
+                        AllowFiltering = true,
+                        ShowOnProductPage = true,
+                        SpecificationAttributeOption = specificationAttributeOptions.FirstOrDefault(o => o.Name == "6.1Inc"),
+                        SpecificationAttributeOptionId = specificationAttributeOptions.FirstOrDefault(o => o.Name == "6.1Inc").Id,
+                    },
+                    new Product_SpecificationAttribute_Mapping
+                    {
+                        Product = products[0],
+                        ProductId = products[0].Id,
+                        AllowFiltering = true,
+                        ShowOnProductPage = true,
+                        SpecificationAttributeOption = specificationAttributeOptions.FirstOrDefault(o => o.Name == "5000MA"),
+                        SpecificationAttributeOptionId = specificationAttributeOptions.FirstOrDefault(o => o.Name == "5000MA").Id,
+                    },
+                    new Product_SpecificationAttribute_Mapping
+                    {
+                        Product = products[0],
+                        ProductId = products[0].Id,
+                        AllowFiltering = true,
+                        ShowOnProductPage = true,
+                        SpecificationAttributeOption = specificationAttributeOptions.FirstOrDefault(o => o.Name == "SnapDragon"),
+                        SpecificationAttributeOptionId = specificationAttributeOptions.FirstOrDefault(o => o.Name == "SnapDragon").Id,
+                    }
+                };
+                _context.SpecificationAttributeMappings.AddRange(product_Specifications);
+                _context.SaveChangesAsync();
 
                 transaction.Commit();
                 Console.WriteLine("Database has been seeded successfully.");
