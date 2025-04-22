@@ -1,5 +1,7 @@
 
 using MainApi.Interfaces;
+using MainApi.Models.Orders;
+using MainApi.Models.Payments;
 using MainApi.Models.Products;
 using MainApi.Models.Products.ProductAttributes;
 using MainApi.Models.Products.SpecificationAttributes;
@@ -88,7 +90,10 @@ namespace MainApi.Data
             _context.Database.EnsureCreated();
 
             // Check if the database has been seeded
-            if (_context.Products.Any() || _context.Categories.Any() || _context.PredefinedProductAttributeValues.Any() || _context.ProductAttributes.Any())
+            if (_context.Products.Any() || _context.Categories.Any() || _context.PredefinedProductAttributeValues.Any() || _context.ProductAttributes.Any()
+            || _context.ProductCombinations.Any() || _context.ProductCombinationsAttribute.Any()
+            || _context.SpecificationAttributes.Any() || _context.SpecificationAttributeOptions.Any() || _context.SpecificationAttributeMappings.Any()
+            )
             {
                 Console.WriteLine("Database already seeded.");
                 return;
@@ -435,6 +440,147 @@ namespace MainApi.Data
                     }
                 };
                 _context.SpecificationAttributeMappings.AddRange(product_Specifications);
+                _context.SaveChangesAsync();
+
+                transaction.Commit();
+                Console.WriteLine("Database has been seeded successfully.");
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                System.Console.WriteLine($"Error during seeding: {ex.Message}");
+            }
+        }
+        public static void StatusInitializer(ApplicationDbContext _context)
+        {
+            // Ensure the database is created
+            _context.Database.EnsureCreated();
+
+            // Check if the database has been seeded
+            if (_context.ShippingStatuses.Any() || _context.OrderStatuses.Any() || _context.PaymentStatuses.Any())
+            {
+                Console.WriteLine("Database already seeded.");
+                return;
+            }
+            using var transaction = _context.Database.BeginTransaction();
+            try
+            {
+                List<OrderStatus> orderStatuses = new List<OrderStatus>
+                {
+                    new OrderStatus
+                    {
+                        StatusName = "Pending",
+                        Description = "Order placed but not yet processed"
+                    },
+                    new OrderStatus
+                    {
+                        StatusName = "Processing",
+                        Description = "Order is being prepared"
+                    },
+                    new OrderStatus
+                    {
+                        StatusName = "Complete",
+                        Description = "Order fully processed and shipped"
+                    },
+                    new OrderStatus
+                    {
+                        StatusName = "Cancelled	",
+                        Description = "Order was cancelled"
+                    },
+                    new OrderStatus
+                    {
+                        StatusName = "OnHold",
+                        Description = "Order is temporarily on hold"
+                    },
+                    new OrderStatus
+                    {
+                        StatusName = "Failed",
+                        Description = "Order failed due to some error"
+                    },
+                    new OrderStatus
+                    {
+                        StatusName = "Refunded",
+                        Description = "Customer was refunded"
+                    }
+                };
+                _context.OrderStatuses.AddRange(orderStatuses);
+                _context.SaveChangesAsync();
+
+                List<PaymentStatus> paymentStatuses = new List<PaymentStatus>
+                {
+                    new PaymentStatus
+                    {
+                        Name = "Pending",
+                        Description = "Payment has not been completed yet"
+                    },
+                    new PaymentStatus
+                    {
+                        Name = "Authorized",
+                        Description = "Payment authorized but not captured"
+                    },
+                    new PaymentStatus
+                    {
+                        Name = "Paid",
+                        Description = "Payment was successfully completed"
+                    },
+                    new PaymentStatus
+                    {
+                        Name = "PartiallyRefunded",
+                        Description = "Part of the amount was refunded"
+                    },
+                    new PaymentStatus
+                    {
+                        Name = "Refunded",
+                        Description = "Full amount was refunded"
+                    },
+                    new PaymentStatus
+                    {
+                        Name = "Voided",
+                        Description = "Payment was voided before completion"
+                    },
+                    new PaymentStatus
+                    {
+                        Name = "Failed",
+                        Description = "Payment attempt failed"
+                    }
+                };
+                _context.PaymentStatuses.AddRange(paymentStatuses);
+                _context.SaveChangesAsync();
+
+                List<ShippingStatus> shippingStatuses = new List<ShippingStatus>
+                {
+                    new ShippingStatus
+                    {
+                        Name = "NotShipped",
+                        Description = "Item not yet shipped"
+                    },
+                    new ShippingStatus
+                    {
+                        Name = "PartiallyShipped",
+                        Description = "Some items shipped, others not"
+                    },
+                    new ShippingStatus
+                    {
+                        Name = "Shipped",
+                        Description = "Item has been shipped"
+                    },
+                    new ShippingStatus
+                    {
+                        Name = "Delivered",
+                        Description = "Item delivered to customer"
+                    },
+                    new ShippingStatus
+                    {
+                        Name = "Returned",
+                        Description = "Item returned by customer"
+                    },
+                    new ShippingStatus
+                    {
+                        Name = "Cancelled",
+                        Description = "Shipment cancelled"
+                    }
+                };
+                _context.ShippingStatuses.AddRange(shippingStatuses);
                 _context.SaveChangesAsync();
 
                 transaction.Commit();
