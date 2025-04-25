@@ -130,6 +130,7 @@ namespace MainApi.Services
             services.AddScoped<IOrderShipmentRepository, OrderShipmentRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
 
+
         }
     }
 }

@@ -7,15 +7,17 @@ using MainApi.Models.Products.ProductAttributes;
 using MainApi.Models.Products.SpecificationAttributes;
 using MainApi.Models.User;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApi.Data
 {
     public static class DbInitializer
     {
-        public static void UserInitializer(ApplicationDbContext _context, UserManager<AppUser> _userManager)
+        public static async Task UserInitializerAsync(ApplicationDbContext _context, UserManager<AppUser> _userManager, RoleManager<IdentityRole> _roleManager)
         {
             // Ensure the database is created
             _context.Database.EnsureCreated();
+            _context.Database.Migrate();
 
             // Check if the database has been seeded
             if (_context.Roles.Any() || _context.Users.Any() || _context.Addresses.Any())
@@ -27,38 +29,30 @@ namespace MainApi.Data
             try
             {
                 // Add roles
-                List<IdentityRole> roles = new List<IdentityRole>
+                var roles = new[] { "Admin", "User" };
+                foreach (var role in roles)
                 {
-                    new IdentityRole
+                    if (!await _roleManager.RoleExistsAsync(role))
                     {
-                        Name = "Admin",
-                        NormalizedName = "ADMIN"
-                    },
-                    new IdentityRole
-                    {
-                        Name = "User",
-                        NormalizedName = "USER"
+                        await _roleManager.CreateAsync(new IdentityRole(role));
                     }
-                };
-                _context.Roles.AddRangeAsync(roles);
-                _context.SaveChangesAsync();
-
+                }
                 //Add a user and an admin
                 AppUser appUser = new AppUser()
                 {
                     UserName = "Admin",
                     Email = "mmazimifar7@gmail.com"
                 };
-                _userManager.CreateAsync(appUser, "@Admin248" ?? string.Empty);
-                _userManager.AddToRoleAsync(appUser, "Admin");
+                await _userManager.CreateAsync(appUser, "@Admin248" ?? string.Empty);
+                await _userManager.AddToRoleAsync(appUser, "Admin");
 
                 AppUser appUser1 = new AppUser()
                 {
                     UserName = "User",
                     Email = "User@gmail.com",
                 };
-                _userManager.CreateAsync(appUser, "@User248" ?? string.Empty);
-                _userManager.AddToRoleAsync(appUser, "User");
+                await _userManager.CreateAsync(appUser1, "@User248" ?? string.Empty);
+                await _userManager.AddToRoleAsync(appUser1, "User");
 
                 // Address
                 Address? address = new Address()
@@ -72,9 +66,10 @@ namespace MainApi.Data
                     Plate = "22",
                     PostalCode = "123456987547",
                 };
-                _context.Addresses.Add(address);
-                _context.SaveChangesAsync();
+                await _context.Addresses.AddAsync(address);
 
+
+                await _context.SaveChangesAsync();
                 transaction.Commit();
                 Console.WriteLine("Database has been seeded successfully.");
             }
@@ -84,10 +79,12 @@ namespace MainApi.Data
                 System.Console.WriteLine($"Error during seeding: {ex.Message}");
             }
         }
-        public static void ProductInitializer(ApplicationDbContext _context, ISKUService sKUService)
+        public static async Task ProductInitializerAsync(ApplicationDbContext _context, ISKUService sKUService)
         {
             // Ensure the database is created
             _context.Database.EnsureCreated();
+
+
 
             // Check if the database has been seeded
             if (_context.Products.Any() || _context.Categories.Any() || _context.PredefinedProductAttributeValues.Any() || _context.ProductAttributes.Any()
@@ -115,8 +112,7 @@ namespace MainApi.Data
                         Description = "TestTestTestTestTest"
                     }
                 };
-                _context.Categories.AddRange(categories);
-                _context.SaveChangesAsync();
+                await _context.Categories.AddRangeAsync(categories);
 
                 //Add Product Attribute
                 List<ProductAttribute> productAttributes = new List<ProductAttribute>
@@ -137,8 +133,7 @@ namespace MainApi.Data
                         Description = "The storage of device"
                     }
                 };
-                _context.ProductAttributes.AddRange(productAttributes);
-                _context.SaveChangesAsync();
+                await _context.ProductAttributes.AddRangeAsync(productAttributes);
 
                 List<PredefinedProductAttributeValue> predefinedProductAttributeValues = new List<PredefinedProductAttributeValue>
                 {
@@ -185,8 +180,7 @@ namespace MainApi.Data
                                              .Select(a => a.Id).FirstOrDefault()
                     }
                 };
-                _context.PredefinedProductAttributeValues.AddRange(predefinedProductAttributeValues);
-                _context.SaveChangesAsync();
+                await _context.PredefinedProductAttributeValues.AddRangeAsync(predefinedProductAttributeValues);
 
 
                 //Add Specification Attribute
@@ -205,8 +199,7 @@ namespace MainApi.Data
                         Name = "Battery"
                     }
                 };
-                _context.SpecificationAttributes.AddRange(specificationAttributes);
-                _context.SaveChangesAsync();
+                await _context.SpecificationAttributes.AddRangeAsync(specificationAttributes);
 
                 List<SpecificationAttributeOption> specificationAttributeOptions = new List<SpecificationAttributeOption>
                 {
@@ -235,8 +228,7 @@ namespace MainApi.Data
                         .FirstOrDefault()
                     },
                 };
-                _context.SpecificationAttributeOptions.AddRange(specificationAttributeOptions);
-                _context.SaveChangesAsync();
+                await _context.SpecificationAttributeOptions.AddRangeAsync(specificationAttributeOptions);
 
 
                 //Add Product
@@ -269,8 +261,7 @@ namespace MainApi.Data
                         .FirstOrDefault()
                     }
                 };
-                _context.Products.AddRange(products);
-                _context.SaveChangesAsync();
+                await _context.Products.AddRangeAsync(products);
 
                 //Add Product Attribute Mapping
                 List<Product_ProductAttribute_Mapping> product_ProductAttribute_Mappings = new List<Product_ProductAttribute_Mapping>
@@ -297,8 +288,7 @@ namespace MainApi.Data
                         ProductAttributeId = productAttributes.FirstOrDefault(a => a.Name == "Color").Id
                     }
                 };
-                _context.ProductAttributeMappings.AddRange(product_ProductAttribute_Mappings);
-                _context.SaveChangesAsync();
+                await _context.ProductAttributeMappings.AddRangeAsync(product_ProductAttribute_Mappings);
                 //Add Product Combination Attribute
                 List<ProductCombination> productCombinations = new List<ProductCombination>
                 {
@@ -403,8 +393,7 @@ namespace MainApi.Data
                         }),
                     }
                 };
-                _context.ProductCombinations.AddRange(productCombinations);
-                _context.SaveChangesAsync();
+                await _context.ProductCombinations.AddRangeAsync(productCombinations);
 
 
                 //Add  Product_SpecificationAttribute_Mapping
@@ -439,9 +428,9 @@ namespace MainApi.Data
                         SpecificationAttributeOptionId = specificationAttributeOptions.FirstOrDefault(o => o.Name == "SnapDragon").Id,
                     }
                 };
-                _context.SpecificationAttributeMappings.AddRange(product_Specifications);
-                _context.SaveChangesAsync();
+                await _context.SpecificationAttributeMappings.AddRangeAsync(product_Specifications);
 
+                await _context.SaveChangesAsync();
                 transaction.Commit();
                 Console.WriteLine("Database has been seeded successfully.");
             }
@@ -451,7 +440,7 @@ namespace MainApi.Data
                 System.Console.WriteLine($"Error during seeding: {ex.Message}");
             }
         }
-        public static void StatusInitializer(ApplicationDbContext _context)
+        public static async Task StatusInitializerAsync(ApplicationDbContext _context)
         {
             // Ensure the database is created
             _context.Database.EnsureCreated();
@@ -503,8 +492,7 @@ namespace MainApi.Data
                         Description = "Customer was refunded"
                     }
                 };
-                _context.OrderStatuses.AddRange(orderStatuses);
-                _context.SaveChangesAsync();
+                await _context.OrderStatuses.AddRangeAsync(orderStatuses);
 
                 List<PaymentStatus> paymentStatuses = new List<PaymentStatus>
                 {
@@ -544,8 +532,7 @@ namespace MainApi.Data
                         Description = "Payment attempt failed"
                     }
                 };
-                _context.PaymentStatuses.AddRange(paymentStatuses);
-                _context.SaveChangesAsync();
+                await _context.PaymentStatuses.AddRangeAsync(paymentStatuses);
 
                 List<ShippingStatus> shippingStatuses = new List<ShippingStatus>
                 {
@@ -580,9 +567,9 @@ namespace MainApi.Data
                         Description = "Shipment cancelled"
                     }
                 };
-                _context.ShippingStatuses.AddRange(shippingStatuses);
-                _context.SaveChangesAsync();
+                await _context.ShippingStatuses.AddRangeAsync(shippingStatuses);
 
+                await _context.SaveChangesAsync();
                 transaction.Commit();
                 Console.WriteLine("Database has been seeded successfully.");
             }

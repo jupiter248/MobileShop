@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MainApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250327040916_UpdatedCartItemTable")]
-    partial class UpdatedCartItemTable
+    [Migration("20250425153801_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,13 +167,13 @@ namespace MainApi.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DeliveredDate")
+                    b.Property<DateTime?>("DeliveredDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ShippedDate")
+                    b.Property<DateTime?>("ShippedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("ShippingStatusId")
@@ -227,7 +227,7 @@ namespace MainApi.Migrations
                     b.Property<int>("OrderItemId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderShipmentId")
+                    b.Property<int?>("OrderShipmentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -251,13 +251,85 @@ namespace MainApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("StatusName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("ShippingStatuses");
+                });
+
+            modelBuilder.Entity("MainApi.Models.Payments.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorityCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("PaymentStatusId");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("MainApi.Models.Payments.PaymentStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentStatuses");
                 });
 
             modelBuilder.Entity("MainApi.Models.Products.Category", b =>
@@ -964,11 +1036,32 @@ namespace MainApi.Migrations
 
                     b.HasOne("MainApi.Models.Orders.OrderShipment", null)
                         .WithMany("ShipmentItems")
-                        .HasForeignKey("OrderShipmentId")
+                        .HasForeignKey("OrderShipmentId");
+
+                    b.Navigation("OrderItem");
+                });
+
+            modelBuilder.Entity("MainApi.Models.Payments.Payment", b =>
+                {
+                    b.HasOne("MainApi.Models.User.AppUser", "AppUser")
+                        .WithMany("Payments")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("MainApi.Models.Orders.Order", null)
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("OrderItem");
+                    b.HasOne("MainApi.Models.Payments.PaymentStatus", "PaymentStatus")
+                        .WithMany("Payments")
+                        .HasForeignKey("PaymentStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("PaymentStatus");
                 });
 
             modelBuilder.Entity("MainApi.Models.Products.Comment", b =>
@@ -1199,6 +1292,8 @@ namespace MainApi.Migrations
                     b.Navigation("OrderItems");
 
                     b.Navigation("OrderShipment");
+
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("MainApi.Models.Orders.OrderShipment", b =>
@@ -1214,6 +1309,11 @@ namespace MainApi.Migrations
             modelBuilder.Entity("MainApi.Models.Orders.ShippingStatus", b =>
                 {
                     b.Navigation("OrderShipment");
+                });
+
+            modelBuilder.Entity("MainApi.Models.Payments.PaymentStatus", b =>
+                {
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("MainApi.Models.Products.Category", b =>
@@ -1281,6 +1381,8 @@ namespace MainApi.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("Payments");
 
                     b.Navigation("WishLists");
                 });
