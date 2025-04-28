@@ -1,0 +1,15 @@
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\MainApi.Application.csproj.AssemblyReference.cache
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\MainApi.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\MainApi.Application.AssemblyInfoInputs.cache
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\MainApi.Application.AssemblyInfo.cs
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\MainApi.Application.csproj.CoreCompileInputs.cache
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\bin\Debug\net9.0\MainApi.Application.deps.json
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\bin\Debug\net9.0\MainApi.Application.dll
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\bin\Debug\net9.0\MainApi.Application.pdb
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\bin\Debug\net9.0\MainApi.Domain.dll
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\bin\Debug\net9.0\MainApi.Domain.pdb
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\MainApi..DC42A273.Up2Date
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\MainApi.Application.dll
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\refint\MainApi.Application.dll
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\MainApi.Application.pdb
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\ref\MainApi.Application.dll
