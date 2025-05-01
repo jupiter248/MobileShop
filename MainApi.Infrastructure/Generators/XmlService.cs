@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using MainApi.Application.Dtos.XmlDtos;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Services;
 using MainApi.Domain.Models.Products.ProductAttributes;
 
-namespace MainApi.Infrastructure.Services
+namespace MainApi.Infrastructure.Services.Generators
 {
     public class XmlService : IXmlService
     {

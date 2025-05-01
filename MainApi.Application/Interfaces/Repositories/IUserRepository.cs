@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Application.Dtos.Account;
 using MainApi.Domain.Models.User;
 
-namespace MainApi.Application.Interfaces
+namespace MainApi.Application.Interfaces.Repositories
 {
     public interface IUserRepository
     {

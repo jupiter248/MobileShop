@@ -7,6 +7,7 @@ using MainApi.Application.Interfaces;
 using MainApi.Domain.Models.Products;
 using MainApi.Domain.Models.User;
 using Microsoft.EntityFrameworkCore;
+using MainApi.Application.Interfaces.Repositories;
 
 namespace MainApi.Persistence.Repository
 {

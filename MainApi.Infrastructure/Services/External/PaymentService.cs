@@ -6,12 +6,14 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using MainApi.Application.Dtos.Payment;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Repositories;
+using MainApi.Application.Interfaces.Services;
 using MainApi.Domain.Models.Payments;
 using MainApi.Domain.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 
-namespace MainApi.Infrastructure.Services
+namespace MainApi.Infrastructure.Services.External
 {
     public class PaymentService : IPaymentService
     {

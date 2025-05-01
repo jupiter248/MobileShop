@@ -10,6 +10,7 @@ using MainApi.Domain.Models.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using MainApi.Application.Interfaces.Repositories;
 
 namespace MainApi.Persistence.Repository
 {

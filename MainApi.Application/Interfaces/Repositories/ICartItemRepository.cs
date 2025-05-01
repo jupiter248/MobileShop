@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Domain.Models.Orders;
 
-namespace MainApi.Application.Interfaces
+namespace MainApi.Application.Interfaces.Repositories
 {
     public interface ICartItemRepository
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Application.Dtos.ProductAttributes;
 using MainApi.Domain.Models.Products.ProductAttributes;
 
-namespace MainApi.Application.Interfaces
+namespace MainApi.Application.Interfaces.Services
 {
     public interface IXmlService
     {

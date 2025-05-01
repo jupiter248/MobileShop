@@ -6,7 +6,7 @@ using MainApi.Application.Dtos.Image;
 using MainApi.Domain.Models;
 using MainApi.Domain.Models.Products;
 
-namespace MainApi.Application.Interfaces
+namespace MainApi.Application.Interfaces.Repositories
 {
     public interface IImageRepository
     {

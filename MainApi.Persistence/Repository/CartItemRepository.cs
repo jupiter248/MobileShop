@@ -8,6 +8,7 @@ using MainApi.Domain.Models.Orders;
 using MainApi.Domain.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MainApi.Application.Interfaces.Repositories;
 
 namespace MainApi.Persistence.Repository
 {

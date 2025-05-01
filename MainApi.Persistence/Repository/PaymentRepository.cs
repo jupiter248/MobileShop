@@ -6,6 +6,7 @@ using MainApi.Persistence.Data;
 using MainApi.Application.Interfaces;
 using MainApi.Domain.Models.Payments;
 using Microsoft.EntityFrameworkCore;
+using MainApi.Application.Interfaces.Repositories;
 
 namespace MainApi.Persistence.Repository
 {

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Services;
 
-namespace MainApi.Infrastructure.Services
+namespace MainApi.Infrastructure.Services.Generators
 {
     public class SKUService : ISKUService
     {

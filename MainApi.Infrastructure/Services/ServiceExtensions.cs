@@ -18,6 +18,10 @@ using Microsoft.OpenApi.Models;
 using MainApi.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using MainApi.Infrastructure.Services.Generators;
+using MainApi.Application.Interfaces.Services;
+using MainApi.Infrastructure.Services.External;
+using MainApi.Application.Interfaces.Repositories;
 
 namespace MainApi.Infrastructure.Services
 {

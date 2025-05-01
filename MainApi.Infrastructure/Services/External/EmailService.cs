@@ -6,9 +6,10 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using MainApi.Application.Dtos.Account.ForgotPassword;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 
-namespace MainApi.Infrastructure.Services
+namespace MainApi.Infrastructure.Services.External
 {
     public class EmailService : IEmailService
     {

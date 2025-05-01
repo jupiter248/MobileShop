@@ -6,7 +6,7 @@ using MainApi.Domain.Models.Products;
 using MainApi.Domain.Models.Products.ProductAttributes;
 using MainApi.Domain.Models.Products.SpecificationAttributes;
 
-namespace MainApi.Application.Interfaces
+namespace MainApi.Application.Interfaces.Repositories
 {
     public interface ISpecificationAttributesRepository
     {

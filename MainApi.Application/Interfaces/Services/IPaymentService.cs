@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Application.Dtos.Payment;
 
-namespace MainApi.Application.Interfaces
+namespace MainApi.Application.Interfaces.Services
 {
     public interface IPaymentService
     {

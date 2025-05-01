@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Application.Dtos.Account;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Repositories;
 using MainApi.Domain.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

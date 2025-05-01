@@ -155,7 +155,7 @@ namespace MainApi.Api.Controllers
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto forgotPasswordRequest)
         {
-            AppUser? appUser = await _userManager.FindByEmailAsync(forgotPasswordRequest.Email);
+            var appUser = await _userManager.FindByEmailAsync(forgotPasswordRequest.Email);
             if (appUser == null) return BadRequest("Email is invalid");
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(appUser);
@@ -179,7 +179,7 @@ namespace MainApi.Api.Controllers
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto resetPasswordRequest)
         {
-            AppUser? user = await _userManager.FindByEmailAsync(resetPasswordRequest.Email);
+            var user = await _userManager.FindByEmailAsync(resetPasswordRequest.Email);
             if (user == null) return BadRequest("Invalid email.");
 
             if (resetPasswordRequest.NewPassword != resetPasswordRequest.RepeatPassword) return BadRequest("The passwords are different");

@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Services;
 using MainApi.Domain.Models;
 using MainApi.Domain.Models.User;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
 
 
-namespace MainApi.Infrastructure.Services
+namespace MainApi.Infrastructure.Services.Generators
 {
     public class TokenService : ITokenService
     {

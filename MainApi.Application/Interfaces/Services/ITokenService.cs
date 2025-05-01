@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Domain.Models;
 using MainApi.Domain.Models.User;
 
-namespace MainApi.Application.Interfaces
+namespace MainApi.Application.Interfaces.Services
 {
     public interface ITokenService
     {
