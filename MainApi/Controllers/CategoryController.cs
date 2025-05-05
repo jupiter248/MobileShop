@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Application.Dtos.Category;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Repositories;
 using MainApi.Application.Mappers;
 using MainApi.Domain.Models.Products;
 using Microsoft.AspNetCore.Authorization;

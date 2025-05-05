@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Application.Dtos.Orders.OrderShipment;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Repositories;
 using MainApi.Application.Mappers;
 using MainApi.Domain.Models.Orders;
 using Microsoft.AspNetCore.Http.HttpResults;

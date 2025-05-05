@@ -5,6 +5,9 @@ using MainApi.Domain.Models.User;
 using MainApi.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using MainApi.Persistence.Services;
+using MainApi.Application.Interfaces.Services;
+using MainApi.Infrastructure.Services.Generators;
+using MainApi.Infrastructure.Services.Setting;
 
 
 

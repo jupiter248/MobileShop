@@ -5,6 +5,7 @@ using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 using MainApi.Application.Dtos.SpecificationAttributes;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Repositories;
 using MainApi.Application.Mappers;
 using MainApi.Domain.Models.Products;
 using MainApi.Domain.Models.Products.SpecificationAttributes;

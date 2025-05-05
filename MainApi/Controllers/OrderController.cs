@@ -6,6 +6,7 @@ using MainApi.Application.Dtos.Orders;
 using MainApi.Application.Dtos.Orders.Order;
 using MainApi.Application.Extensions;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Repositories;
 using MainApi.Application.Mappers;
 using MainApi.Domain.Models;
 using MainApi.Domain.Models.Orders;

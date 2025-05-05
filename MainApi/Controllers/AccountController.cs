@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MainApi.Application.Interfaces.Services;
+using MainApi.Application.Interfaces.Repositories;
 
 namespace MainApi.Api.Controllers
 {
@@ -23,13 +25,15 @@ namespace MainApi.Api.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IUserRepository _userRepository;
         private readonly IEmailService _emailService;
-        public AccountController(UserManager<AppUser> userManager, IEmailService emailService, ITokenService tokenService, SignInManager<AppUser> signInManager, IUserRepository userRepository)
+        private readonly IAccountService _accountService;
+        public AccountController(IAccountService accountService, UserManager<AppUser> userManager, IEmailService emailService, ITokenService tokenService, SignInManager<AppUser> signInManager, IUserRepository userRepository)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
             _userRepository = userRepository;
             _emailService = emailService;
+            _accountService = accountService;
         }
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterDto registerDto)
@@ -128,29 +132,9 @@ namespace MainApi.Api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(loginDto);
-            var user = await _userManager.FindByNameAsync(loginDto.Username);
 
-            if (user == null)
-                user = await _userManager.FindByEmailAsync(loginDto.Username);
-
-            if (user == null)
-                return Unauthorized("username or email does not exists");
-
-            var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, loginDto.RememberMe, false);
-
-            if (result.Succeeded == false)
-                return Unauthorized("Password does not match with the user");
-
-            var role = await _userManager.GetRolesAsync(user);
-
-            return Ok(
-                new NewUserDto
-                {
-                    Username = user.UserName,
-                    Email = user.Email,
-                    Token = _tokenService.CreateToken(user, role)
-                }
-            );
+            NewUserDto newUser = await _accountService.LoginAsync(loginDto);
+            return Ok(newUser);
         }
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto forgotPasswordRequest)

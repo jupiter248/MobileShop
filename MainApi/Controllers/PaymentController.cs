@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using MainApi.Application.Dtos.Payment;
 using MainApi.Application.Extensions;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Repositories;
+using MainApi.Application.Interfaces.Services;
 using MainApi.Domain.Models.Payments;
 using Microsoft.AspNetCore.Mvc;
 

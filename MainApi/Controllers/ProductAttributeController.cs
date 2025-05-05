@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MainApi.Application.Dtos.ProductAttributes;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Repositories;
+using MainApi.Application.Interfaces.Services;
 using MainApi.Application.Mappers;
 using MainApi.Domain.Models.Products;
 using MainApi.Domain.Models.Products.ProductAttributes;

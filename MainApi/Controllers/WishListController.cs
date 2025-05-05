@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Application.Dtos.Products;
 using MainApi.Application.Extensions;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Repositories;
 using MainApi.Application.Mappers;
 using MainApi.Domain.Models.Products;
 using MainApi.Domain.Models.User;

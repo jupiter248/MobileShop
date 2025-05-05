@@ -2,6 +2,7 @@ using MainApi.Application.Dtos.Filtering;
 using MainApi.Application.Dtos.Products;
 using MainApi.Application.Extensions;
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Repositories;
 using MainApi.Application.Mappers;
 using MainApi.Domain.Models;
 using MainApi.Domain.Models.Products;
