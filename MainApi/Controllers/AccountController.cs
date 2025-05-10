@@ -38,95 +38,27 @@ namespace MainApi.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterDto registerDto)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(registerDto);
+            if (!ModelState.IsValid)
+                return BadRequest(registerDto);
 
-                var appUser = new AppUser
-                {
-                    UserName = registerDto.Username,
-                    Email = registerDto.Email
-                };
+            NewUserDto newUser = await _accountService.RegisterUserAsync(registerDto);
+            return Ok(newUser);
 
-                var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password ?? String.Empty);
-                if (createdUser.Succeeded)
-                {
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
-                    if (roleResult.Succeeded)
-                    {
-                        return Ok(
-                            new NewUserDto
-                            {
-                                Username = appUser.UserName,
-                                Email = appUser.Email,
-                            }
-                        );
-                    }
-                    else
-                    {
-                        return StatusCode(500, roleResult.Errors);
-                    }
-                }
-                else
-                {
-                    return StatusCode(500, createdUser.Errors);
-                }
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, e);
-            }
         }
         [Authorize(Roles = "Admin")]
         [HttpPost("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterDto registerDto)
         {
-            try
-            {
-                // if (!User.IsInRole("Admin"))
-                //     return Forbid("Only admins can register new admins");
+            // if (!User.IsInRole("Admin"))
+            //     return Forbid("Only admins can register new admins");
 
-                if (!ModelState.IsValid)
-                    return BadRequest(registerDto);
+            if (!ModelState.IsValid)
+                return BadRequest(registerDto);
 
-                var appUser = new AppUser()
-                {
-                    UserName = registerDto.Username,
-                    Email = registerDto.Email
-                };
+            NewUserDto newUser = await _accountService.RegisterAdminAsync(registerDto);
+            return Ok(newUser);
 
-                var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password ?? String.Empty);
-                if (createdUser.Succeeded)
-                {
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Admin");
-                    if (roleResult.Succeeded)
-                    {
-                        return Ok(
-                            new NewUserDto()
-                            {
-                                Email = appUser.Email,
-                                Username = appUser.UserName,
-                            }
-                        );
-                    }
-                    else
-                    {
-                        return StatusCode(500, roleResult.Errors);
-                    }
-                }
-                else
-                {
-                    return StatusCode(500, createdUser.Errors);
-                }
-            }
-            catch (System.Exception e)
-            {
-                return StatusCode(500, e);
-            }
         }
-
-
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
@@ -139,42 +71,13 @@ namespace MainApi.Api.Controllers
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto forgotPasswordRequest)
         {
-            var appUser = await _userManager.FindByEmailAsync(forgotPasswordRequest.Email);
-            if (appUser == null) return BadRequest("Email is invalid");
-
-            var token = await _userManager.GeneratePasswordResetTokenAsync(appUser);
-            string resetLink = $"https://yourwebsite.com/reset-password?email={forgotPasswordRequest.Email}&token={WebUtility.UrlEncode(token)}";
-
-
-
-            bool emailSent = await _emailService.SendPasswordResetEmail(new SendPasswordResetEmailDto()
-            {
-                ResetLink = resetLink,
-                ToEmail = forgotPasswordRequest.Email
-            });
-
-            if (!emailSent)
-            {
-                return StatusCode(500, "Failed to send email.");
-            }
-
+            await _accountService.ForgotPasswordAsync(forgotPasswordRequest);
             return Ok("Password reset link sent to your email.");
         }
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto resetPasswordRequest)
         {
-            var user = await _userManager.FindByEmailAsync(resetPasswordRequest.Email);
-            if (user == null) return BadRequest("Invalid email.");
-
-            if (resetPasswordRequest.NewPassword != resetPasswordRequest.RepeatPassword) return BadRequest("The passwords are different");
-
-            // Reset the password using the token
-            var result = await _userManager.ResetPasswordAsync(user, WebUtility.UrlDecode(resetPasswordRequest.Token), resetPasswordRequest.NewPassword);
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
-            }
-
+            await _accountService.ResetPasswordAsync(resetPasswordRequest);
             return Ok("Password has been reset successfully.");
         }
     }

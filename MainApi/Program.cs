@@ -8,6 +8,8 @@ using MainApi.Persistence.Services;
 using MainApi.Application.Interfaces.Services;
 using MainApi.Infrastructure.Services.Generators;
 using MainApi.Infrastructure.Services.Setting;
+using MainApi.MainApi.Services.Generators;
+using MainApi.Middlewares;
 
 
 
@@ -65,6 +67,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<RequestTimingMiddleware>();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
