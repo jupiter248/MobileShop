@@ -14,25 +14,16 @@ using Microsoft.EntityFrameworkCore;
 using MainApi.Application.Interfaces.Services;
 using MainApi.Application.Interfaces.Repositories;
 
-namespace MainApi.Api.Controllers
+namespace MainApi.Controllers
 {
     [Route("api/account")]
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly ITokenService _tokenService;
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly IUserRepository _userRepository;
-        private readonly IEmailService _emailService;
         private readonly IAccountService _accountService;
-        public AccountController(IAccountService accountService, UserManager<AppUser> userManager, IEmailService emailService, ITokenService tokenService, SignInManager<AppUser> signInManager, IUserRepository userRepository)
+        public AccountController(IAccountService accountService)
         {
-            _userManager = userManager;
-            _tokenService = tokenService;
-            _signInManager = signInManager;
-            _userRepository = userRepository;
-            _emailService = emailService;
+
             _accountService = accountService;
         }
         [HttpPost("register")]

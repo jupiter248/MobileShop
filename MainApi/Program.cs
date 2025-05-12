@@ -56,7 +56,6 @@ using (var scope = app.Services.CreateScope())
     await DbInitializer.UserInitializerAsync(dbContext, userManager, roleManager);
     await DbInitializer.ProductInitializerAsync(dbContext, sKUService);
     await DbInitializer.StatusInitializerAsync(dbContext);
-
 }
 
 // Configure the HTTP request pipeline.

@@ -23,6 +23,11 @@ namespace MainApi.Middlewares
             {
                 await _next(context);
             }
+            catch (KeyNotFoundException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                await context.Response.WriteAsJsonAsync(new { message = ex.Message });
+            }
             catch (UnauthorizedAccessException ex)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;

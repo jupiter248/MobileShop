@@ -6,7 +6,9 @@ using MainApi.Application.Dtos.Address;
 using MainApi.Application.Extensions;
 using MainApi.Application.Interfaces;
 using MainApi.Application.Interfaces.Repositories;
+using MainApi.Application.Interfaces.Services;
 using MainApi.Application.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MainApi.Api.Controllers
@@ -15,30 +17,25 @@ namespace MainApi.Api.Controllers
     [Route("api/address")]
     public class AddressController : ControllerBase
     {
-        private readonly IAddressRepository _addressRepo;
-        private readonly IUserRepository _userRepo;
-        public AddressController(IAddressRepository addressRepo, IUserRepository userRepo)
+        private readonly IAddressService _addressService;
+        public AddressController(IAddressService addressService)
         {
-            _addressRepo = addressRepo;
-            _userRepo = userRepo;
+            _addressService = addressService;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllAddress()
         {
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
-            var addresses = await _addressRepo.GetAllAddressAsync(username);
-            if (addresses == null) return NotFound();
-            List<AddressDto>? addressDtos = addresses.Select(a => a.ToAddressDto(username)).ToList();
+            List<AddressDto> addressDtos = await _addressService.GetAllAddressAsync(username);
             return Ok(addressDtos);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAddressById([FromRoute] int id)
         {
-            var address = await _addressRepo.GetAddressByIdAsync(id);
-            if (address == null) return NotFound();
-            if (address.appUser?.UserName == null) return NotFound();
-            return Ok(address.ToAddressDto(address.appUser.UserName));
+            AddressDto addressDto = await _addressService.GetAddressByIdAsync(id);
+            return Ok(addressDto);
         }
         [HttpPost]
         public async Task<IActionResult> AddAddress([FromBody] AddAddressRequestDto addAddressRequestDto)
@@ -46,18 +43,11 @@ namespace MainApi.Api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
-            var appUser = await _userRepo.GetUserByUsername(username);
-            if (appUser == null) return NotFound("User is not found");
-            var addressModel = addAddressRequestDto.ToAddressFromAdd(appUser);
-            var address = await _addressRepo.AddAddressAsync(addressModel);
-            if (address != null)
-            {
-                return CreatedAtAction(nameof(GetAddressById), new { id = address.Id }, address.ToAddressDto(username));
-            }
-            else
-            {
-                return BadRequest();
-            }
+
+            AddressDto addressDto = await _addressService.AddAddressAsync(addAddressRequestDto, username);
+
+            return CreatedAtAction(nameof(GetAddressById), new { id = addressDto.Id }, addressDto);
+
         }
         [HttpPut("{id:int}")]
         public async Task<IActionResult> EditAddress([FromRoute] int id, [FromBody] EditAddressRequestDto editAddressRequestDto)
@@ -65,30 +55,17 @@ namespace MainApi.Api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
-            var address = await _addressRepo.EditAddressAsync(id, editAddressRequestDto.ToAddressFromEdit(), username);
-            if (address != null)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return NotFound("The address or the address with this username did not found");
-            }
+            await _addressService.EditAddressAsync(id, editAddressRequestDto, username);
+            return NoContent();
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveAddress([FromRoute] int id)
         {
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
-            var address = await _addressRepo.RemoveAddressAsync(id, username);
-            if (address != null)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return NotFound("The address or the address with this username did not found");
-            }
+            await _addressService.RemoveAddressAsync(id, username);
+            return NoContent();
+
         }
     }
 }
