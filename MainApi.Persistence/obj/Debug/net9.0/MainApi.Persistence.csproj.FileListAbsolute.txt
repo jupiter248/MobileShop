@@ -17,3 +17,4 @@ C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Persistence\obj\Debug\net9.0
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Persistence\obj\Debug\net9.0\MainApi.Persistence.pdb
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Persistence\obj\Debug\net9.0\MainApi.Persistence.genruntimeconfig.cache
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Persistence\obj\Debug\net9.0\ref\MainApi.Persistence.dll
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Persistence\obj\Debug\net9.0\MainApi.Persistence.sourcelink.json

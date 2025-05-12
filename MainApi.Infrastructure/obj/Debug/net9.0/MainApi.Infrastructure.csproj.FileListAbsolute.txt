@@ -17,3 +17,4 @@ C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\refint\MainApi.Infrastructure.dll
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\MainApi.Infrastructure.pdb
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\ref\MainApi.Infrastructure.dll
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\MainApi.Infrastructure.sourcelink.json

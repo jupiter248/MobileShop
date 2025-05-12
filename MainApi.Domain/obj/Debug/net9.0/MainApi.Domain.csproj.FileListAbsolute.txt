@@ -10,3 +10,4 @@ C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Domain\obj\Debug\net9.0\Main
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Domain\obj\Debug\net9.0\refint\MainApi.Domain.dll
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Domain\obj\Debug\net9.0\MainApi.Domain.pdb
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Domain\obj\Debug\net9.0\ref\MainApi.Domain.dll
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Domain\obj\Debug\net9.0\MainApi.Domain.sourcelink.json

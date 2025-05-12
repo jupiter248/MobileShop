@@ -13,3 +13,4 @@ C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\refint\MainApi.Application.dll
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\MainApi.Application.pdb
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\ref\MainApi.Application.dll
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Application\obj\Debug\net9.0\MainApi.Application.sourcelink.json

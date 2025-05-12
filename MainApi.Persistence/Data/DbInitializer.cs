@@ -1,5 +1,6 @@
 
 using MainApi.Application.Interfaces;
+using MainApi.Application.Interfaces.Services;
 using MainApi.Domain.Models.Orders;
 using MainApi.Domain.Models.Payments;
 using MainApi.Domain.Models.Products;

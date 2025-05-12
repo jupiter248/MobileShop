@@ -1,31 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Security.Principal;
-using System.Threading.Tasks;
 using MainApi.Persistence.Data;
-using MainApi.Application.Interfaces;
-using MainApi.Domain.Models.Orders;
 using MainApi.Domain.Models.User;
 using MainApi.Persistence.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MainApi.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using MainApi.Infrastructure.Services.Generators;
 using MainApi.Application.Interfaces.Services;
 using MainApi.Infrastructure.Services.External;
 using MainApi.Application.Interfaces.Repositories;
+using MainApi.Infrastructure.Services.Internal;
 
-namespace MainApi.Infrastructure.Services
+namespace MainApi.Infrastructure.Services.Setting
 {
-    public static class ServiceExtensions
+    public static class ConfigureService
     {
 
         public static void AddSwaggerDocumentation(this IServiceCollection services)
@@ -111,6 +101,7 @@ namespace MainApi.Infrastructure.Services
             services.AddScoped<ISKUService, SKUService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IAccountService, AccountService>();
 
 
             //Repositories
