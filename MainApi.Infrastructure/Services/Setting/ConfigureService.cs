@@ -89,7 +89,6 @@ namespace MainApi.Infrastructure.Services.Setting
                     ValidAudience = jwtSettings["Audience"],
                     ValidIssuer = jwtSettings["Issuer"],
                     IssuerSigningKey = signingKey,
-
                 };
             });
         }
@@ -102,6 +101,7 @@ namespace MainApi.Infrastructure.Services.Setting
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAddressService, AddressService>();
 
 
             //Repositories

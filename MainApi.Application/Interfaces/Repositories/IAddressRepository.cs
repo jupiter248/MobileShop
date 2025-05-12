@@ -8,10 +8,10 @@ namespace MainApi.Application.Interfaces.Repositories
 {
     public interface IAddressRepository
     {
-        Task<List<Address>?> GetAllAddressAsync(string username);
+        Task<List<Address>> GetAllAddressAsync(string username);
         Task<Address?> GetAddressByIdAsync(int addressId);
-        Task<Address?> AddAddressAsync(Address address);
-        Task<Address?> EditAddressAsync(int addressId, Address address, string username);
+        Task<Address> AddAddressAsync(Address address);
+        Task<Address?> EditAddressAsync(int addressId, Address address);
         Task<Address?> RemoveAddressAsync(int addressId, string username);
     }
 }

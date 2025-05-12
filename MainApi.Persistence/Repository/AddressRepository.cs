@@ -20,17 +20,17 @@ namespace MainApi.Persistence.Repository
             _context = context;
             _userManager = userManager;
         }
-        public async Task<Address?> AddAddressAsync(Address address)
+        public async Task<Address> AddAddressAsync(Address address)
         {
             await _context.AddAsync(address);
             await _context.SaveChangesAsync();
             return address;
         }
 
-        public async Task<Address?> EditAddressAsync(int addressId, Address address, string username)
+        public async Task<Address?> EditAddressAsync(int addressId, Address address)
         {
             Address? currentAddress = await _context.Addresses.Include(a => a.appUser).FirstOrDefaultAsync(a => a.Id == addressId);
-            if (currentAddress != null && currentAddress.appUser?.UserName == username)
+            if (currentAddress != null)
             {
                 currentAddress.Country = address.Country;
                 currentAddress.City = address.City;
@@ -54,10 +54,9 @@ namespace MainApi.Persistence.Repository
             return address;
         }
 
-        public async Task<List<Address>?> GetAllAddressAsync(string username)
+        public async Task<List<Address>> GetAllAddressAsync(string username)
         {
             List<Address>? addresses = await _context.Addresses.Include(a => a.appUser).Where(u => u.appUser.UserName == username).ToListAsync();
-            if (addresses == null) return null;
             return addresses;
         }
 
