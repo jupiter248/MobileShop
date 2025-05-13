@@ -11,7 +11,7 @@ using MainApi.Application.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MainApi.Api.Controllers
+namespace MainApi.Controllers
 {
     [ApiController]
     [Route("api/address")]
@@ -23,14 +23,16 @@ namespace MainApi.Api.Controllers
             _addressService = addressService;
         }
         [HttpGet]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> GetAllAddress()
         {
             string? username = User.GetUsername();
+            // string? username = HttpContext.User.Identity.Name;
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
             List<AddressDto> addressDtos = await _addressService.GetAllAddressAsync(username);
             return Ok(addressDtos);
         }
+        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAddressById([FromRoute] int id)
         {

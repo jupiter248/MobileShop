@@ -30,7 +30,7 @@ namespace MainApi.Infrastructure.Services.Generators
 
         public string CreateToken(AppUser appUser, IList<string> roles)
         {
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.GivenName , appUser.UserName ?? string.Empty),
@@ -45,7 +45,7 @@ namespace MainApi.Infrastructure.Services.Generators
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(5),
+                Expires = DateTime.Now.AddDays(5),
                 SigningCredentials = creds,
                 Issuer = _config["JWT:Issuer"],
                 Audience = _config["JWT:Audience"],

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace MainApi.MainApi.Services.Generators
+namespace MainApi.Middlewares
 {
     public class RequestTimingMiddleware
     {

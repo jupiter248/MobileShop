@@ -3,7 +3,7 @@ using MainApi.Domain.Models.User;
 using MainApi.Persistence.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
+// using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +12,7 @@ using MainApi.Application.Interfaces.Services;
 using MainApi.Infrastructure.Services.External;
 using MainApi.Application.Interfaces.Repositories;
 using MainApi.Infrastructure.Services.Internal;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MainApi.Infrastructure.Services.Setting
 {

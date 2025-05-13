@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MainApi.Api.Controllers;
+namespace MainApi.Controllers;
 [Route("api/product")]
 [ApiController]
 public class ProductController : ControllerBase
@@ -34,7 +34,7 @@ public class ProductController : ControllerBase
         List<ProductDto>? productsDto = products.Select(p => p.ToProductDto()).ToList();
         return Ok(productsDto);
     }
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetProductById([FromRoute] int id)
     {

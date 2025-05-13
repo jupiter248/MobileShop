@@ -12,9 +12,9 @@ C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\MainApi.Infrastructure.AssemblyInfoInputs.cache
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\MainApi.Infrastructure.AssemblyInfo.cs
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\MainApi.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\MainApi.Infrastructure.sourcelink.json
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\MainApi..1BE711D3.Up2Date
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\MainApi.Infrastructure.dll
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\refint\MainApi.Infrastructure.dll
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\MainApi.Infrastructure.pdb
 C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\ref\MainApi.Infrastructure.dll
-C:\Users\mohammad\Desktop\USProject\Backend\MainApi.Infrastructure\obj\Debug\net9.0\MainApi.Infrastructure.sourcelink.json

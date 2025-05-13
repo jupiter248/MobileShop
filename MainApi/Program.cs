@@ -6,10 +6,9 @@ using MainApi.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using MainApi.Persistence.Services;
 using MainApi.Application.Interfaces.Services;
-using MainApi.Infrastructure.Services.Generators;
 using MainApi.Infrastructure.Services.Setting;
-using MainApi.MainApi.Services.Generators;
 using MainApi.Middlewares;
+using Microsoft.IdentityModel.Logging;
 
 
 
@@ -63,6 +62,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    IdentityModelEventSource.ShowPII = true;
 }
 
 app.UseMiddleware<RequestTimingMiddleware>();
