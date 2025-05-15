@@ -22,24 +22,10 @@ namespace MainApi.Api.Controllers
     [Route("api/cart-item")]
     public class CartItemController : ControllerBase
     {
-        private readonly ICartItemRepository _cartItemRepo;
-        private readonly IProductAttributeRepository _productAttributeRepo;
-        private readonly IXmlService _xmlService;
-        private readonly IProductRepository _productRepo;
-        private readonly UserManager<AppUser> _userManager;
-        public CartItemController(
-            ICartItemRepository cartItemRepo,
-            IProductAttributeRepository productAttributeRepo,
-            IXmlService xmlService,
-            IProductRepository productRepository,
-            UserManager<AppUser> userManager
-            )
+        private readonly ICartItemService _cartItemService;
+        public CartItemController(ICartItemService cartItemService)
         {
-            _cartItemRepo = cartItemRepo;
-            _productAttributeRepo = productAttributeRepo;
-            _xmlService = xmlService;
-            _productRepo = productRepository;
-            _userManager = userManager;
+            _cartItemService = cartItemService;
         }
 
         [HttpPost]
@@ -47,21 +33,10 @@ namespace MainApi.Api.Controllers
         {
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
-            AppUser? appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == username);
-            if (appUser == null) return NotFound("User is not found");
 
-            Product? product = await _productRepo.GetProductByIdAsync(addItemDto.ProductId);
-            if (product == null) return NotFound("Product not found");
 
-            List<PredefinedProductAttributeValue> attributes = await _productAttributeRepo.GetAttributeValuesById(addItemDto.AttributeIds);
-            if (attributes.Count < 1) return BadRequest("Attribute ids are invalid");
-
-            string xmlAttributes = _xmlService.GenerateAttributeXml(attributes);
-
-            CartItem newCartItem = addItemDto.ToCartItemFromAdd(product, xmlAttributes, appUser);
-
-            CartItem cartItem = await _cartItemRepo.AddCartItemAsync(newCartItem);
-            return Created();
+            CartItemDto cartItemDto = await _cartItemService.AddCartItemAsync(addItemDto, username);
+            return CreatedAtAction(nameof(GetCartItemById), new { id = cartItemDto.Id }, cartItemDto);
         }
         [HttpGet]
         public async Task<IActionResult> GetAllCartItems()
@@ -69,19 +44,14 @@ namespace MainApi.Api.Controllers
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
 
-            List<CartItem> cartItems = await _cartItemRepo.GetUserCartItemsAsync(username);
-            List<CartItemDto> cartItemDtos = cartItems.Select(c => c.ToCartItemDto()).ToList();
+            List<CartItemDto> cartItemDtos = await _cartItemService.GetAllCartItemsAsync(username);
             return Ok(cartItemDtos);
         }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetCartItemById([FromRoute] int id)
         {
-            CartItem? cartItem = await _cartItemRepo.GetCartItemByIdAsync(id);
-            if (cartItem == null)
-            {
-                return NotFound("Cart item not found");
-            }
-            return Ok(cartItem);
+            CartItemDto cartItemDto = await _cartItemService.GetCartItemByIdAsync(id);
+            return Ok(cartItemDto);
         }
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateQuantity([FromRoute] int id, [FromBody] int quantity)
@@ -89,11 +59,7 @@ namespace MainApi.Api.Controllers
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
 
-            CartItem? cartItem = await _cartItemRepo.UpdateCartItemQuantityAsync(id, username, quantity);
-            if (cartItem == null)
-            {
-                return NotFound("Cart item not found");
-            }
+            await _cartItemService.UpdateCartItemQuantityAsync(id, username, quantity);
             return NoContent();
         }
         [HttpDelete("{id:int}")]
@@ -102,11 +68,7 @@ namespace MainApi.Api.Controllers
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
 
-            bool cartItemDeleted = await _cartItemRepo.RemoveCartItemAsync(id, username);
-            if (cartItemDeleted == false)
-            {
-                return NotFound("Cart item not found");
-            }
+            await _cartItemService.DeleteCartItemAsync(id, username);
             return NoContent();
         }
     }
