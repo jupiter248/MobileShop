@@ -18,14 +18,14 @@ namespace MainApi.Persistence.Repository
         {
             _context = context;
         }
-        public async Task<Category?> AddCategoryAsync(Category category)
+        public async Task<Category> AddCategoryAsync(Category category)
         {
             await _context.AddAsync(category);
             await _context.SaveChangesAsync();
             return category;
         }
 
-        public async Task<List<Category>?> GetAllCategoriesAsync()
+        public async Task<List<Category>> GetAllCategoriesAsync()
         {
             var categories = await _context.Categories.Include(p => p.Products).ThenInclude(p => p.Images).ToListAsync();
             return categories;

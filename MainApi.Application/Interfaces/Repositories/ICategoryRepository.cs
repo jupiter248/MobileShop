@@ -9,9 +9,9 @@ namespace MainApi.Application.Interfaces.Repositories
 {
     public interface ICategoryRepository
     {
-        Task<List<Category>?> GetAllCategoriesAsync();
+        Task<List<Category>> GetAllCategoriesAsync();
         Task<Category?> GetCategoryByIdAsync(int categoryId);
-        Task<Category?> AddCategoryAsync(Category category);
+        Task<Category> AddCategoryAsync(Category category);
         Task<Category?> UpdateCategoryAsync(Category category, int categoryId);
         Task<Category?> RemoveCategoryAsync(int categoryId);
     }
