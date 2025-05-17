@@ -6,6 +6,7 @@ using MainApi.Application.Dtos.Comment;
 using MainApi.Application.Extensions;
 using MainApi.Application.Interfaces;
 using MainApi.Application.Interfaces.Repositories;
+using MainApi.Application.Interfaces.Services;
 using MainApi.Application.Mappers;
 using MainApi.Domain.Models.Orders;
 using MainApi.Domain.Models.Products;
@@ -20,11 +21,11 @@ namespace MainApi.Api.Controllers
     [Route("api/comment")]
     public class CommentController : ControllerBase
     {
-        private readonly ICommentRepository _commentRepository;
+        private readonly ICommentService _commentService;
         private readonly IProductRepository _productRepository;
-        public CommentController(ICommentRepository commentRepository, IProductRepository productRepository)
+        public CommentController(ICommentService commentService, IProductRepository productRepository)
         {
-            _commentRepository = commentRepository;
+            _commentService = commentService;
             _productRepository = productRepository;
         }
         [Authorize]
@@ -32,77 +33,49 @@ namespace MainApi.Api.Controllers
         public async Task<IActionResult> GetAllComments()
         {
             string? username = User.GetUsername();
-            if (username == null) return NotFound();
-            List<Comment>? comments = await _commentRepository.GetAllCommentAsync(username);
-            if (comments == null) return NotFound();
-            List<CommentDto>? commentDtos = comments.Select(c => c.ToCommentDto()).ToList();
+            if (username == null) return NotFound("User not found");
+            List<CommentDto>? commentDtos = await _commentService.GetAllUserCommentsAsync(username);
             return Ok(commentDtos);
         }
         [Authorize(Roles = "Admin")]
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetCommentById([FromRoute] int id)
+        [HttpGet("{commentId:int}")]
+        public async Task<IActionResult> GetCommentById([FromRoute] int commentId)
         {
-            Comment? comment = await _commentRepository.GetCommentByIdAsync(id);
-            if (comment == null) return BadRequest();
-            return Ok(comment.ToCommentDto());
+            CommentDto commentDto = await _commentService.GetCommentByIdAsync(commentId);
+            return Ok(commentDto);
         }
         [Authorize]
-        [HttpPost("{id:int}")]
-        public async Task<IActionResult> AddComment([FromRoute] int id, AddCommentRequestDto addCommentRequestDto)
+        [HttpPost("{productId:int}")]
+        public async Task<IActionResult> AddComment([FromRoute] int productId, AddCommentRequestDto addCommentRequestDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return NotFound("Username is invalid");
-            Product? product = await _productRepository.GetProductByIdAsync(id);
-            if (product != null)
-            {
-                Comment? comment = addCommentRequestDto.ToCommentFromAdd(id);
-                comment.Product = product;
-                Comment? commentModel = await _commentRepository.AddCommentAsync(comment, username);
-                if (commentModel != null)
-                {
-                    return CreatedAtAction(nameof(GetCommentById), new { id = commentModel.Id }, commentModel.ToCommentDto());
-                }
-                else
-                {
-                    return BadRequest();
-                }
-            }
-            else
-            {
-                return NotFound("Product is not found");
-            }
+
+            CommentDto? commentDto = await _commentService.AddCommentAsync(productId, addCommentRequestDto, username);
+            return CreatedAtAction(nameof(GetCommentById), new { id = commentDto.Id }, commentDto);
 
         }
         [Authorize]
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> EditComment([FromRoute] int id, EditCommentRequestDto editCommentRequestDto)
+        [HttpPut("{commentId:int}")]
+        public async Task<IActionResult> EditComment([FromRoute] int commentId, EditCommentRequestDto editCommentRequestDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             string? username = User.GetUsername();
-            if (username != null)
-            {
-                Comment? commentModel = await _commentRepository.EditCommentAsync(id, editCommentRequestDto.ToCommentFromEdit(), username);
-                if (commentModel != null)
-                {
-                    return NoContent();
-                }
-                else
-                {
-                    return NotFound("Comment is not found");
-                }
-            }
-            else
-            {
-                return NotFound("User is not found");
-            }
+            if (username == null) return NotFound("User is not found");
+
+            await _commentService.UpdateCommentAsync(commentId, editCommentRequestDto, username);
+            return NoContent();
+
         }
         [Authorize]
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> RemoveComment([FromRoute] int id)
+        [HttpDelete("{commentId:int}")]
+        public async Task<IActionResult> RemoveComment([FromRoute] int commentId)
         {
-            Comment? comment = await _commentRepository.RemoveCommentAsync(id);
-            if (comment == null) return NotFound();
+            string? username = User.GetUsername();
+            if (username == null) return NotFound("User is not found");
+            await _commentService.DeleteCommentAsync(commentId, username);
             return NoContent();
         }
     }

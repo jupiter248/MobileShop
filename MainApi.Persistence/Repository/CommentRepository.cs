@@ -19,28 +19,10 @@ namespace MainApi.Persistence.Repository
             _context = context;
             _userManager = userManager;
         }
-        public async Task<Comment?> AddCommentAsync(Comment comment, string username)
+        public async Task AddCommentAsync(Comment comment)
         {
-            AppUser? appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == username);
-            if (appUser != null)
-            {
-                comment.AppUser = appUser;
-                Comment? commentExists = await _context.Comments.FirstOrDefaultAsync(c => c.Id == comment.Id);
-                if (commentExists == null)
-                {
-                    await _context.AddAsync(comment);
-                    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    return null;
-                }
-                return comment;
-            }
-            else
-            {
-                return null;
-            }
+            await _context.AddAsync(comment);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Comment?> EditCommentAsync(int commentId, Comment commentModel, string username)
@@ -56,10 +38,9 @@ namespace MainApi.Persistence.Repository
             return null;
         }
 
-        public async Task<List<Comment>?> GetAllCommentAsync(string username)
+        public async Task<List<Comment>> GetAllCommentAsync(string username)
         {
-            List<Comment>? comments = await _context.Comments.Include(u => u.AppUser).Include(p => p.Product).Where(c => c.AppUser.UserName == username).ToListAsync();
-            if (comments == null) return null;
+            List<Comment> comments = await _context.Comments.Include(u => u.AppUser).Include(p => p.Product).Where(c => c.AppUser.UserName == username).ToListAsync();
             return comments;
         }
 
@@ -73,16 +54,11 @@ namespace MainApi.Persistence.Repository
             return comment;
         }
 
-        public async Task<Comment?> RemoveCommentAsync(int commentId)
+        public async Task<Comment?> RemoveCommentAsync(Comment comment)
         {
-            Comment? comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
-            if (comment != null)
-            {
-                _context.Remove(comment);
-                await _context.SaveChangesAsync();
-                return comment;
-            }
-            return null;
+            _context.Remove(comment);
+            await _context.SaveChangesAsync();
+            return comment;
         }
 
     }

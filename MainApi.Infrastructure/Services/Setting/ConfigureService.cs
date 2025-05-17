@@ -14,7 +14,7 @@ using MainApi.Application.Interfaces.Repositories;
 using MainApi.Infrastructure.Services.Internal;
 using Microsoft.IdentityModel.Tokens;
 
-namespace MainApi.Infrastructure.Services.Setting
+namespace MainApi.Infrastructure.Services.Internal
 {
     public static class ConfigureService
     {
