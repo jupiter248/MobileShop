@@ -31,21 +31,17 @@ namespace MainApi.Persistence.Repository
             return image;
         }
 
-        public async Task<Image?> EditImageAsync(Image imageModel, int imageId)
+        public async Task EditImageAsync(Image newModel, Image currentImage)
         {
-            Image? image = await GetImageByIdAsync(imageId);
-            if (image != null)
-            {
-                image.ImageName = imageModel.ImageName;
-                image.Url = imageModel.Url;
-                image.IsPrimary = imageModel.IsPrimary;
-                image.ProductId = imageModel.ProductId;
-                await _context.SaveChangesAsync();
-            }
-            return image;
+            currentImage.ImageName = newModel.ImageName;
+            currentImage.Url = newModel.Url;
+            currentImage.IsPrimary = newModel.IsPrimary;
+            currentImage.ProductId = newModel.ProductId;
+            await _context.SaveChangesAsync();
+
         }
 
-        public async Task<List<Image>?> GetAllImagesAsync()
+        public async Task<List<Image>> GetAllImagesAsync()
         {
             var images = await _context.Images.ToListAsync();
             return images;
@@ -57,15 +53,11 @@ namespace MainApi.Persistence.Repository
             return image;
         }
 
-        public async Task<Image?> RemoveImageAsync(int imageId)
+        public async Task RemoveImageAsync(Image image)
         {
-            Image? image = await _context.Images.FirstOrDefaultAsync(i => i.Id == imageId);
-            if (image != null)
-            {
-                _context.Remove(image);
-                await _context.SaveChangesAsync();
-            }
-            return image;
+
+            _context.Remove(image);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<AddImageRequestDto?> StoreImage(UploadImage uploadImage)

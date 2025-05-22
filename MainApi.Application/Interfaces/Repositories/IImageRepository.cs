@@ -10,11 +10,11 @@ namespace MainApi.Application.Interfaces.Repositories
 {
     public interface IImageRepository
     {
-        Task<List<Image>?> GetAllImagesAsync();
+        Task<List<Image>> GetAllImagesAsync();
         Task<Image?> GetImageByIdAsync(int imageId);
         Task<Image?> AddImageAsync(Image image);
-        Task<Image?> EditImageAsync(Image image, int imageId);
-        Task<Image?> RemoveImageAsync(int imageId);
+        Task EditImageAsync(Image image, Image currentImage);
+        Task RemoveImageAsync(Image image);
         Task<AddImageRequestDto?> StoreImage(UploadImage uploadImage);
     }
 }
