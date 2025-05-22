@@ -20,12 +20,10 @@ namespace MainApi.Api.Controllers
     public class ImageController : ControllerBase
     {
         private readonly IImageService _imageService;
-        private readonly IProductRepository _productRepo;
 
-        public ImageController(IImageService imageService, IProductRepository productRepo)
+        public ImageController(IImageService imageService)
         {
             _imageService = imageService;
-            _productRepo = productRepo;
         }
         [Authorize(Roles = "Admin")]
         [HttpGet]

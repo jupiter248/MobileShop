@@ -6,9 +6,9 @@ using MainApi.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using MainApi.Persistence.Services;
 using MainApi.Application.Interfaces.Services;
-using MainApi.Infrastructure.Services.Setting;
 using MainApi.Middlewares;
 using Microsoft.IdentityModel.Logging;
+using MainApi.Infrastructure.Services.Internal;
 
 
 
@@ -80,4 +80,4 @@ app.UseCors("HelloConnection");
 
 app.MapControllers();
 
-app.Run();
+    app.Run();
