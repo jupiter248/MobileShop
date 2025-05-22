@@ -103,6 +103,13 @@ namespace MainApi.Infrastructure.Services.Internal
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<ICartItemService, CartItemService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IOrderService, OrderService>();
+
+
 
 
             //Repositories
