@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MainApi.Application.Dtos.Orders.OrderShipment;
 using MainApi.Application.Interfaces;
 using MainApi.Application.Interfaces.Repositories;
+using MainApi.Application.Interfaces.Services;
 using MainApi.Application.Mappers;
 using MainApi.Domain.Models.Orders;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -16,65 +17,40 @@ namespace MainApi.Api.Controllers
     [Route("api/shipment")]
     public class OrderShipmentController : ControllerBase
     {
-        private readonly IOrderShipmentRepository _orderShipmentRepo;
+        private readonly IOrderShipmentService _orderShipmentService;
         private readonly IOrderRepository _orderRepo;
 
-        public OrderShipmentController(IOrderShipmentRepository orderShipmentRepo, IOrderRepository orderRepo)
+        public OrderShipmentController(IOrderShipmentService orderShipmentService, IOrderRepository orderRepo)
         {
-            _orderShipmentRepo = orderShipmentRepo;
+            _orderShipmentService = orderShipmentService;
             _orderRepo = orderRepo;
         }
         // Shipment
         [HttpPost]
         public async Task<IActionResult> AddShipment([FromBody] AddShipmentRequestDto shipmentRequestDto)
         {
-            Order? order = await _orderRepo.GetOrderByIdAsync(shipmentRequestDto.OrderId);
-            if (order == null) return NotFound("order not found");
-
-            ShippingStatus? shippingStatus = await _orderShipmentRepo.GetShippingStatusByNameAsync(shipmentRequestDto.StatusName);
-            if (shippingStatus == null) return NotFound("Shipping status not found");
-
-            List<OrderItem> orderItems = await _orderRepo.GetOrderItemsByIdAsync(shipmentRequestDto.OrderItemsIds);
-            if (orderItems.Count < 1) return BadRequest("No order item has been selected");
-
-            List<ShipmentItem> shipmentItems = orderItems.Select(i => new ShipmentItem()
-            {
-                OrderItem = i,
-                OrderItemId = i.Id,
-
-            }).ToList();
-
-            OrderShipment orderShipment = await _orderShipmentRepo.AddOrderShipmentAsync(shipmentRequestDto.ToOrderShipmentFromAdd(shippingStatus, order, shipmentItems));
-            return Created();
+            OrderShipmentDto orderShipmentDto = await _orderShipmentService.AddShipmentAsync(shipmentRequestDto);
+            return CreatedAtAction(nameof(GetShipmentById), new { id = orderShipmentDto.Id }, orderShipmentDto);
         }
         [HttpGet("find-by-id{id:int}")]
 
         public async Task<IActionResult> GetShipmentById([FromRoute] int id)
         {
-            OrderShipment? orderShipment = await _orderShipmentRepo.GetShipmentByIdAsync(id);
-            if (orderShipment == null)
-            {
-                return NotFound("Shipment not found");
-            }
-            return Ok(orderShipment);
+            OrderShipmentDto? orderShipmentDto = await _orderShipmentService.GetShipmentByIdAsync(id);
+            return Ok(orderShipmentDto);
 
         }
         [HttpGet("{orderId:int}")]
         public async Task<IActionResult> GetAllOrderShipment([FromRoute] int orderId)
         {
-            List<OrderShipment> orderShipments = await _orderShipmentRepo.GetAllOrderShipmentAsync(orderId);
-            if (orderShipments.Count < 1) return BadRequest("No order shipment has been selected");
-            List<OrderShipmentDto> orderShipmentDtos = orderShipments.Select(s => s.ToShipmentDto()).ToList();
+
+            List<OrderShipmentDto> orderShipmentDtos = await _orderShipmentService.GetAllUsersOrdersShipmentAsync(orderId);
             return Ok(orderShipmentDtos);
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteShipment([FromRoute] int id)
         {
-            bool orderShipmentDeleted = await _orderShipmentRepo.DeleteShipmentAsync(id);
-            if (orderShipmentDeleted == false)
-            {
-                return NotFound("Shipment not found");
-            }
+            await _orderShipmentService.DeleteShipmentAsync(id);
             return NoContent();
         }
 
@@ -84,24 +60,19 @@ namespace MainApi.Api.Controllers
         public async Task<IActionResult> AddShippingStatus([FromBody] AddShippingStatusRequestDto addShippingStatusRequestDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            ShippingStatus shippingStatus = await _orderShipmentRepo.AddShippingStatusAsync(addShippingStatusRequestDto.ToShippingStatusFromAdd());
+            ShippingStatusDto shippingStatusDto = await _orderShipmentService.AddShippingStatusAsync(addShippingStatusRequestDto);
             return Created();
         }
         [HttpGet("status")]
         public async Task<IActionResult> GetAllShippingStatus()
         {
-            List<ShippingStatus> shippingStatus = await _orderShipmentRepo.GetAllShippingStatusAsync();
-            if (shippingStatus.Count < 1) return NotFound("There is no shipping status");
-            return Ok(shippingStatus);
+            List<ShippingStatusDto> shippingStatusDtos = await _orderShipmentService.GetAllShippingStatusAsync();
+            return Ok(shippingStatusDtos);
         }
         [HttpDelete("status{id:int}")]
         public async Task<IActionResult> DeleteShippingStatus([FromRoute] int id)
         {
-            bool shippingStatusDeleted = await _orderShipmentRepo.RemoveShippingStatusAsync(id);
-            if (shippingStatusDeleted == false)
-            {
-                return NotFound("Shipping status not found");
-            }
+            await _orderShipmentService.DeleteShippingStatusAsync(id);
             return NoContent();
         }
 
@@ -110,27 +81,13 @@ namespace MainApi.Api.Controllers
         [HttpPost("item{shipmentId:int}")]
         public async Task<IActionResult> AddItemToShipmentItem([FromBody] List<int> orderItemIds, [FromRoute] int shipmentId)
         {
-            List<OrderItem> orderItems = await _orderRepo.GetOrderItemsByIdAsync(orderItemIds);
-            if (orderItems.Count < 1) return BadRequest("No order item has been selected");
-
-            List<ShipmentItem> shipmentItems = orderItems.Select(i => new ShipmentItem()
-            {
-                OrderItem = i,
-                OrderItemId = i.Id,
-                OrderShipmentId = shipmentId
-
-            }).ToList();
-            await _orderShipmentRepo.AddItemToShipmentAsync(shipmentItems);
+            await _orderShipmentService.AddItemToShipmentItemAsync(orderItemIds, shipmentId);
             return Created();
         }
         [HttpDelete("item{id:int}")]
         public async Task<IActionResult> DeleteShipmentItem([FromRoute] int id)
         {
-            bool shipmentItemDeleted = await _orderShipmentRepo.RemoveFromShipmentAsync(id);
-            if (shipmentItemDeleted == false)
-            {
-                return NotFound("Shipment item not found");
-            }
+            await _orderShipmentService.DeleteShipmentItemAsync(id);
             return NoContent();
         }
 

@@ -29,23 +29,16 @@ namespace MainApi.Persistence.Repository
 
         public async Task<OrderShipment?> GetShipmentByIdAsync(int shipmentId)
         {
-            OrderShipment? shipment = await _context.OrderShipments.FindAsync(shipmentId);
+            OrderShipment? shipment = await _context.OrderShipments.Include(s => s.ShipmentItems).FirstOrDefaultAsync(s => s.Id == shipmentId);
             return shipment;
         }
 
-        public async Task<bool> DeleteShipmentAsync(int shipmentId)
+        public async Task DeleteShipmentAsync(OrderShipment orderShipment)
         {
-            OrderShipment? shipment = await _context.OrderShipments.Include(s => s.ShipmentItems).FirstOrDefaultAsync(s => s.Id == shipmentId);
-            if (shipment == null)
-            {
-                return false;
-            }
-            shipment.ShipmentItems.Select(s => _context.Remove(s));
-            _context.Remove(shipment);
+            orderShipment.ShipmentItems.Select(s => _context.Remove(s));
+            _context.Remove(orderShipment);
 
             await _context.SaveChangesAsync();
-
-            return true;
         }
 
 
@@ -60,17 +53,11 @@ namespace MainApi.Persistence.Repository
             await _context.SaveChangesAsync();
             return shipmentItems;
         }
-        public async Task<bool> RemoveFromShipmentAsync(int itemId)
+        public async Task DeleteFromShipmentAsync(ShipmentItem shipmentItem)
         {
-            ShipmentItem? shipmentItem = await _context.ShipmentItems.FindAsync(itemId);
-            if (shipmentItem == null)
-            {
-                return false;
-            }
+
             _context.Remove(shipmentItem);
             await _context.SaveChangesAsync();
-
-            return true;
         }
 
 
@@ -87,25 +74,29 @@ namespace MainApi.Persistence.Repository
         {
             return await _context.ShippingStatuses.ToListAsync();
         }
-        public async Task<ShippingStatus?> GetShippingStatusByNameAsync(string name)
+        public async Task<ShippingStatus?> GetShippingStatusByIdAsync(int shippingStatusId)
         {
-            ShippingStatus? shippingStatus = await _context.ShippingStatuses.FirstOrDefaultAsync(s => s.Name.ToLower() == name.ToLower());
+            ShippingStatus? shippingStatus = await _context.ShippingStatuses.FirstOrDefaultAsync(s => s.Id == shippingStatusId);
             if (shippingStatus == null)
             {
                 return null;
             }
             return shippingStatus;
         }
-        public async Task<bool> RemoveShippingStatusAsync(int id)
+        public async Task DeleteShippingStatusAsync(ShippingStatus shippingStatus)
         {
-            ShippingStatus? shippingStatus = await _context.ShippingStatuses.FindAsync(id);
-            if (shippingStatus == null)
-            {
-                return false;
-            }
             _context.Remove(shippingStatus);
             await _context.SaveChangesAsync();
-            return true;
+        }
+
+        public async Task<ShipmentItem?> GetShipmentItemByIdAsync(int shipmentItemId)
+        {
+            ShipmentItem? shipmentItem = await _context.ShipmentItems.FirstOrDefaultAsync(i => i.Id == shipmentItemId);
+            if (shipmentItem == null)
+            {
+                return null;
+            }
+            return shipmentItem;
         }
     }
 }

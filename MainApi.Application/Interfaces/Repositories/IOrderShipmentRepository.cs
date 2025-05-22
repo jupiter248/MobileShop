@@ -12,16 +12,17 @@ namespace MainApi.Application.Interfaces.Repositories
         Task<List<OrderShipment>> GetAllOrderShipmentAsync(int orderId);
         Task<OrderShipment?> GetShipmentByIdAsync(int shipmentId);
         Task<OrderShipment> AddOrderShipmentAsync(OrderShipment orderShipment);
-        Task<bool> DeleteShipmentAsync(int shipmentId);
+        Task DeleteShipmentAsync(OrderShipment orderShipment);
 
         //Shipment Item
         Task<List<ShipmentItem>> AddItemToShipmentAsync(List<ShipmentItem> shipmentItems);
-        Task<bool> RemoveFromShipmentAsync(int itemId);
+        Task<ShipmentItem?> GetShipmentItemByIdAsync(int shipmentItemId);
+        Task DeleteFromShipmentAsync(ShipmentItem shipmentItem);
 
         //Shipment Status
         Task<List<ShippingStatus>> GetAllShippingStatusAsync();
-        Task<ShippingStatus?> GetShippingStatusByNameAsync(string name);
+        Task<ShippingStatus?> GetShippingStatusByIdAsync(int shippingStatusId);
         Task<ShippingStatus> AddShippingStatusAsync(ShippingStatus shippingStatus);
-        Task<bool> RemoveShippingStatusAsync(int id);
+        Task DeleteShippingStatusAsync(ShippingStatus shippingStatus);
     }
 }

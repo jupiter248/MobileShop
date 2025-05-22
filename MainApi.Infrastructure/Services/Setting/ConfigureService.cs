@@ -108,6 +108,8 @@ namespace MainApi.Infrastructure.Services.Internal
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderShipmentService, OrderShipmentService>();
+
 
 
 
