@@ -35,13 +35,22 @@ namespace MainApi.Application.Mappers
                 Description = addProductAttributeRequestDto.Description
             };
         }
-        public static PredefinedProductAttributeValue ToPredefinedProductAttributeValueFromAdd(this AddPredefinedProductAttributeValueRequestDto valueRequestDto , ProductAttribute productAttribute)
+        public static PredefinedProductAttributeValue ToPredefinedProductAttributeValueFromAdd(this AddPredefinedProductAttributeValueRequestDto valueRequestDto, ProductAttribute productAttribute)
         {
             return new PredefinedProductAttributeValue()
             {
                 Name = valueRequestDto.Name,
                 ProductAttributeId = valueRequestDto.ProductAttributeId,
                 ProductAttribute = productAttribute
+            };
+        }
+        public static ProductAttributeMappingDto ToProductMappingDto(this Product_ProductAttribute_Mapping product_ProductAttribute_Mapping)
+        {
+            return new ProductAttributeMappingDto
+            {
+                Attribute = product_ProductAttribute_Mapping.ProductAttribute.ToProductAttributeDto(),
+                IsRequired = product_ProductAttribute_Mapping.IsRequired
+
             };
         }
     }

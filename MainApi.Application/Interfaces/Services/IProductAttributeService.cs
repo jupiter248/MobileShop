@@ -13,9 +13,9 @@ namespace MainApi.Application.Interfaces.Services
         Task<List<ProductAttributeDto>> GetAllProductAttributesAsync();
         Task<PredefinedProductAttributeValueDto> AddPredefinedProductAttributeValueAsync(AddPredefinedProductAttributeValueRequestDto addPredefinedValueDto);
         Task<ProductAttributeMappingDto> AssignAttributeToProductAsync(AddProductAttributeMappingRequestDto addProductAttributeMappingRequestDto);
-        Task<ProductAttributeMappingDto> GetAllAssignedProductAttributeAsync(int productId);
-        Task<ProductCombinationDto> AddAttributeCombinationAsync(AddProductCombinationRequestDto addProductCombinationRequestDto);
-        Task<ProductCombinationDto> GetAllAttributeCombinationsAsync(int productId);
+        Task<List<ProductAttributeMappingDto>> GetAllAssignedProductAttributeAsync(int productId);
+        Task AddAttributeCombinationAsync(AddProductCombinationRequestDto addProductCombinationRequestDto);
+        Task<List<ProductCombinationDto>> GetAllAttributeCombinationsAsync(int productId);
         Task DeleteProductAttributeAsync(int productAttributeId);
         Task DeletePredefinedProductAttributeValue(int predefinedProductAttributeId);
         Task DeleteProductAttributeCombination(int combinationId);

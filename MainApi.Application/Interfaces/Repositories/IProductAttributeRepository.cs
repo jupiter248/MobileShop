@@ -12,13 +12,15 @@ namespace MainApi.Application.Interfaces.Repositories
         Task<List<ProductAttribute>> GetAllProductAttributesAsync();
         Task<ProductAttribute> AddProductAttributeAsync(ProductAttribute productAttribute);
         Task<bool> ProductAttributeExistsByName(string name);
-        Task<ProductAttribute?> DeleteProductAttribute(int productAttributeId);
+        Task DeleteProductAttributeAsync(ProductAttribute productAttribute);
         Task<ProductAttribute?> GetProductAttributeByIdAsync(int ProductAttributeId);
 
         //PredefinedAttributeValues
         Task<PredefinedProductAttributeValue> AddPredefinedProductAttributeValueAsync(PredefinedProductAttributeValue predefinedProductAttributeValue);
         Task<bool> PredefinedProductAttributeValueExistsByName(string name);
-        Task<PredefinedProductAttributeValue?> DeletePredefinedProductAttributeValue(int PredefinedProductAttributeValueId);
+        Task<PredefinedProductAttributeValue?> GetPredefinedAttributeValueByIdAsync(int predefinedProductAttributeValueId);
+
+        Task DeletePredefinedProductAttributeValueAsync(PredefinedProductAttributeValue predefinedProductAttributeValue);
         Task<List<PredefinedProductAttributeValue>> GetAttributeValuesById(List<int> Ids);
 
         //AttributeMapping
@@ -28,6 +30,7 @@ namespace MainApi.Application.Interfaces.Repositories
         //AttributeCombination
         Task<ProductCombination> AddProductAttributeCombinationAsync(ProductCombination productCombination);
         Task<List<ProductCombination>> GetAllProductAttributeCombinationAsync(int productId);
-        Task<ProductCombination?> DeleteProductAttributeCombination(int ProductAttributeCombinationId);
+        Task<ProductCombination?> GetProductCombinationByIdAsync(int combinationId);
+        Task DeleteProductAttributeCombinationAsync(ProductCombination productCombination);
     }
 }

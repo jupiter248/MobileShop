@@ -45,31 +45,24 @@ namespace MainApi.Persistence.Repository
             return product_ProductAttribute_Mapping;
         }
 
-        public async Task<PredefinedProductAttributeValue?> DeletePredefinedProductAttributeValue(int predefinedProductAttributeValueId)
+        public async Task DeletePredefinedProductAttributeValueAsync(PredefinedProductAttributeValue predefinedProductAttributeValue)
         {
-            PredefinedProductAttributeValue? value = await _context.PredefinedProductAttributeValues.FirstOrDefaultAsync(v => v.Id == predefinedProductAttributeValueId);
-            if (value == null) return null;
-            _context.Remove(value);
+            _context.Remove(predefinedProductAttributeValue);
             await _context.SaveChangesAsync();
-            return value;
         }
 
-        public async Task<ProductAttribute?> DeleteProductAttribute(int productAttributeId)
+
+
+        public async Task DeleteProductAttributeAsync(ProductAttribute productAttribute)
         {
-            ProductAttribute? value = await _context.ProductAttributes.FirstOrDefaultAsync(v => v.Id == productAttributeId);
-            if (value == null) return null;
-            _context.Remove(value);
+            _context.Remove(productAttribute);
             await _context.SaveChangesAsync();
-            return value;
         }
 
-        public async Task<ProductCombination?> DeleteProductAttributeCombination(int ProductAttributeCombinationId)
+        public async Task DeleteProductAttributeCombinationAsync(ProductCombination productCombination)
         {
-            ProductCombination? value = await _context.ProductCombinations.FirstOrDefaultAsync(v => v.Id == ProductAttributeCombinationId);
-            if (value == null) return null;
-            _context.Remove(value);
+            _context.Remove(productCombination);
             await _context.SaveChangesAsync();
-            return value;
         }
 
         public async Task<List<ProductCombination>> GetAllProductAttributeCombinationAsync(int productId)
@@ -98,6 +91,16 @@ namespace MainApi.Persistence.Repository
             .ToListAsync();
         }
 
+        public async Task<PredefinedProductAttributeValue?> GetPredefinedAttributeValueByIdAsync(int predefinedProductAttributeValueId)
+        {
+            PredefinedProductAttributeValue? predefinedProductAttributeValue = await _context.PredefinedProductAttributeValues.FirstOrDefaultAsync(p => p.Id == predefinedProductAttributeValueId);
+            if (predefinedProductAttributeValue == null)
+            {
+                return null;
+            }
+            return predefinedProductAttributeValue;
+        }
+
         public async Task<ProductAttribute?> GetProductAttributeByIdAsync(int productAttributeId)
         {
             ProductAttribute? productAttribute = await _context.ProductAttributes.FirstOrDefaultAsync(a => a.Id == productAttributeId);
@@ -106,6 +109,16 @@ namespace MainApi.Persistence.Repository
                 return null;
             }
             return productAttribute;
+        }
+
+        public async Task<ProductCombination?> GetProductCombinationByIdAsync(int combinationId)
+        {
+            ProductCombination? productCombination = await _context.ProductCombinations.FirstOrDefaultAsync(c => c.Id == combinationId);
+            if (productCombination == null)
+            {
+                return null;
+            }
+            return productCombination;
         }
 
         public async Task<bool> PredefinedProductAttributeValueExistsByName(string name)
