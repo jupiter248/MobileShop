@@ -10,7 +10,6 @@ using MainApi.Application.Mappers;
 using MainApi.Domain.Models.Products;
 using MainApi.Domain.Models.Products.ProductAttributes;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client.Extensions.Msal;
 
 namespace MainApi.Api.Controllers
 {
@@ -18,12 +17,12 @@ namespace MainApi.Api.Controllers
     [Route("api/product-attribute")]
     public class ProductAttributeController : ControllerBase
     {
-        private readonly IProductAttributeRepository _productAttributeRepo;
+        private readonly IProductAttributeService _productAttributeService;
         private readonly IProductRepository _productRepo;
         private readonly ISKUService _sKUService;
-        public ProductAttributeController(IProductAttributeRepository productAttributeRepo, IProductRepository productRepo, ISKUService sKUService)
+        public ProductAttributeController(IProductAttributeService productAttributeService, IProductRepository productRepo, ISKUService sKUService)
         {
-            _productAttributeRepo = productAttributeRepo;
+            _productAttributeService = productAttributeService;
             _productRepo = productRepo;
             _sKUService = sKUService;
         }
@@ -32,13 +31,7 @@ namespace MainApi.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            bool attributeModelExists = await _productAttributeRepo.ProductAttributeExistsByName(addProductAttributeRequestDto.Name);
-            if (attributeModelExists == true)
-            {
-                return BadRequest("This attribute name already made");
-            }
-
-            await _productAttributeRepo.AddProductAttributeAsync(addProductAttributeRequestDto.ToProductAttributeFromAdd());
+            await _productAttributeService.AddProductAttributeAsync(addProductAttributeRequestDto);
             return Created();
         }
         [HttpGet]

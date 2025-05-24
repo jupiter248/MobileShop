@@ -22,7 +22,6 @@ namespace MainApi.Api.Controllers
         public PaymentController(IPaymentService paymentService, IPaymentRepository paymentRepo)
         {
             _paymentService = paymentService;
-            _paymentService = paymentService;
             _paymentRepo = paymentRepo;
 
         }

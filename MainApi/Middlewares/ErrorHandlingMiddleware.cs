@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using MainApi.Application.CustomException;
+using MainApi.Application.Extensions;
 
 namespace MainApi.Middlewares
 {
@@ -38,12 +40,22 @@ namespace MainApi.Middlewares
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 await context.Response.WriteAsJsonAsync(new { message = ex.Message });
             }
-            catch (Exception ex)
+        }
+        private Task HandleExceptionAsync(HttpContext context, Exception exception)
+        {
+            context.Response.ContentType = "application/json";
+
+            context.Response.StatusCode = exception switch
             {
-                _logger.LogError(ex, "Unhandled exception");
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                await context.Response.WriteAsJsonAsync(new { message = "An error occurred." });
-            }
+                ConflictException => StatusCodes.Status409Conflict,
+                InvalidOperationException => StatusCodes.Status400BadRequest,
+                _ => StatusCodes.Status500InternalServerError
+            };
+
+            return context.Response.WriteAsync(new
+            {
+                error = exception.Message
+            }.ToJson());
         }
     }
 }
