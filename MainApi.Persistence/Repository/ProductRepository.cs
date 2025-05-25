@@ -172,31 +172,21 @@ public class ProductRepository : IProductRepository
         return true;
     }
 
-    public async Task<Product?> RemoveProductAsync(int productId)
+    public async Task DeleteProductAsync(Product product)
     {
-        var product = await GetProductByIdAsync(productId);
-        if (product != null)
-        {
-            _context.Remove(product);
-            await _context.SaveChangesAsync();
-        }
-        return product;
+        _context.Remove(product);
+        await _context.SaveChangesAsync();
     }
 
-    public async Task<Product?> UpdateProductAsync(Product productModel, int productId)
+    public async Task UpdateProductAsync(Product newProduct, Product currentProduct)
     {
-        var product = await _context.Products.FirstOrDefaultAsync(f => f.Id == productId);
-        if (product != null)
-        {
-            product.ProductName = productModel.ProductName;
-            product.Brand = productModel.Brand;
-            product.Model = productModel.Model;
-            product.Price = productModel.Price;
-            product.Quantity = productModel.Quantity;
-            product.Description = productModel.Description;
-            product.CategoryId = productModel.CategoryId;
-            await _context.SaveChangesAsync();
-        }
-        return product;
+        currentProduct.ProductName = newProduct.ProductName;
+        currentProduct.Brand = newProduct.Brand;
+        currentProduct.Model = newProduct.Model;
+        currentProduct.Price = newProduct.Price;
+        currentProduct.Quantity = newProduct.Quantity;
+        currentProduct.Description = newProduct.Description;
+        currentProduct.CategoryId = newProduct.CategoryId;
+        await _context.SaveChangesAsync();
     }
 }

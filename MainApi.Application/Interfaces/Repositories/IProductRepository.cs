@@ -9,8 +9,8 @@ public interface IProductRepository
 {
     Task<List<Product>?> GetAllProductsAsync(ProductSortingDto sortingDto, ProductFilteringDto filteringDto);
     Task<Product?> GetProductByIdAsync(int productId);
-    Task<Product?> AddProductAsync(Product product);
-    Task<Product?> RemoveProductAsync(int productId);
-    Task<Product?> UpdateProductAsync(Product product, int productId);
+    Task<Product> AddProductAsync(Product product);
+    Task DeleteProductAsync(Product product);
+    Task UpdateProductAsync(Product newProduct, Product currentProduct);
     Task<bool> ProductExistsAsync(int productId);
 }
