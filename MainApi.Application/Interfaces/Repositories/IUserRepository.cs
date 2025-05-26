@@ -10,6 +10,5 @@ namespace MainApi.Application.Interfaces.Repositories
     public interface IUserRepository
     {
         Task<List<UserDto>?> GetAllUsers();
-        Task<AppUser?> GetUserByUsername(string username);
     }
 }

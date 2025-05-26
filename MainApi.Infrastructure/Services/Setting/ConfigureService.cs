@@ -112,6 +112,8 @@ namespace MainApi.Infrastructure.Services.Internal
             services.AddScoped<IProductAttributeService, ProductAttributeService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ISpecificationAttributesService, SpecificationAttributesService>();
+            services.AddScoped<IWishListService, WishListService>();
+
 
 
 

@@ -6,6 +6,7 @@ using MainApi.Application.Dtos.Products;
 using MainApi.Application.Extensions;
 using MainApi.Application.Interfaces;
 using MainApi.Application.Interfaces.Repositories;
+using MainApi.Application.Interfaces.Services;
 using MainApi.Application.Mappers;
 using MainApi.Domain.Models.Products;
 using MainApi.Domain.Models.User;
@@ -18,12 +19,12 @@ namespace MainApi.Api.Controllers
     [Route("api/favorite")]
     public class WishListController : ControllerBase
     {
-        private readonly IWishListRepository _wishListRepo;
+        private readonly IWishListService _wishListService;
         private readonly IProductRepository _productRepo;
         private readonly UserManager<AppUser> _userManager;
-        public WishListController(IWishListRepository wishListRepo, IProductRepository productRepo, UserManager<AppUser> userManager)
+        public WishListController(IWishListService wishListService, IProductRepository productRepo, UserManager<AppUser> userManager)
         {
-            _wishListRepo = wishListRepo;
+            _wishListService = wishListService;
             _productRepo = productRepo;
             _userManager = userManager;
         }
@@ -32,19 +33,8 @@ namespace MainApi.Api.Controllers
         {
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
-            List<WishList>? wishLists = await _wishListRepo.GetUserWishListAsync(username);
-            List<ProductDto> productDtos = wishLists
-            .Select(p => new ProductDto
-            {
-                Id = p.ProductId,
-                Brand = p.Product.Brand,
-                categoryId = p.Product.CategoryId,
-                Description = p.Product.Description,
-                Model = p.Product.Model,
-                Price = p.Product.Price,
-                ProductName = p.Product.ProductName,
-                Quantity = p.Product.Quantity,
-            }).ToList();
+
+            List<ProductDto>? productDtos = await _wishListService.GetWishListAsync(username);
             return Ok(productDtos);
         }
         [HttpPost("{productId:int}")]
@@ -53,28 +43,8 @@ namespace MainApi.Api.Controllers
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
 
-            AppUser? appUser = await _userManager.FindByNameAsync(username);
-            if (appUser == null) return BadRequest("There is no user with this username");
-
-            Product? product = await _productRepo.GetProductByIdAsync(productId);
-            if (product == null) return NotFound("Product not found");
-
-            WishList? wishListModel = new WishList()
-            {
-                ProductId = productId,
-                UserId = appUser.Id,
-                AppUser = appUser,
-                Product = product,
-            };
-            await _wishListRepo.AddWishListAsync(wishListModel);
-            if (wishListModel == null)
-            {
-                return StatusCode(500, "Could not create");
-            }
-            else
-            {
-                return Created();
-            }
+            await _wishListService.AddToWishListAsync(productId, username);
+            return Created();
         }
         [HttpDelete("{productId:int}")]
         public async Task<IActionResult> DeleteFromWishList([FromRoute] int productId)
@@ -82,11 +52,7 @@ namespace MainApi.Api.Controllers
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return BadRequest("Username is invalid");
 
-            WishList? wishList = await _wishListRepo.RemoveWishListAsync(productId, username);
-            if (wishList == null)
-            {
-                return NotFound();
-            }
+            await _wishListService.DeleteFromWishListAsync(productId, username);
             return NoContent();
 
         }

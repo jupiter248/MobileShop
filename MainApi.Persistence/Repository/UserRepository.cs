@@ -31,12 +31,5 @@ namespace MainApi.Persistence.Repository
             ).ToList();
             return userDtos;
         }
-
-        public async Task<AppUser?> GetUserByUsername(string username)
-        {
-            AppUser? appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == username);
-            if (appUser == null) return null;
-            return appUser;
-        }
     }
 }
