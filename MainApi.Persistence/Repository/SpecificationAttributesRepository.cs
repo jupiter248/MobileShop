@@ -19,14 +19,14 @@ namespace MainApi.Persistence.Repository
             _context = context;
         }
 
-        public async Task<SpecificationAttribute?> AddSpecificationAttributeAsync(SpecificationAttribute specificationAttribute)
+        public async Task<SpecificationAttribute> AddSpecificationAttributeAsync(SpecificationAttribute specificationAttribute)
         {
             await _context.SpecificationAttributes.AddAsync(specificationAttribute);
             await _context.SaveChangesAsync();
             return specificationAttribute;
         }
 
-        public async Task<SpecificationAttributeOption?> AddSpecificationOptionAsync(SpecificationAttributeOption option)
+        public async Task<SpecificationAttributeOption> AddSpecificationOptionAsync(SpecificationAttributeOption option)
         {
             await _context.SpecificationAttributeOptions.AddAsync(option);
             await _context.SaveChangesAsync();
@@ -52,15 +52,11 @@ namespace MainApi.Persistence.Repository
             return specificationAttributes;
         }
 
-        public async Task<List<SpecificationAttributeOption>?> GetProductSpecificationAttributesByProductIdAsync(int productId)
+        public async Task<List<SpecificationAttributeOption>> GetProductSpecificationAttributesByProductIdAsync(int productId)
         {
             List<Product_SpecificationAttribute_Mapping> product_Specifications = await _context.SpecificationAttributeMappings.Include(o => o.SpecificationAttributeOption).ThenInclude(a => a.SpecificationAttribute)
             .Where(m => m.ProductId == productId).ToListAsync();
             List<SpecificationAttributeOption?> options = product_Specifications.Select(m => m.SpecificationAttributeOption).ToList();
-            if (options == null)
-            {
-                return null;
-            }
             return options;
         }
 
@@ -74,9 +70,9 @@ namespace MainApi.Persistence.Repository
             return true;
         }
 
-        public async Task<SpecificationAttribute?> GetSpecificationAttributeByName(string name)
+        public async Task<SpecificationAttribute?> GetSpecificationAttributeByIdAsync(int specificationId)
         {
-            SpecificationAttribute? specificationAttribute = await _context.SpecificationAttributes.FirstOrDefaultAsync(s => s.Name.ToLower() == name.ToLower());
+            SpecificationAttribute? specificationAttribute = await _context.SpecificationAttributes.FirstOrDefaultAsync(s => s.Id == specificationId);
             if (specificationAttribute == null)
             {
                 return null;
@@ -84,7 +80,7 @@ namespace MainApi.Persistence.Repository
             return specificationAttribute;
         }
 
-        public async Task<SpecificationAttributeOption?> GetSpecificationAttributeOptionById(int optionId)
+        public async Task<SpecificationAttributeOption?> GetSpecificationAttributeOptionByIdAsync(int optionId)
         {
             SpecificationAttributeOption? option = await _context.SpecificationAttributeOptions.FirstOrDefaultAsync(o => o.Id == optionId);
             if (option == null)
@@ -94,40 +90,44 @@ namespace MainApi.Persistence.Repository
             return option;
         }
 
-        public async Task<bool> DeleteSpecificationAttributeAsync(int specificationAttributeId)
+        public async Task DeleteSpecificationAttributeAsync(SpecificationAttribute specificationAttribute)
         {
-            SpecificationAttribute? specification = await _context.SpecificationAttributes.FindAsync(specificationAttributeId);
-            if (specification == null)
-            {
-                return false;
-            }
-            _context.Remove(specification);
+            _context.Remove(specificationAttribute);
             await _context.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<bool> DeleteSpecificationOptionAsync(int specificationOptionId)
+        public async Task DeleteSpecificationOptionAsync(SpecificationAttributeOption specificationAttributeOption)
         {
-            SpecificationAttributeOption? option = await _context.SpecificationAttributeOptions.FindAsync(specificationOptionId);
-            if (option == null)
-            {
-                return false;
-            }
-            _context.Remove(option);
+            _context.Remove(specificationAttributeOption);
             await _context.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<bool> DeleteAssignedSpecificationAsync(int mappingId)
+        public async Task DeleteAssignedSpecificationAsync(Product_SpecificationAttribute_Mapping product_SpecificationAttribute_Mapping)
         {
-            Product_SpecificationAttribute_Mapping? mappedModel = await _context.SpecificationAttributeMappings.FindAsync(mappingId);
-            if (mappedModel == null)
-            {
-                return false;
-            }
-            _context.Remove(mappedModel);
+
+            _context.Remove(product_SpecificationAttribute_Mapping);
             await _context.SaveChangesAsync();
-            return true;
+        }
+
+
+        public async Task<Product_SpecificationAttribute_Mapping?> GetMappedSpecificationByIdAsync(int mappedId)
+        {
+            Product_SpecificationAttribute_Mapping? product_SpecificationAttribute_Mapping = await _context.SpecificationAttributeMappings.FirstOrDefaultAsync(m => m.Id == mappedId);
+            if (product_SpecificationAttribute_Mapping == null)
+            {
+                return null;
+            }
+            return product_SpecificationAttribute_Mapping;
+        }
+
+        public async Task<SpecificationAttribute?> GetSpecificationAttributeByNameAsync(string specificationName)
+        {
+            SpecificationAttribute? specificationAttribute = await _context.SpecificationAttributes.FirstOrDefaultAsync(s => s.Name.ToLower() == specificationName.ToLower());
+            if (specificationAttribute == null)
+            {
+                return null;
+            }
+            return specificationAttribute;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MainApi.Application.Dtos.SpecificationAttributes;
 using MainApi.Application.Interfaces;
 using MainApi.Application.Interfaces.Repositories;
+using MainApi.Application.Interfaces.Services;
 using MainApi.Application.Mappers;
 using MainApi.Domain.Models.Products;
 using MainApi.Domain.Models.Products.SpecificationAttributes;
@@ -17,46 +18,33 @@ namespace MainApi.Api.Controllers
     [Route("api/specifications")]
     public class SpecificationAttributesController : ControllerBase
     {
-        private readonly ISpecificationAttributesRepository _specificationAttributesRepo;
+        private readonly ISpecificationAttributesService _specificationAttributesService;
         private readonly IProductRepository _productRepo;
-        public SpecificationAttributesController(ISpecificationAttributesRepository specificationAttributesRepo, IProductRepository productRepo)
+        public SpecificationAttributesController(ISpecificationAttributesService specificationAttributesService, IProductRepository productRepo)
         {
-            _specificationAttributesRepo = specificationAttributesRepo;
+            _specificationAttributesService = specificationAttributesService;
             _productRepo = productRepo;
         }
         [HttpPost]
         public async Task<IActionResult> AddSpecificationAttribute([FromBody] AddSpecificationAttributeRequestDto addSpecificationAttributeRequestDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            SpecificationAttribute specification = addSpecificationAttributeRequestDto.ToSpecificationAttributeFromAddDto();
-            bool specificationExists = await _specificationAttributesRepo.SpecificationAttributeExistsAsync(specification.Name);
-            if (specificationExists == true)
-            {
-                return BadRequest("This attribute already made");
-            }
-            await _specificationAttributesRepo.AddSpecificationAttributeAsync(specification);
+
+            SpecificationAttributeDto specificationAttributeDto = await _specificationAttributesService.AddSpecificationAttributeAsync(addSpecificationAttributeRequestDto);
             return Created();
         }
         [HttpGet]
         public async Task<IActionResult> GetAllSpecificationAttributes()
         {
-            List<SpecificationAttribute> specificationAttributes = await _specificationAttributesRepo.GetAllSpecificationAttributesAsync();
-            List<SpecificationAttributeDto> specificationAttributeDtos = specificationAttributes.Select(s => s.ToSpecificationAttributeDto()).ToList();
+            List<SpecificationAttributeDto> specificationAttributeDtos = await _specificationAttributesService.GetAllSpecificationAttributesAsync();
             return Ok(specificationAttributeDtos);
         }
         [HttpPost("option")]
         public async Task<IActionResult> AddSpecificationAttributeOption([FromBody] AddSpecificationAttributeOptionRequestDto option)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            SpecificationAttribute? specificationAttribute = await _specificationAttributesRepo.GetSpecificationAttributeByName(option.AttributeName);
-            if (specificationAttribute == null) return NotFound("Attribute name not found");
-            SpecificationAttributeOption optionModel = new SpecificationAttributeOption()
-            {
-                Name = option.AttributeValue,
-                SpecificationAttributeId = specificationAttribute.Id,
-                SpecificationAttribute = specificationAttribute
-            };
-            await _specificationAttributesRepo.AddSpecificationOptionAsync(optionModel);
+
+            await _specificationAttributesService.AddSpecificationAttributeOptionAsync(option);
             return Created();
         }
         [HttpPost("assign-to-product")]
@@ -64,70 +52,33 @@ namespace MainApi.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            Product? product = await _productRepo.GetProductByIdAsync(addAssignToProductRequestDto.ProductId);
-            if (product == null) return BadRequest("Product not found");
-
-            SpecificationAttributeOption? option = await _specificationAttributesRepo.GetSpecificationAttributeOptionById(addAssignToProductRequestDto.SpecificationAttributeOptionId);
-            if (option == null) return BadRequest("Option not found");
-
-            Product_SpecificationAttribute_Mapping mappedModel = addAssignToProductRequestDto.ToProductSpecificationAttributeMappingFromAdd();
-            mappedModel.SpecificationAttributeOption = option;
-            mappedModel.Product = product;
-
-            await _specificationAttributesRepo.AssignSpecificationToProductAsync(mappedModel);
-
-            if (mappedModel == null)
-            {
-                return BadRequest("Can not create");
-            }
+            await _specificationAttributesService.AssignSpecificationToProductAsync(addAssignToProductRequestDto);
 
             return Created();
         }
         [HttpGet("product-specification/{productId:int}")]
         public async Task<IActionResult> GetProductSpecification([FromRoute] int productId)
         {
-            List<SpecificationAttributeOption>? options = await _specificationAttributesRepo.GetProductSpecificationAttributesByProductIdAsync(productId);
-            if (options == null) return NotFound();
-            List<ProductSpecificationAttributeDto> optionDtos = options
-            .Select(o =>
-            {
-                return new ProductSpecificationAttributeDto()
-                {
-                    SpecificationName = o.SpecificationAttribute.Name,
-                    SpecificationValue = o.Name
-                };
-            }
-            ).ToList();
-            return Ok(optionDtos);
+            List<ProductSpecificationAttributeDto> specificationAttributeOptionDto = await _specificationAttributesService.GetProductSpecificationOptionsAsync(productId);
+            return Ok(specificationAttributeOptionDto);
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteSpecification([FromRoute] int id)
         {
-            bool specificationDeleted = await _specificationAttributesRepo.DeleteSpecificationAttributeAsync(id);
-            if (specificationDeleted == false)
-            {
-                return NotFound("Specification not found");
-            }
+            await _specificationAttributesService.DeleteSpecificationAsync(id);
             return NoContent();
         }
         [HttpDelete("option{id:int}")]
         public async Task<IActionResult> DeleteSpecificationOption([FromRoute] int id)
         {
-            bool specificationOptionDeleted = await _specificationAttributesRepo.DeleteSpecificationOptionAsync(id);
-            if (specificationOptionDeleted == false)
-            {
-                return NotFound("Specification option not found");
-            }
+            await _specificationAttributesService.DeleteSpecificationOptionAsync(id);
             return NoContent();
         }
         [HttpDelete("assigned{id:int}")]
         public async Task<IActionResult> DeleteSpecificationAssigned([FromRoute] int id)
         {
-            bool specificationAssignedDeleted = await _specificationAttributesRepo.DeleteAssignedSpecificationAsync(id);
-            if (specificationAssignedDeleted == false)
-            {
-                return NotFound("Specification assigned not found");
-            }
+            await _specificationAttributesService.DeleteSpecificationAssignedAsync(id);
+
             return NoContent();
         }
     }

@@ -111,6 +111,8 @@ namespace MainApi.Infrastructure.Services.Internal
             services.AddScoped<IOrderShipmentService, OrderShipmentService>();
             services.AddScoped<IProductAttributeService, ProductAttributeService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ISpecificationAttributesService, SpecificationAttributesService>();
+
 
 
 
