@@ -13,10 +13,10 @@ namespace MainApi.Application.Interfaces.Repositories
         Task UpdatePaymentStatusAsync(string authority, PaymentStatus status, string transactionId);
 
         // Payment Status
-        Task<PaymentStatus?> CreatePaymentStatusAsync(PaymentStatus paymentStatus);
+        Task<PaymentStatus> CreatePaymentStatusAsync(PaymentStatus paymentStatus);
         Task<List<PaymentStatus>> GetAllPaymentStatusesAsync();
         Task<PaymentStatus?> GetPaymentStatusByNameAsync(string statusName);
-        Task<PaymentStatus?> DeletePaymentStatusAsync(int id);
+        Task DeletePaymentStatusAsync(PaymentStatus paymentStatus);
 
 
     }

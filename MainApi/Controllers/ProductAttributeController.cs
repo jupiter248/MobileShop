@@ -18,13 +18,9 @@ namespace MainApi.Api.Controllers
     public class ProductAttributeController : ControllerBase
     {
         private readonly IProductAttributeService _productAttributeService;
-        private readonly IProductRepository _productRepo;
-        private readonly ISKUService _sKUService;
-        public ProductAttributeController(IProductAttributeService productAttributeService, IProductRepository productRepo, ISKUService sKUService)
+        public ProductAttributeController(IProductAttributeService productAttributeService)
         {
             _productAttributeService = productAttributeService;
-            _productRepo = productRepo;
-            _sKUService = sKUService;
         }
         [HttpPost]
         public async Task<IActionResult> AddProductAttribute([FromBody] AddProductAttributeRequestDto addProductAttributeRequestDto)

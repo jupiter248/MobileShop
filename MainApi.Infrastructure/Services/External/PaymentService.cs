@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
+using MainApi.Application.CustomException;
 using MainApi.Application.Dtos.Payment;
 using MainApi.Application.Interfaces;
 using MainApi.Application.Interfaces.Repositories;
@@ -34,7 +35,39 @@ namespace MainApi.Infrastructure.Services.External
             _callbackUrl = configuration["Zarinpal:CallbackUrl"] ?? string.Empty;
         }
 
-        public async Task<string> RequestPayment(string username, AddRequestPaymentDto AddPaymentDto)
+        public async Task AddPaymentStatusAsync(string statusName, string description)
+        {
+            PaymentStatus? status = await _paymentRepo.GetPaymentStatusByNameAsync(statusName);
+            if (status != null)
+            {
+                throw new ConflictException("Data already exists");
+            }
+            await _paymentRepo.CreatePaymentStatusAsync(new PaymentStatus
+            {
+                Name = statusName,
+                Description = description
+            });
+        }
+
+        public async Task DeletePaymentStatusesAsync(string statusName)
+        {
+            PaymentStatus paymentStatus = await _paymentRepo.GetPaymentStatusByNameAsync(statusName) ?? throw new KeyNotFoundException("Data not found");
+            await _paymentRepo.DeletePaymentStatusAsync(paymentStatus);
+        }
+
+        public async Task<IEnumerable<object>> GetAllPaymentStatusesAsync()
+        {
+            List<PaymentStatus> paymentStatuses = await _paymentRepo.GetAllPaymentStatusesAsync();
+            IEnumerable<object> PaymentStatusDto = paymentStatuses.Select(s => new
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Description = s.Description
+            });
+            return PaymentStatusDto;
+        }
+
+        public async Task<string> RequestPaymentAsync(string username, AddRequestPaymentDto AddPaymentDto)
         {
             AppUser? appUser = await _userManager.FindByNameAsync(username);
             if (appUser == null) throw new Exception("User not found");
@@ -73,7 +106,8 @@ namespace MainApi.Infrastructure.Services.External
             return result.data.Authority;
         }
 
-        public async Task<bool> VerifyPayment(AddVerifyPaymentDto addVerifyPaymentDto)
+
+        public async Task<bool> VerifyPaymentAsync(AddVerifyPaymentDto addVerifyPaymentDto)
         {
             Payment? payment = await _paymentRepo.GetPaymentByAuthorityAsync(addVerifyPaymentDto.Authority);
             if (payment == null) return false;

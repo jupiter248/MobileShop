@@ -19,11 +19,9 @@ namespace MainApi.Api.Controllers
     public class SpecificationAttributesController : ControllerBase
     {
         private readonly ISpecificationAttributesService _specificationAttributesService;
-        private readonly IProductRepository _productRepo;
-        public SpecificationAttributesController(ISpecificationAttributesService specificationAttributesService, IProductRepository productRepo)
+        public SpecificationAttributesController(ISpecificationAttributesService specificationAttributesService)
         {
             _specificationAttributesService = specificationAttributesService;
-            _productRepo = productRepo;
         }
         [HttpPost]
         public async Task<IActionResult> AddSpecificationAttribute([FromBody] AddSpecificationAttributeRequestDto addSpecificationAttributeRequestDto)

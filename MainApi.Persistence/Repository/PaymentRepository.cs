@@ -49,27 +49,18 @@ namespace MainApi.Persistence.Repository
         //Payment Status
 
 
-        public async Task<PaymentStatus?> CreatePaymentStatusAsync(PaymentStatus paymentStatus)
+        public async Task<PaymentStatus> CreatePaymentStatusAsync(PaymentStatus paymentStatus)
         {
-            PaymentStatus? status = await _context.PaymentStatuses.FirstOrDefaultAsync(s => s.Name.ToLower() == paymentStatus.Name.ToLower());
-            if (status != null)
-            {
-                return null;
-            }
             await _context.AddAsync(paymentStatus);
             await _context.SaveChangesAsync();
             return paymentStatus;
         }
 
-        public async Task<PaymentStatus?> DeletePaymentStatusAsync(int id)
+        public async Task DeletePaymentStatusAsync(PaymentStatus paymentStatus)
         {
-            PaymentStatus? paymentStatus = await _context.PaymentStatuses.FindAsync(id);
-            if (paymentStatus != null)
-            {
-                _context.PaymentStatuses.Remove(paymentStatus);
-                await _context.SaveChangesAsync();
-            }
-            return paymentStatus;
+
+            _context.PaymentStatuses.Remove(paymentStatus);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<PaymentStatus>> GetAllPaymentStatusesAsync()
