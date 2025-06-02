@@ -64,8 +64,8 @@ namespace MainApi.Infrastructure.Services.Internal
         }
         public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration config)
         {
-            var jwtSettings = config.GetSection("JWT");
-            string signingKeyString = jwtSettings["SigningKey"] ?? string.Empty;
+            // var jwtSettings = config.GetSection("JWT");
+            string signingKeyString = Environment.GetEnvironmentVariable("JWT_SigningKey") ?? string.Empty;
             if (string.IsNullOrWhiteSpace(signingKeyString))
                 throw new InvalidOperationException("JWT key is not configured properly.");
 
@@ -87,8 +87,8 @@ namespace MainApi.Infrastructure.Services.Internal
                     ValidateAudience = true,
                     ValidateIssuer = true,
                     ValidateLifetime = true,
-                    ValidAudience = jwtSettings["Audience"],
-                    ValidIssuer = jwtSettings["Issuer"],
+                    ValidAudience = Environment.GetEnvironmentVariable("JWT_Audience"),
+                    ValidIssuer = Environment.GetEnvironmentVariable("JWT_Issuer"),
                     IssuerSigningKey = signingKey,
                 };
             });

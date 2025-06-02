@@ -22,12 +22,12 @@ namespace MainApi.Infrastructure.Services.External
 
         public EmailService(IConfiguration configuration)
         {
-            _fromEmail = configuration["EmailSettings:FromEmail"] ?? string.Empty;
-            _fromName = configuration["EmailSettings:FromName"] ?? string.Empty;
-            _smtpPassword = configuration["EmailSettings:SmtpPassword"] ?? string.Empty;
-            _smtpPort = int.Parse(configuration["EmailSettings:SmtpPort"] ?? string.Empty);
-            _smtpServer = configuration["EmailSettings:SmtpServer"] ?? string.Empty;
-            _smtpUsername = configuration["EmailSettings:SmtpUsername"] ?? string.Empty;
+            _fromEmail = Environment.GetEnvironmentVariable("EmailSettings_FromEmail") ?? string.Empty;
+            _fromName = Environment.GetEnvironmentVariable("EmailSettings_FromName") ?? string.Empty;
+            _smtpPassword = Environment.GetEnvironmentVariable("EmailSettings_SmtpPassword") ?? string.Empty;
+            _smtpPort = int.Parse(Environment.GetEnvironmentVariable("EmailSettings_SmtpPort") ?? string.Empty);
+            _smtpServer = Environment.GetEnvironmentVariable("EmailSettings_SmtpServer") ?? string.Empty;
+            _smtpUsername = Environment.GetEnvironmentVariable("EmailSettings_SmtpUsername") ?? string.Empty;
         }
 
 

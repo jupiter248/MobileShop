@@ -31,8 +31,8 @@ namespace MainApi.Infrastructure.Services.External
             _orderRepo = orderRepo;
             _paymentRepo = paymentRepo;
             _userManager = userManager;
-            _merchantId = configuration["Zarinpal:MerchantId"] ?? string.Empty;
-            _callbackUrl = configuration["Zarinpal:CallbackUrl"] ?? string.Empty;
+            _merchantId = Environment.GetEnvironmentVariable("Zarinpal_MerchantId") ?? string.Empty;
+            _callbackUrl = Environment.GetEnvironmentVariable("Zarinpal_CallbackUrl") ?? string.Empty;
         }
 
         public async Task AddPaymentStatusAsync(string statusName, string description)

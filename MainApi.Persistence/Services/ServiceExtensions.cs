@@ -17,7 +17,7 @@ namespace MainApi.Persistence.Services
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Environment.GetEnvironmentVariable("DefaultConnection"));
             });
         }
     }
