@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Logging;
 using MainApi.Infrastructure.Services.Internal;
 
 
+DotNetEnv.Env.Load(); // This loads .env into Environment variables
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,7 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddCustomServices();
 
+
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("HelloConnection", policy =>
@@ -42,6 +44,8 @@ builder.Services.AddCors(opt =>
     });
 });
 builder.Services.AddHttpClient();
+
+
 
 var app = builder.Build();
 
@@ -80,4 +84,4 @@ app.UseCors("HelloConnection");
 
 app.MapControllers();
 
-    app.Run();
+app.Run();
