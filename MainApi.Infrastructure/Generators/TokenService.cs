@@ -25,7 +25,7 @@ namespace MainApi.Infrastructure.Services.Generators
         public TokenService(IConfiguration config)
         {
             _config = config;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"] ?? string.Empty));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SigningKey") ?? string.Empty));
         }
 
         public string CreateToken(AppUser appUser, IList<string> roles)
@@ -47,8 +47,8 @@ namespace MainApi.Infrastructure.Services.Generators
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(5),
                 SigningCredentials = creds,
-                Issuer = _config["JWT:Issuer"],
-                Audience = _config["JWT:Audience"],
+                Issuer = Environment.GetEnvironmentVariable("JWT_SigningKey"),
+                Audience = Environment.GetEnvironmentVariable("JWT_SigningKey"),
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
