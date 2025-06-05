@@ -9,6 +9,7 @@ using MainApi.Application.Interfaces.Services;
 using MainApi.Middlewares;
 using Microsoft.IdentityModel.Logging;
 using MainApi.Infrastructure.Services.Internal;
+using Microsoft.EntityFrameworkCore;
 
 
 DotNetEnv.Env.Load(); // This loads .env into Environment variables
@@ -53,6 +54,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate(); // Ensure the database is created and migrations are applied
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var sKUService = services.GetRequiredService<ISKUService>();

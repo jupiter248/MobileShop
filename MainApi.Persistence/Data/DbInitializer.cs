@@ -16,9 +16,6 @@ namespace MainApi.Persistence.Data
     {
         public static async Task UserInitializerAsync(ApplicationDbContext _context, UserManager<AppUser> _userManager, RoleManager<IdentityRole> _roleManager)
         {
-            // Ensure the database is created
-            _context.Database.EnsureCreated();
-            _context.Database.Migrate();
 
             // Check if the database has been seeded
             if (_context.Roles.Any() || _context.Users.Any() || _context.Addresses.Any())
@@ -82,10 +79,6 @@ namespace MainApi.Persistence.Data
         }
         public static async Task ProductInitializerAsync(ApplicationDbContext _context, ISKUService sKUService)
         {
-            // Ensure the database is created
-            _context.Database.EnsureCreated();
-
-
 
             // Check if the database has been seeded
             if (_context.Products.Any() || _context.Categories.Any() || _context.PredefinedProductAttributeValues.Any() || _context.ProductAttributes.Any()
@@ -444,7 +437,6 @@ namespace MainApi.Persistence.Data
         public static async Task StatusInitializerAsync(ApplicationDbContext _context)
         {
             // Ensure the database is created
-            _context.Database.EnsureCreated();
 
             // Check if the database has been seeded
             if (_context.ShippingStatuses.Any() || _context.OrderStatuses.Any() || _context.PaymentStatuses.Any())

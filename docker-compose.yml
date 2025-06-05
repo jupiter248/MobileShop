@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  mainapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8080"
+    depends_on:
+      - sqlserver
+    env_file:
+      - .env
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1431:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=mahdi2481385m@Kroos
+    volumes:
+      - sql-server-volume:/var/opt/mssql
+
+volumes:
+  sql-server-volume:
+    external: false # set to false if you want Docker Compose to create a new volume

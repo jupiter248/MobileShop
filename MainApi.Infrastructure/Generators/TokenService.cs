@@ -47,8 +47,8 @@ namespace MainApi.Infrastructure.Services.Generators
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(5),
                 SigningCredentials = creds,
-                Issuer = Environment.GetEnvironmentVariable("JWT_SigningKey"),
-                Audience = Environment.GetEnvironmentVariable("JWT_SigningKey"),
+                Issuer = Environment.GetEnvironmentVariable("JWT_Issuer"),
+                Audience = Environment.GetEnvironmentVariable("JWT_Audience"),
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

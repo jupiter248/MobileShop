@@ -12,7 +12,7 @@ COPY  ["MainApi.Domain/MainApi.Domain.csproj", "MainApi.Domain/"]
 COPY  ["MainApi.Infrastructure/MainApi.Infrastructure.csproj", "MainApi.Infrastructure/"]
 COPY  ["MainApi.Persistence/MainApi.Persistence.csproj", "MainApi.Persistence/"]
 RUN dotnet restore "MainApi/MainApi.csproj"
-COPY . .
+COPY . .    
 
 WORKDIR "/src/MainApi"
 RUN dotnet build "MainApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
