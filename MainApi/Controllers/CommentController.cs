@@ -30,11 +30,11 @@ namespace MainApi.Api.Controllers
         }
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllComments()
+        public async Task<IActionResult> GetAllComments([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
         {
             string? username = User.GetUsername();
             if (username == null) return NotFound("User not found");
-            List<CommentDto>? commentDtos = await _commentService.GetAllUserCommentsAsync(username);
+            List<CommentDto>? commentDtos = await _commentService.GetAllUserCommentsAsync(username, pageNumber, pageSize);
             return Ok(commentDtos);
         }
         [Authorize(Roles = "Admin")]
@@ -45,16 +45,17 @@ namespace MainApi.Api.Controllers
             return Ok(commentDto);
         }
         [Authorize]
-        [HttpPost("{productId:int}")]
-        public async Task<IActionResult> AddComment([FromRoute] int productId, AddCommentRequestDto addCommentRequestDto)
+        [HttpPost]
+        public async Task<IActionResult> AddComment(int productId, AddCommentRequestDto addCommentRequestDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             string? username = User.GetUsername();
             if (string.IsNullOrWhiteSpace(username)) return NotFound("Username is invalid");
 
-            CommentDto? commentDto = await _commentService.AddCommentAsync(productId, addCommentRequestDto, username);
-            return CreatedAtAction(nameof(GetCommentById), new { id = commentDto.Id }, commentDto);
+            CommentDto commentDto = await _commentService.AddCommentAsync(productId, addCommentRequestDto, username);
+            // return CreatedAtAction(nameof(GetCommentById), new { id = commentDto.Id }, commentDto);
+            return Created();
 
         }
         [Authorize]

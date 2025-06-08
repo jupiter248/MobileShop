@@ -33,7 +33,7 @@ public class ProductController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetProductById([FromRoute] int id)
     {
-        ProductDto? productDto = await _productService.GetProductByIdAsync(id);
+        ProductDto productDto = await _productService.GetProductByIdAsync(id);
         return Ok(productDto);
     }
     [Authorize(Roles = "Admin")]

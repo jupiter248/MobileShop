@@ -7,10 +7,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8090:8080"
-    depends_on:
-      - sqlserver
     env_file:
       - .env
+    depends_on:
+      - sqlserver
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest

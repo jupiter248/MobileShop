@@ -56,10 +56,10 @@ namespace MainApi.Infrastructure.Services.Internal
 
         public async Task<NewUserDto> LoginAsync(LoginDto loginDto)
         {
-            var user = await _userManager.FindByNameAsync(loginDto.Username);
+            var user = await _userManager.FindByNameAsync(loginDto.UsernameOrEmail);
 
             if (user == null)
-                user = await _userManager.FindByEmailAsync(loginDto.Username);
+                user = await _userManager.FindByEmailAsync(loginDto.UsernameOrEmail);
 
             if (user == null)
                 throw new UnauthorizedAccessException("User not found");

@@ -38,10 +38,12 @@ namespace MainApi.Persistence.Repository
             return null;
         }
 
-        public async Task<List<Comment>> GetAllCommentAsync(string username)
+        public async Task<List<Comment>> GetAllCommentAsync(string username, int pageNumber, int pageSize)
         {
             List<Comment> comments = await _context.Comments.Include(u => u.AppUser).Include(p => p.Product).Where(c => c.AppUser.UserName == username).ToListAsync();
-            return comments;
+            var skipNumber = (pageNumber - 1) * pageSize;
+
+            return comments.Skip(skipNumber).Take(pageSize).ToList();
         }
 
         public async Task<Comment?> GetCommentByIdAsync(int commentId)

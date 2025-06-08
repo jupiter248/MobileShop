@@ -4,7 +4,7 @@ namespace MainApi.Application.Interfaces.Repositories
 {
     public interface ICommentRepository
     {
-        Task<List<Comment>> GetAllCommentAsync(string username);
+        Task<List<Comment>> GetAllCommentAsync(string username ,int pageNumber, int pageSize);
         Task<Comment?> GetCommentByIdAsync(int commentId);
         Task AddCommentAsync(Comment comment);
         Task<Comment?> EditCommentAsync(int commentId, Comment comment, string username);

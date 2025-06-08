@@ -11,7 +11,7 @@ namespace MainApi.Application.Interfaces.Services
 {
     public interface ICommentService
     {
-        Task<List<CommentDto>> GetAllUserCommentsAsync(string username);
+        Task<List<CommentDto>> GetAllUserCommentsAsync(string username , int pageNumber = 1, int pageSize = 20);
         Task<CommentDto> GetCommentByIdAsync(int commentId);
         Task<CommentDto> AddCommentAsync(int productId, AddCommentRequestDto addCommentRequestDto, string username);
         Task UpdateCommentAsync(int commentId, EditCommentRequestDto editCommentRequestDto, string username);

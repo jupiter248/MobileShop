@@ -10,7 +10,7 @@ namespace MainApi.Application.Dtos.Account
     {
         [Required]
         [Display(Name = "Email or Username")]
-        public required string Username { get; set; }
+        public required string UsernameOrEmail { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

@@ -43,9 +43,9 @@ namespace MainApi.Infrastructure.Services.Internal
             await _commentRepository.RemoveCommentAsync(comment);
         }
 
-        public async Task<List<CommentDto>> GetAllUserCommentsAsync(string username)
+        public async Task<List<CommentDto>> GetAllUserCommentsAsync(string username , int pageNumber = 1, int pageSize = 20)    
         {
-            List<Comment> comments = await _commentRepository.GetAllCommentAsync(username);
+            List<Comment> comments = await _commentRepository.GetAllCommentAsync(username , pageNumber , pageSize);
             List<CommentDto>? commentDtos = comments.Select(c => c.ToCommentDto()).ToList();
             return commentDtos;
         }

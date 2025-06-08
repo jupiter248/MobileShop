@@ -12,7 +12,7 @@ using MainApi.Infrastructure.Services.Internal;
 using Microsoft.EntityFrameworkCore;
 
 
-DotNetEnv.Env.Load(); // This loads .env into Environment variables
+DotNetEnv.Env.Load(Path.Combine("..", ".env")); // This loads .env into Environment variables
 
 var builder = WebApplication.CreateBuilder(args);
 
