@@ -24,8 +24,8 @@ namespace MainApi.Application.Interfaces.Repositories
         Task<List<PredefinedProductAttributeValue>> GetAttributeValuesById(List<int> Ids);
 
         //AttributeMapping
-        Task<Product_ProductAttribute_Mapping> AddProductAttributeMappingAsync(Product_ProductAttribute_Mapping product_ProductAttribute_Mapping);
-        Task<List<Product_ProductAttribute_Mapping>> GetAllProductAttributeMappingAsync(int productId);
+        Task<ProductAttributeMapping> AddProductAttributeMappingAsync(ProductAttributeMapping ProductAttributeMapping);
+        Task<List<ProductAttributeMapping>> GetAllProductAttributeMappingAsync(int productId);
 
         //AttributeCombination
         Task<ProductCombination> AddProductAttributeCombinationAsync(ProductCombination productCombination);

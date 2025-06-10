@@ -26,7 +26,7 @@ namespace MainApi.Domain.Models.Products
         public List<Image> Images { get; set; } = new List<Image>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public List<WishList> WishLists { get; set; } = new List<WishList>();
-        public List<Product_ProductAttribute_Mapping> Product_ProductAttribute_Mappings { get; set; } = new List<Product_ProductAttribute_Mapping>();
+        public List<ProductAttributeMapping> Product_ProductAttribute_Mappings { get; set; } = new List<ProductAttributeMapping>();
         public List<Product_SpecificationAttribute_Mapping> Product_SpecificationAttribute_Mappings { get; set; } = new List<Product_SpecificationAttribute_Mapping>();
         public List<ProductCombination> ProductCombination { get; set; } = new List<ProductCombination>();
         public List<CartItem> CartItems { get; set; } = new List<CartItem>();

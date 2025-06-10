@@ -31,10 +31,6 @@ namespace MainApi.Infrastructure.Services.Internal
 
             List<PredefinedProductAttributeValue> selectedValues = await _productAttributeRepo.GetAttributeValuesById(addProductCombinationRequestDto.SelectedValueIds) ?? throw new ValidationException("Invalid attribute selections");
 
-
-            // string attributeString = string.Join(" - ", selectedValues.Select(v => v.Name));
-
-
             string Sku = _sKUService.GenerateSKU(product.ProductName, selectedValues.Select(s => s.Name).ToList());
 
             ProductCombination combination = new ProductCombination()
@@ -82,7 +78,7 @@ namespace MainApi.Infrastructure.Services.Internal
 
             ProductAttribute? productAttribute = await _productAttributeRepo.GetProductAttributeByIdAsync(addProductAttributeMappingRequestDto.ProductAttributeId) ?? throw new KeyNotFoundException("ProductAttribute not found");
 
-            Product_ProductAttribute_Mapping? mappingModel = new Product_ProductAttribute_Mapping()
+            ProductAttributeMapping? mappingModel = new ProductAttributeMapping()
             {
                 IsRequired = addProductAttributeMappingRequestDto.IsRequired,
                 Product = product,
@@ -91,8 +87,8 @@ namespace MainApi.Infrastructure.Services.Internal
                 ProductId = addProductAttributeMappingRequestDto.ProductId
             };
 
-            Product_ProductAttribute_Mapping product_ProductAttribute_Mapping = await _productAttributeRepo.AddProductAttributeMappingAsync(mappingModel);
-            return product_ProductAttribute_Mapping.ToProductMappingDto();
+            ProductAttributeMapping productAttributeMapping = await _productAttributeRepo.AddProductAttributeMappingAsync(mappingModel);
+            return productAttributeMapping.ToProductMappingDto();
         }
 
         public async Task DeletePredefinedProductAttributeValue(int predefinedProductAttributeId)
@@ -116,7 +112,7 @@ namespace MainApi.Infrastructure.Services.Internal
 
         public async Task<List<ProductAttributeMappingDto>> GetAllAssignedProductAttributeAsync(int productId)
         {
-            List<Product_ProductAttribute_Mapping> product_ProductAttribute_Mappings = await _productAttributeRepo.GetAllProductAttributeMappingAsync(productId);
+            List<ProductAttributeMapping> product_ProductAttribute_Mappings = await _productAttributeRepo.GetAllProductAttributeMappingAsync(productId);
             List<ProductAttributeMappingDto> productAttributeMappingDtos = product_ProductAttribute_Mappings.Select(m =>
             {
                 return new ProductAttributeMappingDto()
@@ -135,30 +131,39 @@ namespace MainApi.Infrastructure.Services.Internal
             // var productCombinationAttribute = combinations.Select(c => c.CombinationAttributes.Select(a => a.AttributeValue.ProductAttribute.Name).ToList()).ToList();
             // var ex = productCombinationAttribute.Select(a => a.Except(new List<string>() { "Color" }).ToList()).ToList();
 
-            List<ProductCombinationDto> combinationDtos = combinations.GroupBy(c => new
-            {
-                Storage = c.CombinationAttributes?.FirstOrDefault(a => a.AttributeValue?.ProductAttribute?.Name == "Storage")?.AttributeValue.Name,
-                RAM = c.CombinationAttributes?.FirstOrDefault(a => a.AttributeValue?.ProductAttribute?.Name == "RAM")?.AttributeValue.Name
-            })
-            .Select(g => new ProductCombinationDto
-            {
-                Quantity = g.Sum(v => v.Quantity),
-                ProductId = productId,
-                Attributes = new Dictionary<string, string>
-                {
-                    {"Storage" , g.Key.Storage ?? string.Empty},
-                    {"RAM" , g.Key.RAM ?? string.Empty},
-                },
+            // List<ProductCombinationDto> combinationDtos = combinations.GroupBy(c => new
+            // {
+            //     Storage = c.CombinationAttributes?.FirstOrDefault(a => a.AttributeValue?.ProductAttribute?.Name == "Storage")?.AttributeValue.Name,
+            //     RAM = c.CombinationAttributes?.FirstOrDefault(a => a.AttributeValue?.ProductAttribute?.Name == "RAM")?.AttributeValue.Name
+            // })
+            // .Select(g => new ProductCombinationDto
+            // {
+            //     Quantity = g.Sum(v => v.Quantity),
+            //     ProductId = productId,
+            //     Attributes = new Dictionary<string, string>
+            //     {
+            //         {"Storage" , g.Key.Storage ?? string.Empty},
+            //         {"RAM" , g.Key.RAM ?? string.Empty},
+            //     },
 
-                AvailableColors = g.Select(v => new ColorOptionDto
+            //     AvailableColors = g.Select(v => new ColorOptionDto
+            //     {
+            //         Name = v.CombinationAttributes.FirstOrDefault(a => a.AttributeValue.ProductAttribute.Name == "Color").AttributeValue.Name,
+            //         Stock = v.Quantity,
+            //         Price = v.FinalPrice,
+            //         Sku = v.Sku
+            //     }).ToList()
+            List<ProductCombinationDto> combinationDtos = combinations.
+                Select(g => new ProductCombinationDto
                 {
-                    Name = v.CombinationAttributes.FirstOrDefault(a => a.AttributeValue.ProductAttribute.Name == "Color").AttributeValue.Name,
-                    Stock = v.Quantity,
-                    Price = v.FinalPrice,
-                    Sku = v.Sku
-                }).ToList()
-
-            }).ToList();
+                    Quantity = g.Quantity,
+                    ProductId = productId,
+                    Attributes = g.CombinationAttributes
+                    .Select(a => new Dictionary<string, string>
+                    {
+                        { a.AttributeValue.ProductAttribute.Name, a.AttributeValue.Name }
+                    }).ToList()
+                }).ToList();
 
             // List<ProductCombinationDto> combinationDtos = combinations.Select(c => c.ToProductAttributeCombinationDto()).ToList();
             return combinationDtos;

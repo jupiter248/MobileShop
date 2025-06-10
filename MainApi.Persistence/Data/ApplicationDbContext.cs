@@ -14,7 +14,7 @@ namespace MainApi.Persistence.Data;
 
 public class ApplicationDbContext : IdentityDbContext<AppUser>
 {
-    public ApplicationDbContext(DbContextOptions dbContextOptions)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions)
       : base(dbContextOptions)
     {
     }
@@ -34,7 +34,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Address> Addresses { get; set; }
     public DbSet<WishList> WishLists { get; set; }
     public DbSet<PredefinedProductAttributeValue> PredefinedProductAttributeValues { get; set; }
-    public DbSet<Product_ProductAttribute_Mapping> ProductAttributeMappings { get; set; }
+    public DbSet<ProductAttributeMapping> ProductAttributeMappings { get; set; }
     public DbSet<ProductAttribute> ProductAttributes { get; set; }
     public DbSet<ProductAttributeValue> ProductAttributeValues { get; set; }
     public DbSet<ProductCombination> ProductCombinations { get; set; }

@@ -38,11 +38,11 @@ namespace MainApi.Persistence.Repository
             return productAttributeCombination;
         }
 
-        public async Task<Product_ProductAttribute_Mapping> AddProductAttributeMappingAsync(Product_ProductAttribute_Mapping product_ProductAttribute_Mapping)
+        public async Task<ProductAttributeMapping> AddProductAttributeMappingAsync(ProductAttributeMapping ProductAttributeMapping)
         {
-            await _context.ProductAttributeMappings.AddAsync(product_ProductAttribute_Mapping);
+            await _context.ProductAttributeMappings.AddAsync(ProductAttributeMapping);
             await _context.SaveChangesAsync();
-            return product_ProductAttribute_Mapping;
+            return ProductAttributeMapping;
         }
 
         public async Task DeletePredefinedProductAttributeValueAsync(PredefinedProductAttributeValue predefinedProductAttributeValue)
@@ -72,7 +72,7 @@ namespace MainApi.Persistence.Repository
             .Where(p => p.ProductId == productId).ToListAsync();
         }
 
-        public async Task<List<Product_ProductAttribute_Mapping>> GetAllProductAttributeMappingAsync(int productId)
+        public async Task<List<ProductAttributeMapping>> GetAllProductAttributeMappingAsync(int productId)
         {
             return await _context.ProductAttributeMappings.Include(m => m.ProductAttribute).ThenInclude(a => a.PredefinedProductAttributeValues).Include(m => m.ProductAttributeValues).Where(m => m.ProductId == productId).ToListAsync();
         }

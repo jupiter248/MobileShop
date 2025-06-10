@@ -232,7 +232,7 @@ namespace MainApi.Persistence.Data
                     {
                         Brand = "Samsung",
                         ProductName = "Samsung A15",
-                        Model = "A15",
+                        Model = "2023",
                         Quantity = 5,
                         Description = "Test Test Test Test Test",
                         Price = 125000000,
@@ -245,7 +245,7 @@ namespace MainApi.Persistence.Data
                     {
                         Brand = "Samsung",
                         ProductName = "Samsung A10s",
-                        Model = "A10s",
+                        Model = "2019",
                         Quantity = 2,
                         Description = "Test Test Test Test Test",
                         Price = 50000000,
@@ -258,23 +258,23 @@ namespace MainApi.Persistence.Data
                 await _context.Products.AddRangeAsync(products);
 
                 //Add Product Attribute Mapping
-                List<Product_ProductAttribute_Mapping> product_ProductAttribute_Mappings = new List<Product_ProductAttribute_Mapping>
+                List<ProductAttributeMapping> product_ProductAttribute_Mappings = new List<ProductAttributeMapping>
                 {
-                    new Product_ProductAttribute_Mapping
+                    new ProductAttributeMapping
                     {
                         Product = products[0],
                         ProductId = products[0].Id,
                         ProductAttribute = productAttributes.FirstOrDefault(a => a.Name == "RAM"),
                         ProductAttributeId = productAttributes.FirstOrDefault(a => a.Name == "RAM").Id
                     },
-                    new Product_ProductAttribute_Mapping
+                    new ProductAttributeMapping
                     {
                         Product = products[0],
                         ProductId = products[0].Id,
                         ProductAttribute = productAttributes.FirstOrDefault(a => a.Name == "Storage"),
                         ProductAttributeId = productAttributes.FirstOrDefault(a => a.Name == "Storage").Id
                     },
-                    new Product_ProductAttribute_Mapping
+                    new ProductAttributeMapping
                     {
                         Product = products[0],
                         ProductId = products[0].Id,

@@ -10,7 +10,6 @@ namespace MainApi.Application.Dtos.ProductAttributes
     {
         public required int ProductId { get; set; }
         public required int Quantity { get; set; }
-            public Dictionary<string, string>? Attributes { get; set; }
-        public List<ColorOptionDto>? AvailableColors { get; set; }
+        public List<Dictionary<string, string>>? Attributes { get; set; }
     }
 }

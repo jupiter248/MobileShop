@@ -44,12 +44,12 @@ namespace MainApi.Application.Mappers
                 ProductAttribute = productAttribute
             };
         }
-        public static ProductAttributeMappingDto ToProductMappingDto(this Product_ProductAttribute_Mapping product_ProductAttribute_Mapping)
+        public static ProductAttributeMappingDto ToProductMappingDto(this ProductAttributeMapping productAttributeMapping )
         {
             return new ProductAttributeMappingDto
             {
-                Attribute = product_ProductAttribute_Mapping.ProductAttribute.ToProductAttributeDto(),
-                IsRequired = product_ProductAttribute_Mapping.IsRequired
+                Attribute = productAttributeMapping.ProductAttribute.ToProductAttributeDto(),
+                IsRequired = productAttributeMapping.IsRequired
 
             };
         }

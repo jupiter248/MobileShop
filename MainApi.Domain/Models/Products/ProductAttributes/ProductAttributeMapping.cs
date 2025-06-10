@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MainApi.Domain.Models.Products.ProductAttributes
 {
-    public class Product_ProductAttribute_Mapping
+    public class ProductAttributeMapping
     {
         [Key]
         public int Id { get; set; }

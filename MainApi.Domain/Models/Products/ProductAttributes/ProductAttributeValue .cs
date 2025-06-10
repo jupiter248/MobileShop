@@ -11,7 +11,7 @@ namespace MainApi.Domain.Models.Products.ProductAttributes
         [Key]
         public int Id { get; set; }
         public int ProductAttributeMappingId { get; set; }
-        public Product_ProductAttribute_Mapping? Product_ProductAttribute_Mapping { get; set; }
+        public ProductAttributeMapping? productAttributeMapping { get; set; }
         public string? Name { get; set; }
         public decimal PriceAdjustment { get; set; }
     }
